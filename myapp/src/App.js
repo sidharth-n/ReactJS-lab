@@ -1,4 +1,4 @@
-import logo from "./logo.svg";
+import { useState } from "react";
 import "./App.css";
 
 const Person = () => {
@@ -12,16 +12,26 @@ const Person = () => {
 };
 
 function App() {
-  const name = "sid";
+  const [counter, setCounter] = useState(0);
   return (
     <div className="App">
       <>
-        <h1>Hello, {Math.pow(4, 8)}</h1>
-        <Person />
-        <Person />
-        <Person />
-        <Person />
-        <Person />
+        <h1>Counter</h1>
+        <button
+          onClick={() => {
+            setCounter((prevCount) => prevCount - 1);
+          }}
+        >
+          -
+        </button>
+        <h2>{counter} </h2>
+        <button
+          onClick={() => {
+            setCounter((prevCount) => prevCount + 1);
+          }}
+        >
+          +
+        </button>
       </>
     </div>
   );
