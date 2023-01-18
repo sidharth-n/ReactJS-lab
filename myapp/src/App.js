@@ -1,37 +1,39 @@
 import { useState } from "react";
 import "./App.css";
 
-const Person = () => {
+function Square() {
+  const [value, setvalue] = useState(null);
+
+  function handleClick() {
+    setvalue("x");
+  }
   return (
-    <>
-      <h1>Name:sid</h1>
-      <h2>Last name : crizz</h2>
-      <h2>Age : 30</h2>
-    </>
+    <button className="Button" onClick={handleClick}>
+      {value}
+    </button>
   );
-};
+}
 
 function App() {
-  const [counter, setCounter] = useState(0);
   return (
     <div className="App">
       <>
-        <h1>Counter</h1>
-        <button
-          onClick={() => {
-            setCounter((prevCount) => prevCount - 1);
-          }}
-        >
-          -
-        </button>
-        <h2>{counter} </h2>
-        <button
-          onClick={() => {
-            setCounter((prevCount) => prevCount + 1);
-          }}
-        >
-          +
-        </button>
+        <h1>Tic-Tac-Toe</h1>
+        <div className="rows">
+          <Square />
+          <Square />
+          <Square />
+        </div>
+        <div className="rows">
+          <Square />
+          <Square />
+          <Square />
+        </div>{" "}
+        <div className="rows">
+          <Square />
+          <Square />
+          <Square />
+        </div>
       </>
     </div>
   );
