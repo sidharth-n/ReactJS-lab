@@ -1,7 +1,7 @@
 .Button {
-  width: 40px;
-  height: 40px;
-  font-size: 30px;
+  width: 80px;
+  height: 80px;
+  font-size: 50px;
   font-weight: bold;
   border: 1px solid grey;
   background-color: rgb(238, 225, 225);
@@ -18,4 +18,10 @@
 
 .rows {
   display: flex;
+}
+
+.status {
+  font-size: 20px;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
