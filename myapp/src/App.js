@@ -16,10 +16,11 @@ function App() {
   let status;
   if (winner) {
     status = `Winner : ${winner}`;
-  } else {
+  } else if (squares.includes(null)) {
     status = `Next move : ${isNext ? "x" : "o"}`;
+  } else {
+    status = `oops ! tie game. `;
   }
-
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) {
       return;
