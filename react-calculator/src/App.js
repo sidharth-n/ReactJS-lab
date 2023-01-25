@@ -125,10 +125,8 @@ function evaluate({ currentOperand, previousOperand, operation }) {
 }
 
 function Calculator() {
-  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(
-    reducer,
-    {}
-  );
+  const [{ currentOperand = "Use me", previousOperand, operation }, dispatch] =
+    useReducer(reducer, {});
 
   return (
     <div className="calculator-grid">
