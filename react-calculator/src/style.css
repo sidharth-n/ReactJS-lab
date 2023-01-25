@@ -49,8 +49,7 @@ button {
   border: 1px solid white;
 }
 
-button:hover,
-button:focus {
+button:hover {
   cursor: pointer;
   background-color: white;
 }
