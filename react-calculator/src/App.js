@@ -34,7 +34,8 @@ function reducer(state, { type, payload }) {
     case ACTIONS.CLEAR: {
       return {
         ...state,
-        currentOperand: "",
+        currentOperand: "Use me",
+        overwrite: true,
       };
     }
     case ACTIONS.CHOOSE_OPERATION: {
