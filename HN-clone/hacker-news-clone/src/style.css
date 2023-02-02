@@ -61,10 +61,11 @@ body {
 
 .story-title {
   color: rgb(24, 24, 24);
-  flex-wrap: no;
 }
 .story-url {
   font-size: 11px;
+  color: grey;
+  text-decoration: none;
 }
 
 .story-sub {

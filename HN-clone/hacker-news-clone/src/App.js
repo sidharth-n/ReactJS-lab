@@ -10,7 +10,7 @@ const HackerNews = () => {
       .then((response) => response.json())
       .then(async (data) => {
         const storyPromises = data
-          .slice(0, 100)
+          .slice(0, 1)
           .map((storyId) =>
             fetch(
               `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`
