@@ -33,7 +33,8 @@ export default function Story({ props }) {
       <div className="story-sub">
         {props.score} points by {props.by} {UpdateTime}
         {UpdateTime == 1 ? " hour " : " hours "}
-        ago | hide | {props.descendants} <Comments id={props.id} />
+        ago | hide | {props.descendants}{" "}
+        {/* <Comments id={props.id} /* onClick = {handleClick}  */ /> */}
       </div>
     </li>
   );

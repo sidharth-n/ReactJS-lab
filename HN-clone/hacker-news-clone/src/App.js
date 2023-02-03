@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Story from "./story";
+import { Link, Route, Routes } from "react-router-dom";
+import Comments from "./comments";
+import Stories from "./stories";
 import "./style.css";
 
 const HackerNews = () => {
@@ -33,13 +35,10 @@ const HackerNews = () => {
         </div>
         <div className="login">login</div>
       </div>
-      <ol className="news">
-        {stories.map((story) => (
-          <li>
-            <Story props={story} />
-          </li>
-        ))}
-      </ol>
+      <Routes>
+        <Route path="/" element={<Stories />} />
+        <Route path="/comments/:id" element={<Comments />} />
+      </Routes>
     </div>
   );
 };

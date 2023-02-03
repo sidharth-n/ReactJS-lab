@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-const apiKey = "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";
-const model = "text-davinci-003";
+const apiKey = "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";
 const maxTokens = 1000;
 const temperature = 0;
 

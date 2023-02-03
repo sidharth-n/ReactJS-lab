@@ -73,3 +73,25 @@ body {
   margin-top: 2px;
   padding-left: 12px;
 }
+
+.comments {
+  font-size: 13px;
+  color: black;
+  margin-top: 10px;
+  list-style: none;
+}
+
+.comment-head {
+  font-size: 10px;
+  margin-bottom: 2px;
+  color: grey;
+  display: flex;
+  align-items: center;
+}
+
+.t-up {
+  fill: rgb(173, 173, 173);
+  stroke: rgb(173, 173, 173);
+  margin-left: -20px;
+  margin-right: 10px;
+}
