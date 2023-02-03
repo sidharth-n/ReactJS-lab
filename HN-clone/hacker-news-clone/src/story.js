@@ -1,4 +1,5 @@
 import Comments from "./comments";
+import { Link } from "react-router-dom";
 export default function Story({ props }) {
   function hoursPassed(timestamp) {
     const now = Date.now() / 1000; // current time in Unix timestamp (in seconds)
@@ -33,8 +34,10 @@ export default function Story({ props }) {
       <div className="story-sub">
         {props.score} points by {props.by} {UpdateTime}
         {UpdateTime == 1 ? " hour " : " hours "}
-        ago | hide | {props.descendants}{" "}
-        {/* <Comments id={props.id} /* onClick = {handleClick}  */ /> */}
+        ago | hide |{" "}
+        <Link className="link" to={`/comments/${props.id}`}>
+          {props.descendants} Comments
+        </Link>
       </div>
     </li>
   );
