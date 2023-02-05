@@ -31,6 +31,7 @@ function Commentscall({ id }) {
     fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
       .then((response) => response.json())
       .then(async (data) => {
+        console.log(data);
         setStory(data);
         if (data.kids) {
           const storyPromises = data.kids.map((storyId) =>
@@ -39,8 +40,9 @@ function Commentscall({ id }) {
             ).then((res) => res.json())
           );
           CommentData = await Promise.all(storyPromises);
+          console.log(CommentData);
         } else {
-          CommentData = [story];
+          CommentData = [...story];
           console.log(story);
         }
         setComments(CommentData);
@@ -50,6 +52,7 @@ function Commentscall({ id }) {
   }, []);
   return (
     <div className="comment-div">
+      <h3>{story.text}</h3>
       <ul className="comments-section">
         {comments.map((comment) => (
           <li
