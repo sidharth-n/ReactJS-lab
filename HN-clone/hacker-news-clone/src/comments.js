@@ -19,12 +19,6 @@ function Commentscall({ id }) {
   let CommentData;
   const [loading, setLoading] = useState(true);
   /* console.log("id is :" + id); */
-  function hoursPassed(timestamp) {
-    const now = Date.now() / 1000; // current time in Unix timestamp (in seconds)
-    const difference = now - timestamp; // difference in seconds
-    const hours = difference / 3600; // convert to hours
-    return Math.floor(hours);
-  }
   const [comments, setComments] = useState([]);
   const [story, setStory] = useState([]);
   useEffect(() => {
@@ -52,39 +46,55 @@ function Commentscall({ id }) {
   }, []);
   return (
     <div className="comment-div">
-      <h3>{story.text}</h3>
+      {story.text && <CommentStyle comment={story} />}
       <ul className="comments-section">
         {comments.map((comment) => (
-          <li
-            className="comments"
-            key={comment.id}
-            style={{ marginLeft: "40px" }}
-          >
-            <div className="comment-head">
-              <svg
-                className="t-up"
-                xmlns="http://www.w3.org/2000/svg"
-                width="9"
-                height="9"
-                viewBox="0 0 24 24"
-                fill="grey"
-                stroke="grey"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-              </svg>
-              {comment.by} {hoursPassed(comment.time)}
-              {hoursPassed(comment.time) == 1 ? " hour " : " hours "} ago | root
-              | parent | next
-            </div>
-            <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+          <>
+            {comment.text && <CommentStyle comment={comment} />}
             {comment.kids &&
               comment.kids.map((kid) => <Commentscall id={kid} />)}
-          </li>
+          </>
         ))}
       </ul>
     </div>
+  );
+}
+
+function CommentStyle({ comment }) {
+  const [margin, setMargin] = useState(40);
+  /* setMargin(margin + 20); */
+  function hoursPassed(timestamp) {
+    const now = Date.now() / 1000; // current time in Unix timestamp (in seconds)
+    const difference = now - timestamp; // difference in seconds
+    const hours = difference / 3600; // convert to hours
+    return Math.floor(hours);
+  }
+  return (
+    <li
+      className="comments"
+      key={comment.id}
+      style={{ marginLeft: `${margin}px` }}
+    >
+      <div className="comment-head">
+        <svg
+          className="t-up"
+          xmlns="http://www.w3.org/2000/svg"
+          width="9"
+          height="9"
+          viewBox="0 0 24 24"
+          fill="grey"
+          stroke="grey"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+        </svg>
+        {comment.by} {hoursPassed(comment.time)}
+        {hoursPassed(comment.time) == 1 ? " hour " : " hours "} ago | root |
+        parent | next | existing : {comment.dead} {console.log(margin)}
+      </div>
+      <div dangerouslySetInnerHTML={{ __html: comment.text }} />
+    </li>
   );
 }

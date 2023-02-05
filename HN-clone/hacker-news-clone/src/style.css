@@ -74,13 +74,6 @@ body {
   padding-left: 12px;
 }
 
-.comments {
-  font-size: 13px;
-  color: black;
-  margin-top: 10px;
-  list-style: none;
-}
-
 .comment-head {
   font-size: 10px;
   margin-bottom: 2px;
@@ -104,8 +97,21 @@ body {
 .comments-section {
   width: 80%;
   margin-top: 20px;
+  margin-left: 40px;
+  color: blue;
 }
-
+.comments {
+  font-size: 13px;
+  color: black;
+  margin-top: 10px;
+  list-style: none;
+  background-color: green;
+  margin-left: 40px;
+}
+.comment-div {
+  margin-left: 0px;
+  background-color: grey;
+}
 .lds-ring {
   display: inline-block;
   position: relative;
@@ -145,10 +151,6 @@ body {
   100% {
     transform: rotate(360deg);
   }
-}
-
-.comment-div {
-  padding: 10px;
 }
 
 .comment-input {
