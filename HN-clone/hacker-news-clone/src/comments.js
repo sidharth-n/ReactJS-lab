@@ -4,14 +4,25 @@ import Loading from "./loading";
 import Story from "./story";
 
 export default function Comments() {
+  const [story, setStory] = useState([]);
   const { id } = useParams();
+  useEffect(() => {
+    fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
+      .then((response) => response.json())
+      .then(async (data) => {
+        console.log(data);
+        setStory(data);
+      });
+  }, []);
   return (
-    <>
-      <h1>replace with story</h1>
+    <div className="comments-page">
+      <Story props={story} />
       <input className="comment-input" type="text"></input>
       <button className="comment-btn">add comment</button>
-      <Commentscall id={id} />
-    </>
+      <div className="comments-container">
+        <Commentscall id={id} />
+      </div>
+    </div>
   );
 }
 
@@ -71,7 +82,7 @@ function CommentStyle({ comment }) {
   }
   return (
     <li
-      className="comments"
+      /* className="comments" */
       key={comment.id}
       style={{ marginLeft: `${margin}px` }}
     >
