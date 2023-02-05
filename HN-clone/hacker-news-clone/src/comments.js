@@ -1,18 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Loading from "./loading";
+import Story from "./story";
 
-export default function Comments({ idKids }) {
+export default function Comments() {
+  const { id } = useParams();
+  return (
+    <>
+      <h1>replace with story</h1>
+      <input className="comment-input" type="text"></input>
+      <button className="comment-btn">add comment</button>
+      <Commentscall id={id} />
+    </>
+  );
+}
+
+function Commentscall({ id }) {
+  let CommentData;
   const [loading, setLoading] = useState(true);
-  const { idc } = useParams();
-  console.log("idKids is : " + idKids);
-  let id;
-  if (idKids == undefined) {
-    id = idc;
-  } else {
-    id = idKids;
-  }
-  console.log("id is :" + id);
+  /* console.log("id is :" + id); */
   function hoursPassed(timestamp) {
     const now = Date.now() / 1000; // current time in Unix timestamp (in seconds)
     const difference = now - timestamp; // difference in seconds
@@ -20,24 +26,30 @@ export default function Comments({ idKids }) {
     return Math.floor(hours);
   }
   const [comments, setComments] = useState([]);
+  const [story, setStory] = useState([]);
   useEffect(() => {
     fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json`)
       .then((response) => response.json())
       .then(async (data) => {
-        const storyPromises = data.kids.map((storyId) =>
-          fetch(
-            `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`
-          ).then((res) => res.json())
-        );
-        const storyData = await Promise.all(storyPromises);
-        setComments(storyData);
-        console.log(storyData);
+        setStory(data);
+        if (data.kids) {
+          const storyPromises = data.kids.map((storyId) =>
+            fetch(
+              `https://hacker-news.firebaseio.com/v0/item/${storyId}.json`
+            ).then((res) => res.json())
+          );
+          CommentData = await Promise.all(storyPromises);
+        } else {
+          CommentData = [story];
+          console.log(story);
+        }
+        setComments(CommentData);
+        /*  console.log(CommentData); */
         setLoading(false);
       });
   }, []);
   return (
-    <div>
-      {loading && <Loading />}
+    <div className="comment-div">
       <ul className="comments-section">
         {comments.map((comment) => (
           <li
@@ -65,7 +77,8 @@ export default function Comments({ idKids }) {
               | parent | next
             </div>
             <div dangerouslySetInnerHTML={{ __html: comment.text }} />
-            {/*  {comment.kids && comment.kids.map((kid) => <Comments id={kid} />)} */}
+            {comment.kids &&
+              comment.kids.map((kid) => <Commentscall id={kid} />)}
           </li>
         ))}
       </ul>

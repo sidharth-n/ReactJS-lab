@@ -8,7 +8,7 @@ export default function Loading() {
         height: "100vh",
       }}
     >
-      <div style={{ textAlign: "center" }}>
+      <div className="loading" style={{ textAlign: "center" }}>
         <h1>Fetching data...</h1>
         <div className="lds-ring">
           <div></div>
