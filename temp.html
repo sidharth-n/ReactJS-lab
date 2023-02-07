@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      async
+      src="https://cdn.jsdelivr.net/npm/puppeteer-core@6.0.0/dist/puppeteer-core.min.js"
+    ></script>
+    <script>
+      async function getText() {
+        const browser = await puppeteer.launch({ headless: false });
+        const page = await browser.newPage();
+        await page.goto(
+          "https://you.com/search?q=who+are+you&tbm=youchat&cfr=chat"
+        );
+
+        // Input field selection
+        const inputField = await page.waitForXPath(
+          "/html/body/div[1]/div/div/div/div[2]/section/main/div/div/div[1]/div[2]/div/div/li/div[2]/div[1]/textarea"
+        );
+        await inputField.type("who is the ceo of twitter");
+        await inputField.press("Enter");
+
+        // Wait for 5 seconds
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+
+        // Wait for text to appear
+        const text = await page.waitForXPath(
+          '//*[@id="chatHistory"]/div[2]/div[2]/div[1]/p'
+        );
+
+        // Get text content
+        const textContent = await page.evaluate(
+          (element) => element.textContent,
+          text
+        );
+        console.log(textContent);
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="getText()">Get Text</button>
+  </body>
+</html>
