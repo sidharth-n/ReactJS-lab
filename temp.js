@@ -54,20 +54,19 @@ async function selectFirstMessage(page) {
   await selectFirstMessage(page);
 })();
  */
+const Youbrowser = await puppeteer.launch({ headless: false });
+const Botpage = await Youbrowser.newPage();
+await Botpage.goto("https://you.com/search?q=who+are+you&tbm=youchat&cfr=chat");
 async function fetchAnswer(question) {
-  const browser = await puppeteer.launch({ headless: false });
-  const page = await browser.newPage();
-  await page.goto("https://you.com/search?q=who+are+you&tbm=youchat&cfr=chat");
-
   // Input field selection
-  const inputField = await page.waitForSelector(
+  const inputField = await Botpage.waitForSelector(
     "#section > main > div > div > div.sc-c7689318-2.kybaUe > div:nth-child(2) > div > div > li > div.sc-1bad5357-2.cvgjRS > div.sc-24085169-0.dyHEmQ > textarea"
   );
   await inputField.type(question);
   await inputField.press("Enter");
 
   // Get text content
-  const text = await page.waitForXPath(
+  const text = await Botpage.waitForXPath(
     '//*[@id="chatHistory"]/div[2]/div[2]/div[1]/p'
   );
 
@@ -77,7 +76,10 @@ async function fetchAnswer(question) {
 
   while (sameTextCount < 5) {
     previousText = currentText;
-    currentText = await page.evaluate((element) => element.textContent, text);
+    currentText = await Botpage.evaluate(
+      (element) => element.textContent,
+      text
+    );
     if (previousText === currentText) {
       sameTextCount++;
     } else {
@@ -85,7 +87,6 @@ async function fetchAnswer(question) {
     }
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  await browser.close();
   return currentText;
 }
 
