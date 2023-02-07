@@ -11,32 +11,57 @@ async function selectFirstMessage(page) {
   );
 
   BotGroup.click();
-  const lastMessage = await page.waitForXPath(
-    "/html/body/div[1]/div/div/div[4]/div/div[2]/div/div[2]/div[3]/div[7]/div/div/div[1]/div[1]/div[1]/div/span[1]/span"
-  );
-  currentText = await page.evaluate(
+
+  let currentText = "/ask hi chatgpt";
+
+  setInterval(async () => {
+    const lastMessage = await page.waitForSelector(
+      "#main > div._2gzeB > div > div._5kRIK > div.n5hs2j7m.oq31bsqd.gx1rr48f.qh5tioqs > div:last-child > div > div > div.ItfyB._3nbHh > div._27K43 > div.copyable-text > div > span._11JPr.selectable-text.copyable-text > span"
+    );
+    const updatedText = await page.evaluate(
+      (element) => element.textContent,
+      lastMessage
+    );
+
+    if (updatedText !== currentText) {
+      currentText = updatedText;
+      console.log("query from whatsapp : " + currentText);
+      if (currentText.includes("/ask")) {
+        const query = currentText.replace("/ask", "").trim();
+        const answer = await fetchAnswer(query);
+        console.log(query);
+        console.log(answer);
+        const inputField = await page.waitForXPath(
+          `//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]`
+        );
+        await inputField.type(answer);
+        await inputField.press("Enter");
+      }
+    }
+  }, 500);
+
+  /*  currentText = await page.evaluate(
     (element) => element.textContent,
     lastMessage
-  );
-  console.log(currentText);
+  ); */
 }
 
-(async () => {
+/* (async () => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
   // Select the first message
   await selectFirstMessage(page);
 })();
-
+ */
 async function fetchAnswer(question) {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   await page.goto("https://you.com/search?q=who+are+you&tbm=youchat&cfr=chat");
 
   // Input field selection
-  const inputField = await page.waitForXPath(
-    "/html/body/div[1]/div/div/div/div[2]/section/main/div/div/div[1]/div[2]/div/div/li/div[2]/div[1]/textarea"
+  const inputField = await page.waitForSelector(
+    "#section > main > div > div > div.sc-c7689318-2.kybaUe > div:nth-child(2) > div > div > li > div.sc-1bad5357-2.cvgjRS > div.sc-24085169-0.dyHEmQ > textarea"
   );
   await inputField.type(question);
   await inputField.press("Enter");
@@ -64,11 +89,7 @@ async function fetchAnswer(question) {
   return currentText;
 }
 
-/* (async () => {
+(async () => {
   const answer1 = await fetchAnswer("write a poem about chatgpt");
   console.log("Answer 1:", answer1);
-
-  const answer2 = await fetchAnswer("who is the CEO of Twitter");
-  console.log("Answer 2:", answer2);
 })();
- */
