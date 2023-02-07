@@ -12,22 +12,13 @@ async function selectFirstMessage(page) {
 
   BotGroup.click();
   const lastMessage = await page.waitForXPath(
-    "/html/body/div[1]/div/div/div[4]/div/div[2]/div/div[2]/div[2]/div[6]/div/div/div[1]/div[1]/div[1]/div/span[1]/span"
+    "/html/body/div[1]/div/div/div[4]/div/div[2]/div/div[2]/div[3]/div[7]/div/div/div[1]/div[1]/div[1]/div/span[1]/span"
   );
   currentText = await page.evaluate(
     (element) => element.textContent,
     lastMessage
   );
   console.log(currentText);
-  // Select the first chat
-  /*   const firstChat = await page.evaluate(() => {
-    const chat = document.querySelector("#pane-side [tabindex='0']");
-    chat.click();
-    return chat;
-  }); */
-
-  // Wait for the chat to open
-  ///html/body/div[1]/div/div/div[4]/div/div[2]/div/div[2]/div[2]/div[6]/div/div/div[1]/div[1]/div[1]/div/span[1]/span
 }
 
 (async () => {
@@ -37,6 +28,7 @@ async function selectFirstMessage(page) {
   // Select the first message
   await selectFirstMessage(page);
 })();
+
 async function fetchAnswer(question) {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
