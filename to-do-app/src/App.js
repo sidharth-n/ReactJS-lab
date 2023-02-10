@@ -5,6 +5,14 @@ import Task from "./TaskList";
 function App() {
   const [task, setTask] = useState("");
   const [taskList, setTaskList] = useState([]);
+  const [isDone, setIsDone] = useState(false);
+  function handleDelete(deleteTask) {
+    let newsTaskList = taskList.filter((task) => task != deleteTask);
+    setTaskList(newsTaskList);
+  }
+  function handleDone() {
+    setIsDone(!isDone);
+  }
   return (
     <div className="flex flex-col p-4 bg-blue-100 h-screen ">
       <div className="bg-blue-500 text-white font-bold py-2 px-4 rounded ">
@@ -12,7 +20,12 @@ function App() {
       </div>
       <div className="mt-4 flex-grow overflow-y-scroll">
         {taskList.map((task) => (
-          <Task key={task.id} title={task} />
+          <Task
+            title={task}
+            onDelete={handleDelete}
+            isDone={isDone}
+            onDone={handleDone}
+          />
         ))}
       </div>
       <div className="flex items-center mt-4">

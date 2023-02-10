@@ -1,8 +1,22 @@
-export default function Task(props) {
+export default function Task({ title, onDelete, isDone, onDone }) {
+  const doneStyle = [
+    "flex items-center justify-center w-12 bg-green-400",
+    "font-semibold text-green-500 dark:text-green-300",
+  ];
+  const pendingStyle = [
+    "flex items-center justify-center w-12 bg-yellow-400",
+    "font-semibold text-yellow-500 dark:text-yellow-300",
+  ];
+
+  function showIsdone() {
+    console.log(isDone);
+    onDone();
+  }
+
   return (
     <>
       <div class=" mt-2 flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
-        <div class="flex items-center justify-center w-12 bg-yellow-400">
+        <div class={isDone ? doneStyle[0] : pendingStyle[0]}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -27,9 +41,7 @@ export default function Task(props) {
 
         <div class="px-4 py-2 -mx-3">
           <div class="mx-3">
-            <span class="font-semibold text-yellow-500 dark:text-yellow-300">
-              {props.title}
-            </span>
+            <span class={isDone ? doneStyle[1] : pendingStyle[1]}>{title}</span>
             <p class="text-sm text-gray-600 dark:text-gray-200">
               Add sub-title here
             </p>
@@ -37,21 +49,25 @@ export default function Task(props) {
         </div>
         <div class="ml-auto pr-4 flex items-center">
           <svg
+            onClick={showIsdone}
             class="ml-6"
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="gray"
+            stroke={!isDone ? "gray" : "green"}
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
           >
-            <line x1="18" y1="2" x2="22" y2="6"></line>
-            <path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"></path>
+            <path d="M18 6 7 17l-5-5"></path>
+            <path d="m22 10-7.5 7.5L13 16"></path>
           </svg>
           <svg
+            onClick={() => {
+              onDelete(title);
+            }}
             class="ml-4 "
             xmlns="http://www.w3.org/2000/svg"
             width="16"
