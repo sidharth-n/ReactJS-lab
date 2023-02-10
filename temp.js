@@ -51,8 +51,8 @@ async function selectFirstMessage(page) {
     if (updatedText !== currentText) {
       currentText = updatedText;
       console.log("query from whatsapp : " + currentText);
-      if (currentText.includes("/ask")) {
-        const query = currentText.replace("/ask", "").trim();
+      if (!currentText.includes("..:")) {
+        const query = currentText;
         const answer = await fetchAnswer(query);
 
         console.log(query);
@@ -84,7 +84,7 @@ async function fetchAnswer(question, initiate = null) {
   }
 
   const inputField = await Botpage.waitForSelector(
-    "#section > main > div > div > div.sc-c7689318-2.kybaUe > div:nth-child(2) > div > div > li > div.sc-1bad5357-2.cvgjRS > div.sc-24085169-0.dyHEmQ > textarea"
+    " #section > main > div > div > div.sc-5e54d835-2.hNDzNs > div:nth-child(2) > div > div > li > div.sc-c5d5838d-2.doEeVo > div.sc-e8e0f785-0.cNJixV > textarea"
   );
   await inputField.type(question);
   await inputField.press("Enter");
@@ -93,30 +93,64 @@ async function fetchAnswer(question, initiate = null) {
   const text = await Botpage.waitForSelector(
     `#chatHistory > ${
       initiate != null
-        ? "div.sc-ec96b016-2.kxQdzz"
+        ? "div.sc-c159efe6-2.fPZaWV"
         : `div:nth-child(${+message_index})`
-    } > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe > p`
+    } > div.sc-c159efe6-4.cqUSEl > div.sc-c159efe6-7.hdjlGH`
   );
   console.log("message_index : " + message_index);
   let previousText = "";
-  let currentText = "";
+  let innerHTML = "";
   let sameTextCount = 0;
 
   while (sameTextCount < 5) {
-    previousText = currentText;
-    currentText = await Botpage.evaluate(
-      (element) => element.textContent,
-      text
+    previousText = innerHTML;
+    innerHTML = await Botpage.$eval(
+      `#chatHistory > ${
+        //#chatHistory > div.sc-c159efe6-2.fPZaWV > div.sc-c159efe6-4.cqUSEl > div.sc-c159efe6-7.hdjlGH
+
+        //#chatHistory > div:nth-child(3) > div.sc-c159efe6-4.cqUSEl > div.sc-c159efe6-7.hdjlGH
+        initiate != null
+          ? "div.sc-c159efe6-2.fPZaWV"
+          : `div:nth-child(${+message_index})`
+      } > div.sc-c159efe6-4.cqUSEl > div.sc-c159efe6-7.hdjlGH`,
+      (element) => element.innerHTML
     );
-    if (previousText === currentText) {
+    if (previousText === innerHTML) {
       sameTextCount++;
     } else {
       sameTextCount = 0;
     }
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 600));
   }
-  return "🤖 :" + currentText;
+  const Htmltext = await Botpage.evaluate((innerHTML) => {
+    const div = document.createElement("div");
+    div.innerHTML = innerHTML;
+    let text = div.textContent;
+
+    // Replace line breaks with new line characters
+    text = text.replace(/\n/g, "   ");
+    text = text.replace(
+      "This answer is helpful and/or accurate. Provide feedback on this result.This answer is not helpful, accurate, and/or safe. Provide feedback on this result.",
+      ""
+    );
+
+    // Replace list items with bullet points
+    text = text.replace(/\n- /g, "\u2028• ");
+
+    return text;
+  }, innerHTML);
+
+  return "🤖..:  " + Htmltext;
 }
 
+//#chatHistory > div:nth-child(3) > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe
 //#chatHistory > div.sc-ec96b016-2.kxQdzz > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe > p
 //#chatHistory > div.sc-ec96b016-2.kxQdzz > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe > p
+// #chatHistory > div:nth-child(3) > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe > p
+//#chatHistory > div.sc-ec96b016-2.kxQdzz > div.sc-ec96b016-4.jLEIOQ
+//#chatHistory > div:nth-child(3) > div.sc-ec96b016-4.jLEIOQ
+//#chatHistory > div:nth-child(3) > div.sc-ec96b016-4.jLEIOQ
+//#chatHistory > div.sc-ec96b016-2.kxQdzz > div.sc-ec96b016-4.jLEIOQ
+//#chatHistory > div:nth-child(14) > div.sc-ec96b016-4.jLEIOQ > div.sc-ec96b016-8.hAeOYe
+//#chatHistory > div.sc-c159efe6-2.fPZaWV > div.sc-c159efe6-4.cqUSEl
+//#chatHistory > div.sc-c159efe6-2.fPZaWV > div.sc-c159efe6-4.cqUSEl > div.sc-c159efe6-7.hdjlGH
