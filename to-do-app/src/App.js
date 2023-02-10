@@ -3,7 +3,7 @@ import "./App.css";
 import Task from "./TaskList";
 
 function App() {
-  const [task, setTask] = useState("");
+  const [task, setTask] = useState({});
   const [taskList, setTaskList] = useState([]);
   const [isDone, setIsDone] = useState(false);
   function handleDelete(deleteTask) {
@@ -21,7 +21,7 @@ function App() {
       <div className="mt-4 flex-grow overflow-y-scroll">
         {taskList.map((task) => (
           <Task
-            title={task}
+            title={task.title}
             onDelete={handleDelete}
             isDone={isDone}
             onDone={handleDone}
