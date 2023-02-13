@@ -11,6 +11,16 @@ function App() {
   const [count, setCount] = useState(0);
   const [serverUpdate, setServerUpdate] = useState(false);
 
+  const arraysEqual = (a, b) => {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     const boardArray = JSON.stringify(board);
     fetch(url, {
@@ -28,7 +38,11 @@ function App() {
     }, 1000);
     fetch(url)
       .then((r) => r.json())
-      .then((newBoard) => setBoard(newBoard));
+      .then((newBoard) => {
+        if (!arraysEqual(newBoard, board)) {
+          setBoard(newBoard);
+        }
+      });
     return () => clearInterval(intervalId);
   }, [count]);
 
