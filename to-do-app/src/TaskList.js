@@ -1,11 +1,11 @@
 export default function Task({ title, onDelete, isDone, onDone }) {
   const doneStyle = [
     "flex items-center justify-center w-12 bg-green-400",
-    "font-semibold text-green-500 dark:text-green-300",
+    "font-semibold text-green-500 ",
   ];
   const pendingStyle = [
     "flex items-center justify-center w-12 bg-yellow-400",
-    "font-semibold text-yellow-500 dark:text-yellow-300",
+    "font-semibold text-yellow-500 ",
   ];
 
   function showIsdone() {
@@ -15,7 +15,7 @@ export default function Task({ title, onDelete, isDone, onDone }) {
 
   return (
     <>
-      <div class=" mt-2 flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+      <div class=" mt-2 flex w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md ">
         <div class={isDone ? doneStyle[0] : pendingStyle[0]}>
           <svg
             xmlns="http://www.w3.org/2000/svg"

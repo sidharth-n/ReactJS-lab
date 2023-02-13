@@ -1,0 +1,17 @@
+/* .animated {
+  transition: transform 200ms ease-out;
+}
+
+.roll {
+  transform: translateY(-100%);
+}
+
+@keyframes roll {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+ */
