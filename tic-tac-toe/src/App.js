@@ -11,12 +11,21 @@ function App() {
   const [count, setCount] = useState(0);
   const [serverUpdate, setServerUpdate] = useState(false);
 
-  const arraysEqual = (a, b) => {
+  /*   const arraysEqual = (a, b) => {
     if (a === b) return true;
     if (a == null || b == null) return false;
     if (a.length !== b.length) return false;
     for (var i = 0; i < a.length; ++i) {
       if (a[i] !== b[i]) return false;
+    }
+    return true;
+  }; */
+  const arraysEqual = (a, b) => {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return a[i];
     }
     return true;
   };
@@ -39,8 +48,16 @@ function App() {
     fetch(url)
       .then((r) => r.json())
       .then((newBoard) => {
-        if (!arraysEqual(newBoard, board)) {
+        const difference = arraysEqual(newBoard, board);
+        if (difference !== true) {
+          if (newBoard.every((element) => element === null)) {
+            clearBoard();
+          }
           setBoard(newBoard);
+          setCurrentPlayer(difference == "X" ? "O" : "X");
+          console.log("Different value: ", difference);
+        } else {
+          console.log("Arrays are equal");
         }
       });
     return () => clearInterval(intervalId);
@@ -78,6 +95,14 @@ function App() {
   }
   function clearBoard() {
     const clearArray = Array(9).fill(null);
+    const boardArray = JSON.stringify(clearArray);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/plain",
+      },
+      body: boardArray,
+    });
     setBoard(clearArray);
     setCurrentPlayer("X");
     setWinner(null);
@@ -86,7 +111,7 @@ function App() {
   }
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="text-3xl text-bold">
+      <div className="inline-flex items-center justify-center rounded-full bg-gray-200 px-2.5 py-0.5 text-gray-700 mt-4 mb-4">
         {winner
           ? winner + " won"
           : gameEnded
@@ -111,7 +136,7 @@ function Board({ handleClick, board, winnerLine }) {
     <div className="grid grid-cols-3 ">
       {board.map((square, index) => (
         <div
-          className={`w-32 h-32 border border-gray-400 flex items-center justify-center cursor-pointer text-4xl text-neutral-700 font-bold ${
+          className={`w-24 h-24 border border-gray-400 flex items-center justify-center cursor-pointer text-4xl text-neutral-700 font-bold ${
             winnerLine.includes(index)
               ? "bg-green-300"
               : index % 2
@@ -148,3 +173,43 @@ const calculateWinner = (squares) => {
   }
   return null;
 };
+
+/* 
+<span class="inline-flex items-center justify-center rounded-full bg-purple-100 px-2.5 py-0.5 text-purple-700">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="-ml-1 mr-1.5 h-4 w-4"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M14.25 7.756a4.5 4.5 0 100 8.488M7.5 10.5h5.25m-5.25 3h5.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+
+  <p class="text-sm whitespace-nowrap">Euro</p>
+
+  <button class="-mr-1 ml-1.5 inline-block rounded-full bg-purple-200 p-0.5 text-purple-600 transition hover:text-purple-700">
+    <span class="sr-only">Remove badge</span>
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-3 h-3"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
+    </svg>
+  </button>
+</span>;
+ */
