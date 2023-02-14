@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const gameTime = 20;
-  const [answer, setAnswer] = useState(196);
+  const gameTime = 25;
+  const [answer, setAnswer] = useState(null);
   const [input, setInput] = useState("");
   const [question, setQuestion] = useState(null);
   const [answerStatus, setAnswerStatus] = useState("pending");
@@ -87,7 +87,7 @@ function App() {
           <div className="text-black font-bold  py-2 px-2 bg-gray-200 grow h-16">
             {question ? question + "  ?" : "press start"}
           </div>
-          <div3
+          <div
             className={`${
               answerStatus === "right"
                 ? "text-lime-600"
@@ -97,7 +97,7 @@ function App() {
             } font-bold   py-2 px-2 bg-gray-200 w-20 h-16 `}
           >
             {input}
-          </div3>
+          </div>
         </div>
         <SecondsTimer
           isGameOn={isGameOn}
@@ -105,11 +105,11 @@ function App() {
           setIsGameOn={setIsGameOn}
           seconds={seconds}
         />
-        <NumberKeypad onNumberClick={handleClick} />
+        <NumberKeypad onNumberClick={handleClick} Onchange={question} />
         <button
           onClick={onStart}
-          className={` bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded col-span-2 border-solid border-white border mt-4 self-center ${
-            seconds == 20 ? "flex" : "hidden"
+          className={` bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full col-span-2 border-solid border-white border mt-4 self-center ${
+            seconds == gameTime ? "flex" : "hidden"
           }`}
         >
           start
@@ -122,18 +122,27 @@ function App() {
           <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
             Thank you for playing
           </p>
-          <div className="flex flex-col items-start">
-            <div class="mt-6 text-1xl ">
-              {`Your score : ${(rightAnswers / totalQuestions).toFixed(2)}`}
-            </div>
-            <div class="mt-6 text-1xl mt-1 ">
-              {`No of questions : ${totalQuestions}`}
-            </div>
-            <div class="mt-6 text-1xl mt-1 ">
-              {`Correct answers : ${rightAnswers}`}
-            </div>
-            <div class="mt-6 text-1xl mt-1 ">{`Total time : ${gameTime} Seconds`}</div>
+          <div class=" mt-6 flex items-center justify-center rounded-xl border-4 border-black bg-pink-100 px-8 py-4 font-bold shadow-[6px_6px_0_0_#000] transition hover:shadow-none focus:outline-none focus:ring active:bg-pink-50">
+            Your Score:
+            <span className="font-bold px-1">
+              {(
+                +(rightAnswers / totalQuestions).toFixed(2) +
+                +(totalQuestions / gameTime).toFixed(2)
+              ).toFixed(3)}
+            </span>
           </div>
+          <div className="flex flex-col items-start">
+            <li class="mt-6 text-1xl ">
+              {`Decision making : ${(totalQuestions / gameTime).toFixed(2)}`}
+            </li>
+            <li class=" text-1xl ">
+              {`Accuracy : ${(rightAnswers / totalQuestions).toFixed(2)}`}
+            </li>
+            <li class=" text-1xl ">{`No of questions : ${totalQuestions}`}</li>
+            <li class=" text-1xl  ">{`Correct answers : ${rightAnswers}`}</li>
+            <li class=" text-1xl">{`Total time : ${gameTime} Seconds`}</li>
+          </div>
+
           <div
             onClick={() => reset()}
             className="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
@@ -168,25 +177,45 @@ function SecondsTimer(props) {
   );
 }
 
-const NumberKeypad = ({ onNumberClick }) => {
-  const [grid, setGrid] = useState(Array(9).fill(null));
+const NumberKeypad = ({ onNumberClick, Onchange }) => {
+  function getKeypad() {
+    const arr = [];
+
+    // fill array with numbers from 0 to 9
+    for (let i = 0; i < 10; i++) {
+      arr.push(i);
+    }
+
+    // shuffle the array using Fisher-Yates algorithm
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+
+    return arr;
+  }
+
+  const [grid, setGrid] = useState([]);
+
+  useEffect(() => {
+    setGrid(getKeypad());
+  }, []);
+
+  useEffect(() => {
+    setGrid(getKeypad());
+  }, [Onchange]);
+
   return (
     <div className="grid grid-cols-3 gap-0 items-center mt-48">
       {grid.map((number, index) => (
         <button
-          onClick={() => onNumberClick(index + 1)}
+          key={index}
+          onClick={() => onNumberClick(number)}
           className=" w-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded border-solid border-white border"
         >
-          {index + 1}
+          {number}
         </button>
       ))}
-
-      <button
-        onClick={() => onNumberClick(0)}
-        className="w-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded border-solid border-white border"
-      >
-        0
-      </button>
     </div>
   );
 };
