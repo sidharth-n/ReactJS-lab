@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 
 function App() {
+  const gameTime = 20;
   const [answer, setAnswer] = useState(196);
   const [input, setInput] = useState("");
-  const [question, setQuestion] = useState([]);
+  const [question, setQuestion] = useState(null);
   const [answerStatus, setAnswerStatus] = useState("pending");
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState(gameTime);
   const [isGameOn, setIsGameOn] = useState(false);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [rightAnswers, setRightAnswers] = useState(0);
@@ -45,7 +46,7 @@ function App() {
 
   useEffect(() => {
     console.log("time is : " + seconds);
-    if (seconds == 50) {
+    if (seconds == 0) {
       setShowBoard(false);
       console.log("game over !");
       console.log("total questions : " + totalQuestions);
@@ -65,15 +66,14 @@ function App() {
   function onStart() {
     newQuestion();
     setIsGameOn(true);
-    setSeconds(0);
   }
 
   function reset() {
     setAnswer("");
     setInput("");
-    setQuestion([]);
+    setQuestion(null);
     setAnswerStatus("pending");
-    setSeconds(0);
+    setSeconds(gameTime);
     setIsGameOn(false);
     setTotalQuestions(0);
     setRightAnswers(0);
@@ -81,32 +81,36 @@ function App() {
   }
 
   return (
-    <div className=" flex flex-col items-center justify-center mt-16">
-      <SecondsTimer
-        isGameOn={isGameOn}
-        setSeconds={setSeconds}
-        setIsGameOn={setIsGameOn}
-        seconds={seconds}
-      />
+    <div className=" flex flex-col  items-center justify-center mt-12">
       <div className={`border ${showBoard ? "flex" : "hidden"} flex-col`}>
-        <div className="text-white font-bold  border border-black border-solid py-2 px-2 bg-gray-200 mb-2">
-          {question}
+        <div className="flex items-center text-4xl">
+          <div className="text-black font-bold  py-2 px-2 bg-gray-200 grow h-16">
+            {question ? question + "  ?" : "press start"}
+          </div>
+          <div3
+            className={`${
+              answerStatus === "right"
+                ? "text-lime-600"
+                : answerStatus === "pending"
+                ? "text-black"
+                : "text-red-500"
+            } font-bold   py-2 px-2 bg-gray-200 w-20 h-16 `}
+          >
+            {input}
+          </div3>
         </div>
-        <div
-          className={`${
-            answerStatus === "right"
-              ? "text-lime-600"
-              : answerStatus === "pending"
-              ? "text-white"
-              : "text-red-500"
-          } font-bold  border border-black border-solid py-2 px-2 bg-gray-200 mb-2`}
-        >
-          {input}
-        </div>
+        <SecondsTimer
+          isGameOn={isGameOn}
+          setSeconds={setSeconds}
+          setIsGameOn={setIsGameOn}
+          seconds={seconds}
+        />
         <NumberKeypad onNumberClick={handleClick} />
         <button
           onClick={onStart}
-          className=" bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded col-span-2 border-solid border-white border mt-4 self-center"
+          className={` bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded col-span-2 border-solid border-white border mt-4 self-center ${
+            seconds == 20 ? "flex" : "hidden"
+          }`}
         >
           start
         </button>
@@ -118,11 +122,18 @@ function App() {
           <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
             Thank you for playing
           </p>
-
-          <div class="mt-6 text-2xl font-bold">
-            {`Your score : ${rightAnswers / totalQuestions}`}
+          <div className="flex flex-col items-start">
+            <div class="mt-6 text-1xl ">
+              {`Your score : ${(rightAnswers / totalQuestions).toFixed(2)}`}
+            </div>
+            <div class="mt-6 text-1xl mt-1 ">
+              {`No of questions : ${totalQuestions}`}
+            </div>
+            <div class="mt-6 text-1xl mt-1 ">
+              {`Correct answers : ${rightAnswers}`}
+            </div>
+            <div class="mt-6 text-1xl mt-1 ">{`Total time : ${gameTime} Seconds`}</div>
           </div>
-
           <div
             onClick={() => reset()}
             className="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
@@ -140,11 +151,11 @@ export default App;
 function SecondsTimer(props) {
   useEffect(() => {
     let interval = null;
-    if (props.isGameOn && props.seconds < 50) {
+    if (props.isGameOn && props.seconds > 0) {
       interval = setInterval(() => {
-        props.setSeconds((seconds) => seconds + 1);
+        props.setSeconds((seconds) => seconds - 1);
       }, 1000);
-    } else if (props.seconds === 50) {
+    } else if (props.seconds === 0) {
       props.setIsGameOn(false);
     }
     return () => clearInterval(interval);
@@ -160,11 +171,11 @@ function SecondsTimer(props) {
 const NumberKeypad = ({ onNumberClick }) => {
   const [grid, setGrid] = useState(Array(9).fill(null));
   return (
-    <div className="grid grid-cols-3 gap-0 items-center">
+    <div className="grid grid-cols-3 gap-0 items-center mt-48">
       {grid.map((number, index) => (
         <button
           onClick={() => onNumberClick(index + 1)}
-          className=" w-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-solid border-white border"
+          className=" w-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded border-solid border-white border"
         >
           {index + 1}
         </button>
@@ -172,7 +183,7 @@ const NumberKeypad = ({ onNumberClick }) => {
 
       <button
         onClick={() => onNumberClick(0)}
-        className="w-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-solid border-white border"
+        className="w-28 bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded border-solid border-white border"
       >
         0
       </button>
