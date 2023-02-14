@@ -2,23 +2,12 @@ import { useState, useEffect } from "react";
 
 function App() {
   const url = "https://textdb.dev/api/data/tic-tac-toe-test-00456";
-  const [board, setBoard] = useState(Array(9).fill(null));
+  const [board, setBoard] = useState(Array(16).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [winner, setWinner] = useState(null);
   const [gameEnded, setGameEnded] = useState(false);
-  const [winnerLine, setWinnerLine] = useState(Array(3).fill(null));
+  const [winnerLine, setWinnerLine] = useState(Array(4).fill(null));
   const [count, setCount] = useState(0);
-  const [serverUpdate, setServerUpdate] = useState(false);
-
-  /*   const arraysEqual = (a, b) => {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
-    for (var i = 0; i < a.length; ++i) {
-      if (a[i] !== b[i]) return false;
-    }
-    return true;
-  }; */
   const arraysEqual = (a, b) => {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -93,7 +82,7 @@ function App() {
     }
   }
   function clearBoard() {
-    const clearArray = Array(9).fill(null);
+    const clearArray = Array(16).fill(null);
     const boardArray = JSON.stringify(clearArray);
     fetch(url, {
       method: "POST",
@@ -106,7 +95,7 @@ function App() {
     setCurrentPlayer("X");
     setWinner(null);
     setGameEnded(false);
-    setWinnerLine(Array(3).fill(null));
+    setWinnerLine(Array(4).fill(null));
   }
   return (
     <div className="flex flex-col justify-center items-center">
@@ -132,15 +121,15 @@ function App() {
 
 function Board({ handleClick, board, winnerLine }) {
   return (
-    <div className="grid grid-cols-3 ">
+    <div className="grid grid-cols-4">
       {board.map((square, index) => (
         <div
-          className={`w-24 h-24 border border-gray-400 flex items-center justify-center cursor-pointer text-4xl text-neutral-700 font-bold ${
+          className={`w-16 h-16 border border-gray-400 flex items-center justify-center cursor-pointer text-4xl text-neutral-700 font-bold ${
             winnerLine.includes(index)
               ? "bg-green-300"
-              : index % 2
-              ? "bg-gray-200"
-              : "bg-gray-400"
+              : (index + Math.floor(index / 4)) % 2 === 0
+              ? "bg-gray-400 border-gray-700"
+              : "bg-gray-200 border-gray-700"
           }`}
           onClick={() => handleClick(index)}
         >
@@ -153,7 +142,55 @@ function Board({ handleClick, board, winnerLine }) {
 
 export default App;
 
-const calculateWinner = (squares) => {
+function calculateWinner(board) {
+  // Check rows
+  for (let i = 0; i < 4; i++) {
+    if (
+      board[i * 4] === board[i * 4 + 1] &&
+      board[i * 4 + 1] === board[i * 4 + 2] &&
+      board[i * 4 + 2] === board[i * 4 + 3] &&
+      board[i * 4] !== null
+    ) {
+      return [board[i * 4], [i * 4, i * 4 + 1, i * 4 + 2, i * 4 + 3]];
+    }
+  }
+
+  // Check columns
+  for (let i = 0; i < 4; i++) {
+    if (
+      board[i] === board[i + 4] &&
+      board[i + 4] === board[i + 8] &&
+      board[i + 8] === board[i + 12] &&
+      board[i] !== null
+    ) {
+      return [board[i], [i, i + 4, i + 8, i + 12]];
+    }
+  }
+
+  // Check top-left to bottom-right diagonal
+  if (
+    board[0] === board[5] &&
+    board[5] === board[10] &&
+    board[10] === board[15] &&
+    board[0] !== null
+  ) {
+    return [board[0], [0, 5, 10, 15]];
+  }
+
+  // Check top-right to bottom-left diagonal
+  if (
+    board[3] === board[6] &&
+    board[6] === board[9] &&
+    board[9] === board[12] &&
+    board[3] !== null
+  ) {
+    return [board[3], [3, 6, 9, 12]];
+  }
+
+  return [null, []];
+}
+
+/* const calculateWinner = (squares) => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -172,7 +209,7 @@ const calculateWinner = (squares) => {
   }
   return null;
 };
-
+ */
 /* 
 <span class="inline-flex items-center justify-center rounded-full bg-purple-100 px-2.5 py-0.5 text-purple-700">
   <svg
