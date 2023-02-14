@@ -1,42 +1,163 @@
 import { useState, useEffect } from "react";
+
 function App() {
   const [answer, setAnswer] = useState(196);
-  const [input, setInput] = useState(0);
+  const [input, setInput] = useState("");
   const [question, setQuestion] = useState([]);
+  const [answerStatus, setAnswerStatus] = useState("pending");
+  const [seconds, setSeconds] = useState(0);
+  const [isGameOn, setIsGameOn] = useState(false);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [rightAnswers, setRightAnswers] = useState(0);
+  const [showBoard, setShowBoard] = useState(true);
+
   function handleClick(num) {
-    if (input == null) {
+    if (input === "") {
       setInput(num);
       return;
     }
     if (input.toString().length < answer.toString().length) {
       setInput((prevInput) => +`${prevInput.toString()}${num.toString()}`);
+      return;
+    } else {
+      setInput(num);
     }
   }
 
   useEffect(() => {
-    if (input == answer) {
-      alert("right");
+    if (input.toString().length === answer.toString().length) {
+      if (input === answer) {
+        console.log("right answer");
+        setAnswerStatus("right");
+        setRightAnswers((prev) => prev + 1);
+        setTimeout(() => {
+          newQuestion();
+        }, 500);
+      } else {
+        console.log("wrong answer");
+        setAnswerStatus("wrong");
+        setTimeout(() => {
+          newQuestion();
+        }, 500);
+      }
     }
   }, [input]);
 
+  useEffect(() => {
+    console.log("time is : " + seconds);
+    if (seconds == 50) {
+      setShowBoard(false);
+      console.log("game over !");
+      console.log("total questions : " + totalQuestions);
+      console.log("right ans : " + rightAnswers);
+    }
+  }, [isGameOn]);
+
+  function newQuestion() {
+    const newQuestion = generateMathQuestion();
+    setQuestion(newQuestion.question);
+    setAnswer(newQuestion.answer);
+    setInput("");
+    setAnswerStatus("pending");
+    setTotalQuestions((prev) => prev + 1);
+  }
+
+  function onStart() {
+    newQuestion();
+    setIsGameOn(true);
+    setSeconds(0);
+  }
+
+  function reset() {
+    setAnswer("");
+    setInput("");
+    setQuestion([]);
+    setAnswerStatus("pending");
+    setSeconds(0);
+    setIsGameOn(false);
+    setTotalQuestions(0);
+    setRightAnswers(0);
+    setShowBoard(true);
+  }
+
   return (
-    <div className=" flex flex-col items-center justify-center mt-16 ">
-      <div className="border">
+    <div className=" flex flex-col items-center justify-center mt-16">
+      <SecondsTimer
+        isGameOn={isGameOn}
+        setSeconds={setSeconds}
+        setIsGameOn={setIsGameOn}
+        seconds={seconds}
+      />
+      <div className={`border ${showBoard ? "flex" : "hidden"} flex-col`}>
         <div className="text-white font-bold  border border-black border-solid py-2 px-2 bg-gray-200 mb-2">
           {question}
         </div>
-        <div className="text-white font-bold  border border-black border-solid py-2 px-2 bg-gray-200 mb-2">
+        <div
+          className={`${
+            answerStatus === "right"
+              ? "text-lime-600"
+              : answerStatus === "pending"
+              ? "text-white"
+              : "text-red-500"
+          } font-bold  border border-black border-solid py-2 px-2 bg-gray-200 mb-2`}
+        >
           {input}
         </div>
         <NumberKeypad onNumberClick={handleClick} />
+        <button
+          onClick={onStart}
+          className=" bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded col-span-2 border-solid border-white border mt-4 self-center"
+        >
+          start
+        </button>
       </div>
+      <section
+        class={`rounded-3xl shadow-2xl ${!showBoard ? "flex" : "hidden"} mx-4`}
+      >
+        <div class="p-8 text-center sm:p-12">
+          <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
+            Thank you for playing
+          </p>
+
+          <div class="mt-6 text-2xl font-bold">
+            {`Your score : ${rightAnswers / totalQuestions}`}
+          </div>
+
+          <div
+            onClick={() => reset()}
+            className="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
+          >
+            play again
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
 
 export default App;
 
-const NumberKeypad = ({ onNumberClick, submit }) => {
+function SecondsTimer(props) {
+  useEffect(() => {
+    let interval = null;
+    if (props.isGameOn && props.seconds < 50) {
+      interval = setInterval(() => {
+        props.setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    } else if (props.seconds === 50) {
+      props.setIsGameOn(false);
+    }
+    return () => clearInterval(interval);
+  }, [props.isGameOn, props.seconds]);
+
+  return (
+    <div className=" bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full col-span-2 border-solid border-white border mt-4 self-center">
+      {props.seconds}
+    </div>
+  );
+}
+
+const NumberKeypad = ({ onNumberClick }) => {
   const [grid, setGrid] = useState(Array(9).fill(null));
   return (
     <div className="grid grid-cols-3 gap-0 items-center">
@@ -54,12 +175,6 @@ const NumberKeypad = ({ onNumberClick, submit }) => {
         className="w-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border-solid border-white border"
       >
         0
-      </button>
-      <button
-        onClick={() => submit}
-        className=" bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded col-span-2 border-solid border-white border"
-      >
-        submit
       </button>
     </div>
   );
