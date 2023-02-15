@@ -1,182 +1,108 @@
-/* import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faDice,
-  faArrowUp,
-  faArrowDown,
-} from "@fortawesome/free-solid-svg-icons";
-
-const App = () => {
-  const [position, setPosition] = useState(0);
-
-  const handleRoll = () => {
-    setPosition(position + Math.floor(Math.random() * 6) + 1);
-  };
-
-  const handleMove = (move) => {
-    setPosition(position + move);
-  };
-
-  return (
-    <div className="w-64 mx-auto my-10">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold mb-3">Snake and Ladder</h1>
-        <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto my-3 flex items-center justify-center">
-          <span className="text-3xl font-bold">{position}</span>
-        </div>
-        <div className="flex justify-center my-3">
-          <button
-            onClick={handleRoll}
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
-          >
-            <FontAwesomeIcon icon={faDice} className="mr-2" />
-            Roll Dice
-          </button>
-        </div>
-        <div className="flex flex-wrap justify-center">
-          <button
-            onClick={() => handleMove(10)}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mx-3"
-          >
-            <FontAwesomeIcon icon={faArrowUp} className="mr-2" />
-            Ladder
-          </button>
-          <button
-            onClick={() => handleMove(-10)}
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full mx-3"
-          >
-            <FontAwesomeIcon icon={faArrowDown} className="mr-2" />
-            Snake
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default App; */
-
-/* import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDice } from "@fortawesome/free-solid-svg-icons";
-
-const App = () => {
-  const [position, setPosition] = useState(0);
-
-  const handleMove = () => {
-    const roll = Math.floor(Math.random() * 6) + 1;
-
-    const newPosition = position + roll;
-
-    setPosition(newPosition);
-  };
-
-  return (
-    <div className="flex flex-col items-center">
-      <Board />
-      {   <div className="w-64 h-64 bg-gray-400 rounded-lg p-4">
-        {Array.from({ length: 100 }, (_, index) => (
-          <div
-            key={index}
-            className={`w-8 h-8 rounded-full ${
-              index === position
-                ? "bg-yellow-500"
-                : index % 2 === 0
-                ? "bg-gray-300"
-                : "bg-white"
-            }`}
-          ></div>
-        ))}
-      </div>}
-      <button
-        className="bg-gray-800 text-white p-2 rounded-full mt-2"
-        onClick={handleMove}
-      >
-        <FontAwesomeIcon icon={faDice} /> Roll Dice
-      </button>
-    </div>
-  );
-};
-
-export default App;
- */
-/* const Board = () => {
-  return (
-    <div className="flex flex-col items-center">
-      <div className="w-100 h-100 bg-gray-400 rounded-lg p-4">
-    
-        <div className="grid grid-cols-10 grid-rows-10  gap-2">
-          {Array.from({ length: 100 }, (_, index) => (
-            <div
-              key={index}
-              className={`flex items-center justify-center p-4 rounded-lg ${
-                index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-              }`}
-            >
-              {index + 1}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}; */
-
-import React, { useState } from "react";
-import { motion, useCycle } from "framer-motion";
+import React, { useState, useEffect } from "react";
 
 const Board = () => {
   const [position, setPosition] = useState(1);
+  const [finalPosition, setFinalPosition] = useState(null);
   const [rolling, setRolling] = useState(false);
-
+  const [random, setRandom] = useState(null);
+  const board = Array(100).fill(null);
+  const evenClass = "bg-gray-200";
+  const oddClass = "bg-gray-300";
   const rollDice = () => {
     setRolling(true);
+    const roll = Math.floor(Math.random() * 6) + 1;
     setTimeout(() => {
-      const roll = Math.floor(Math.random() * 6) + 1;
-      setPosition(position + roll);
+      setRandom(roll);
       setRolling(false);
-    }, 2000);
+      let i = position;
+      const intervalId = setInterval(() => {
+        i++;
+        setPosition(i);
+        if (i == position + roll) {
+          setFinalPosition(i);
+        }
+        if (i >= position + roll) {
+          clearInterval(intervalId);
+        }
+      }, 500);
+    }, 1000);
   };
 
+  useEffect(() => {
+    if (finalPosition == 20) {
+      console.log("you won");
+      setPosition(1);
+      setRolling(false);
+      setRandom(null);
+      return;
+    }
+    if (finalPosition > 20) {
+      console.log("oops! replay ?");
+      setPosition(1);
+      setRolling(false);
+      setRandom(null);
+    }
+  }, [finalPosition]);
+
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-100 h-100 bg-gray-400 rounded-lg p-4">
-        {/* Render the board with 100 squares */}
-        <div className="grid grid-cols-10 grid-rows-10  gap-2">
-          {Array.from({ length: 100 }, (_, index) => (
-            <div
-              key={index}
-              className={`flex items-center justify-center p-4 rounded-lg ${
-                index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-              }`}
-            >
-              {position === index + 1 ? (
-                <motion.div
-                  animate={{ y: [-20, 20] }}
-                  transition={{
-                    yoyo: Infinity,
-                    duration: 0.5,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <i className="fas fa-chess-pawn fa-2x text-red-500"></i>
-                </motion.div>
-              ) : (
-                index + 1
-              )}
-            </div>
-          ))}
+    <div className="flex flex-col">
+      <div className="flex flex-col my-auto border-black border border-solid mx-2 mt-4">
+        <div className="grid grid-cols-10 grid-rows-10 ">
+          {board
+            .map((square, index) => (
+              <div
+                className={`h-8 flex items-center justify-center text-xs border-solid border-white border text-slate-700 ${
+                  (Math.floor(index / 10) % 2 === 0 ? index : index + 10) %
+                    2 ===
+                  0
+                    ? evenClass
+                    : oddClass
+                }`}
+                key={index}
+              >
+                {position === 100 - index ? (
+                  <div
+                    className="w-3 h-3 rounded-full bg-red-500 animate-bounce"
+                    style={{
+                      position: "relative",
+                      transition: "all 1s ease-in-out",
+                      transform:
+                        position === 100 - index
+                          ? "translateX(40px)"
+                          : "translateX(0)",
+                    }}
+                  ></div>
+                ) : (
+                  100 - index
+                )}
+              </div>
+            ))
+            .reduce((rows, square, index) => {
+              return (
+                (index % 10 === 0
+                  ? rows.push([square])
+                  : rows[rows.length - 1].push(square)) && rows
+              );
+            }, [])
+            .map((row, rowIndex) => {
+              return rowIndex % 2 === 0 ? row : row.reverse();
+            })
+            .flat()}
         </div>
       </div>
-      <button
-        className="bg-gray-500 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg mt-4"
+      <div
         onClick={rollDice}
-        disabled={rolling}
+        class="mt-8 self-center rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
       >
-        {rolling ? "Rolling..." : "Roll Dice"}
-      </button>
+        <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium text-black ">
+          {rolling ? "Rolling..." : "Roll"}
+        </span>
+      </div>
+
+      <span class=" mt-8 block rounded-full bg-white px-8 py-3 text-sm font-medium hover:bg-transparent">
+        {random}
+      </span>
     </div>
   );
 };
-
 export default Board;
