@@ -2,46 +2,29 @@ import React, { useState, useEffect } from "react";
 import mario from "./mario.svg";
 const Board = () => {
   const snakes = [
-    [17, 7],
-    [54, 34],
-    [62, 19],
-    [64, 60],
-    [93, 73],
-    [95, 75],
-    [99, 22],
-    [28, 3],
-    [47, 29],
-    [68, 38],
-    [79, 42],
-    [89, 71],
-    [97, 65],
+    [32, 10],
+    [34, 6],
+    [48, 26],
+    [62, 18],
+    [88, 24],
+    [95, 56],
+    [97, 78],
   ];
 
   const ladders = [
     [4, 14],
-    [9, 31],
+    [8, 30],
+    [17, 38],
     [21, 42],
-    [28, 84],
-    [36, 44],
-    [51, 67],
-    [71, 91],
-    [80, 94],
-    [12, 22],
-    [38, 50],
-    [46, 72],
-    [55, 80],
-    [70, 91],
-    [2, 18],
-    [16, 29],
-    [43, 58],
-    [65, 79],
-    [82, 96],
+    [28, 76],
+    [50, 67],
+    [80, 99],
+    [71, 92],
   ];
 
   const [position, setPosition] = useState(1);
   const [finalPosition, setFinalPosition] = useState(null);
   const [rolling, setRolling] = useState(false);
-  const [random, setRandom] = useState(null);
   const board = Array(100).fill(null);
   const evenClass = "bg-gray-200";
   const oddClass = "bg-gray-300";
@@ -50,28 +33,55 @@ const Board = () => {
   const ladderClassHighlight = "bg-green-700";
   const snakeClassHighlight = "bg-red-700";
   const [highlights, setHighlights] = useState([]);
+  const [gameBanner, setGameBanner] = useState("Ready to play ?");
+  const [isGameOn, setIsGameOn] = useState(false);
+  const [isPLayerStill, setIsPlayerStill] = useState(true);
+
+  useEffect(() => {
+    if (rolling) {
+      setGameBanner("Rolling");
+    }
+  }, [rolling]);
   const rollDice = () => {
+    if (isGameOn == false) {
+      setGameBanner("Roll the dice");
+      setIsGameOn(true);
+      return;
+    }
+    setIsPlayerStill(false);
     setRolling(true);
     setHighlights([]);
     const roll = Math.floor(Math.random() * 6) + 1;
     setTimeout(() => {
-      setRandom(roll);
       setRolling(false);
+      setGameBanner(`You got a ${roll}`);
+      let start = position;
       let i = position;
       const intervalId = setInterval(() => {
         i++;
+        if (i > 100) {
+          setGameBanner("oop! movement not possible");
+          setPosition(start);
+          setFinalPosition(start);
+          setIsPlayerStill(true);
+          clearInterval(intervalId);
+          return;
+        }
         setPosition(i);
         if (i == position + roll) {
           setFinalPosition(i);
         }
         if (i >= position + roll) {
           clearInterval(intervalId);
+          setIsPlayerStill(true);
         }
-      }, 500);
+      }, 200);
     }, 1000);
   };
 
   function ladderMove(pos) {
+    setIsPlayerStill(false);
+    setGameBanner(`Hurray! you stepped on ladder at ${pos[0]}`);
     let i = pos[0];
     const intervalId = setInterval(() => {
       i++;
@@ -79,11 +89,14 @@ const Board = () => {
       if (i == pos[1]) {
         setFinalPosition(i);
         clearInterval(intervalId);
+        setIsPlayerStill(true);
       }
-    }, 100);
+    }, 50);
   }
 
   function snakeMove(pos) {
+    setIsPlayerStill(false);
+    setGameBanner(`Oops! there was a snake at ${pos[0]}`);
     let i = pos[0];
     const intervalId = setInterval(() => {
       i--;
@@ -91,25 +104,21 @@ const Board = () => {
       if (i == pos[1]) {
         setFinalPosition(i);
         clearInterval(intervalId);
+        setIsPlayerStill(true);
       }
-    }, 100);
+    }, 50);
   }
 
   useEffect(() => {
     if (finalPosition == 100) {
-      console.log("you won");
+      setGameBanner(`Cool !! you won! replay ?`);
       setPosition(1);
       setRolling(false);
-      setRandom(null);
+      setIsGameOn(false);
+
       return;
     }
-    if (finalPosition > 100) {
-      console.log("oops! replay ?");
-      setPosition(1);
-      setRolling(false);
-      setRandom(null);
-      return;
-    }
+
     if (ladders.some((ladder) => ladder[0] === finalPosition)) {
       const ladderEnd = ladders.find(
         (ladder) => ladder[0] === finalPosition
@@ -129,8 +138,8 @@ const Board = () => {
   }, [highlights]);
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col my-auto border-black border border-solid mx-2 mt-4">
+    <div className="flex flex-col max-w-md m-auto">
+      <div className="flex flex-col my-auto border-gray-600 border border-solid mx-2 mt-4">
         <div className="grid grid-cols-10 grid-rows-10 ">
           {board
             .map((square, index) => (
@@ -162,9 +171,11 @@ const Board = () => {
 `}
                 key={index}
               >
-                {position === 100 - index ? (
+                {position === 100 - index && isGameOn == true ? (
                   <div
-                    className="w-5 h-5 rounded-full bg-red-500 animate-bounce"
+                    className={`w-5 h-5 rounded-full bg-transparent animate-bounce ${
+                      isGameOn ? "flex" : "hidden"
+                    }`}
                     style={{
                       position: "relative",
                       transition: "all 1s ease-in-out",
@@ -198,18 +209,31 @@ const Board = () => {
             .flat()}
         </div>
       </div>
-      <div
-        onClick={rollDice}
-        class="mt-8 self-center rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
-      >
-        <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium text-black ">
-          {rolling ? "Rolling..." : "Roll"}
+      <div class="self-center text-sm flex items-center justify-center rounded-xl border-4 border-black bg-pink-100 px-8 py-4 font-bold shadow-[6px_6px_0_0_#000] mt-8">
+        {gameBanner}
+        <span
+          aria-hidden="true"
+          role="img"
+          class={`ml-1.5 ${isGameOn && rolling ? "flex" : "hidden"}`}
+        >
+          🎲
         </span>
       </div>
 
-      <span class=" mt-8 block rounded-full bg-white px-8 py-3 text-sm font-medium hover:bg-transparent">
+      <div
+        onClick={rollDice}
+        className={`mt-8 self-center rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75 ${
+          !isPLayerStill ? "pointer-events-none opacity-50" : ""
+        }`}
+      >
+        <span className="block rounded-full bg-white px-8 py-3 text-sm font-medium text-black ">
+          {!isGameOn ? "Play" : "Roll"}
+        </span>
+      </div>
+
+      {/*  <span class=" mt-8 block rounded-full bg-white px-8 py-3 text-sm font-medium hover:bg-transparent">
         {random}
-      </span>
+      </span> */}
     </div>
   );
 };
