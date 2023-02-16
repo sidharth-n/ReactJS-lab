@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  const [board, setBoard] = useState(Array(16).fill(null));
+  const [board, setBoard] = useState(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [winner, setWinner] = useState(null);
   const [gameEnded, setGameEnded] = useState(false);
-  const [winnerLine, setWinnerLine] = useState(Array(4).fill(null));
+  const [winnerLine, setWinnerLine] = useState(Array(3).fill(null));
   const [isRoomCreated, setisRoomCreated] = useState(false);
   const [isPlayerChoosen, setisPlayerChoosen] = useState(false);
   const [roomLink, setRoomLink] = useState("Link here");
@@ -72,10 +72,13 @@ function App() {
   function createRoom() {
     setId(getId());
     setServerUrl(`https://textdb.dev/api/data/${id}`);
-    console.log("server created : " + serverUrl);
-    setRoomLink(`${window.location.href}?id=${id}`);
+
     setisRoomCreated(true);
   }
+  useEffect(() => {
+    setRoomLink(`${window.location.href}?id=${id}`);
+    console.log("server created : " + serverUrl);
+  }, [isRoomCreated]);
 
   useEffect(() => {
     const boardArray = JSON.stringify(board);
@@ -148,7 +151,7 @@ function App() {
     }
   }
   function clearBoard() {
-    const clearArray = Array(16).fill(null);
+    const clearArray = Array(9).fill(null);
     const boardArray = JSON.stringify(clearArray);
     fetch(serverUrl, {
       method: "POST",
@@ -161,7 +164,7 @@ function App() {
     setCurrentPlayer("X");
     setWinner(null);
     setGameEnded(false);
-    setWinnerLine(Array(4).fill(null));
+    setWinnerLine(Array(3).fill(null));
   }
   return (
     <div className="flex flex-col justify-center items-center">
@@ -243,7 +246,9 @@ function App() {
       >
         <div className="inline-flex items-center justify-center rounded-full bg-gray-200 px-2.5 py-0.5 text-gray-700 mt-4 mb-4">
           {winner
-            ? winner + " won"
+            ? winner == mySymbol
+              ? "Congrats! You won. Replay?"
+              : "Oops ! You lost. Try again?"
             : gameEnded
             ? "Oops!! replay ?"
             : currentPlayer == mySymbol
@@ -270,15 +275,15 @@ function App() {
 
 function Board({ handleClick, board, winnerLine }) {
   return (
-    <div className="grid grid-cols-4">
+    <div className="grid grid-cols-3">
       {board.map((square, index) => (
         <div
           className={`w-16 h-16 border border-gray-400 flex items-center justify-center cursor-pointer text-4xl text-neutral-700 font-bold ${
             winnerLine.includes(index)
               ? "bg-green-300"
-              : (index + Math.floor(index / 4)) % 2 === 0
-              ? "bg-gray-400 border-gray-700"
-              : "bg-gray-200 border-gray-700"
+              : index % 2
+              ? "bg-gray-200"
+              : "bg-gray-400"
           }`}
           onClick={() => handleClick(index)}
         >
@@ -291,53 +296,25 @@ function Board({ handleClick, board, winnerLine }) {
 
 export default App;
 
-function calculateWinner(board) {
-  // Check rows
-  for (let i = 0; i < 4; i++) {
-    if (
-      board[i * 4] === board[i * 4 + 1] &&
-      board[i * 4 + 1] === board[i * 4 + 2] &&
-      board[i * 4 + 2] === board[i * 4 + 3] &&
-      board[i * 4] !== null
-    ) {
-      return [board[i * 4], [i * 4, i * 4 + 1, i * 4 + 2, i * 4 + 3]];
+const calculateWinner = (squares) => {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return [squares[a], lines[i]];
     }
   }
-
-  // Check columns
-  for (let i = 0; i < 4; i++) {
-    if (
-      board[i] === board[i + 4] &&
-      board[i + 4] === board[i + 8] &&
-      board[i + 8] === board[i + 12] &&
-      board[i] !== null
-    ) {
-      return [board[i], [i, i + 4, i + 8, i + 12]];
-    }
-  }
-
-  // Check top-left to bottom-right diagonal
-  if (
-    board[0] === board[5] &&
-    board[5] === board[10] &&
-    board[10] === board[15] &&
-    board[0] !== null
-  ) {
-    return [board[0], [0, 5, 10, 15]];
-  }
-
-  // Check top-right to bottom-left diagonal
-  if (
-    board[3] === board[6] &&
-    board[6] === board[9] &&
-    board[9] === board[12] &&
-    board[3] !== null
-  ) {
-    return [board[3], [3, 6, 9, 12]];
-  }
-
-  return [null, []];
-}
+  return null;
+};
 
 /* const calculateWinner = (squares) => {
   const lines = [
