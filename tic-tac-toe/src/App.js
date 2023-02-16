@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  let url;
   const [board, setBoard] = useState(Array(16).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState("X");
   const [winner, setWinner] = useState(null);
   const [gameEnded, setGameEnded] = useState(false);
   const [winnerLine, setWinnerLine] = useState(Array(4).fill(null));
-  const [count, setCount] = useState(0);
   const [isRoomCreated, setisRoomCreated] = useState(false);
   const [isPlayerChoosen, setisPlayerChoosen] = useState(false);
   const [roomLink, setRoomLink] = useState("Link here");
   const [playerChoosen, setPlayerChoosen] = useState(null);
   const [isShared, setIsShared] = useState(false);
-  let shareLink;
-  let id;
+  const [serverUrl, setServerUrl] = useState(null);
+  const [isInRoom, setIsInRoom] = useState(false);
+  const [count, setCount] = useState(1);
+  const [mySymbol, setMysymbol] = useState(null);
+  const [id, setId] = useState(null);
   const arraysEqual = (a, b) => {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -31,17 +32,23 @@ function App() {
       const params = new Proxy(new URLSearchParams(window.location.search), {
         get: (searchParams, prop) => searchParams.get(prop),
       });
-      url = `https://textdb.dev/api/data/${params.id}`;
+      setServerUrl(`https://textdb.dev/api/data/${params.id}`);
+      console.log(serverUrl);
       setIsShared(true);
       setisPlayerChoosen(true);
       setisRoomCreated(true);
-      setPlayerChoosen(params.pl);
       setisPlayerChoosen(true);
+      setIsInRoom(true);
+      setMysymbol(params.pl);
     }
   }, []);
 
   useEffect(() => {
-    setRoomLink(`${window.location.href}?id=${id}&pl=${playerChoosen}`);
+    console.log("updated url with use effect : " + serverUrl);
+  }, [serverUrl]);
+
+  useEffect(() => {
+    setRoomLink((link) => `${link}&pl=${playerChoosen == "X" ? "O" : "X"}`);
   }, [playerChoosen]);
 
   const getId = function (_id = null) {
@@ -63,32 +70,33 @@ function App() {
   };
 
   function createRoom() {
-    id = getId();
-    url = `https://textdb.dev/api/data/${id}`;
-    console.log(url);
+    setId(getId());
+    setServerUrl(`https://textdb.dev/api/data/${id}`);
+    console.log("server created : " + serverUrl);
+    setRoomLink(`${window.location.href}?id=${id}`);
     setisRoomCreated(true);
   }
 
   useEffect(() => {
     const boardArray = JSON.stringify(board);
-    fetch(url, {
+    fetch(serverUrl, {
       method: "POST",
       headers: {
         "Content-Type": "text/plain",
       },
       body: boardArray,
     });
-  }, []);
+  }, [playerChoosen]);
 
   function setGame() {
-    window.location = roomLink;
+    window.location = `${window.location.href}?id=${id}&pl=${playerChoosen}`;
   }
 
-  /*   useEffect(() => {
+  useEffect(() => {
     const intervalId = setInterval(() => {
       setCount((prevCount) => prevCount + 1);
     }, 1000);
-    fetch(url)
+    fetch(serverUrl)
       .then((r) => r.json())
       .then((newBoard) => {
         const difference = arraysEqual(newBoard, board);
@@ -104,7 +112,7 @@ function App() {
         }
       });
     return () => clearInterval(intervalId);
-  }, [count]); */
+  }, [count]);
 
   useEffect(() => {
     const result = calculateWinner(board);
@@ -121,11 +129,14 @@ function App() {
     if (winner) {
       return;
     }
+    if (currentPlayer !== mySymbol) {
+      return;
+    }
     const newBoard = [...board];
     if (newBoard[index] == null) {
       newBoard[index] = currentPlayer;
       const boardArray = JSON.stringify(newBoard);
-      fetch(url, {
+      fetch(serverUrl, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain",
@@ -139,7 +150,7 @@ function App() {
   function clearBoard() {
     const clearArray = Array(16).fill(null);
     const boardArray = JSON.stringify(clearArray);
-    fetch(url, {
+    fetch(serverUrl, {
       method: "POST",
       headers: {
         "Content-Type": "text/plain",
@@ -235,7 +246,9 @@ function App() {
             ? winner + " won"
             : gameEnded
             ? "Oops!! replay ?"
-            : "Next Move : " + currentPlayer}
+            : currentPlayer == mySymbol
+            ? "Your move"
+            : "Wait for friends move"}
         </div>
         <Board
           handleClick={handleClick}
