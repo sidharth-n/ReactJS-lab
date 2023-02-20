@@ -1,4 +1,5 @@
 import LineChart from "./LineChart.js"
+import WorldMap from "./map.js"
 function App() {
   const topTitles = [
     [`iPhone 13 Pro`, "1,784"],
@@ -139,8 +140,8 @@ function App() {
               </div>
             </div>
             <div class="map-card col-span-2 rounded-lg h-[400px] border border-gray-200 bg-white shadow">
-              <div class="mt-10 flex flex-col items-center pb-10">
-                <div class="text-sm">map</div>
+              <div class="flex h-full w-full">
+                <WorldMap />
               </div>
             </div>
           </div>

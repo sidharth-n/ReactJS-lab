@@ -5,7 +5,7 @@ const geographyPaths = worldData.features.map(feature => feature.geometry)
 
 function WorldMap() {
   return (
-    <svg width={800} height={500}>
+    <svg width="100%" height="100%">
       <ComposableMap projection="geoMercator" projectionConfig={{ scale: 155 }}>
         <Geographies geography={geographyPaths}>
           {({ geographies }) =>
