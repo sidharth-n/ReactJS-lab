@@ -1,3 +1,4 @@
+import LineChart from "./LineChart.js"
 function App() {
   const topTitles = [
     [`iPhone 13 Pro`, "1,784"],
@@ -17,9 +18,41 @@ function App() {
     [`IdeaPad`, "556"],
   ]
 
+  const data1 = [
+    { timestamp: "Jan", value: 10 },
+    { timestamp: "Feb", value: 20 },
+    { timestamp: "Mar", value: 30 },
+    { timestamp: "Apr", value: 25 },
+    { timestamp: "May", value: 35 },
+    { timestamp: "Jun", value: 40 },
+    { timestamp: "Jul", value: 45 },
+    { timestamp: "Aug", value: 50 },
+    { timestamp: "Sep", value: 45 },
+    { timestamp: "Oct", value: 40 },
+    { timestamp: "Nov", value: 35 },
+    { timestamp: "Dec", value: 30 },
+    // ...
+  ]
+
+  const data2 = [
+    { timestamp: "Jan", value: 20 },
+    { timestamp: "Feb", value: 22 },
+    { timestamp: "Mar", value: 24 },
+    { timestamp: "Apr", value: 26 },
+    { timestamp: "May", value: 28 },
+    { timestamp: "Jun", value: 30 },
+    { timestamp: "Jul", value: 32 },
+    { timestamp: "Aug", value: 34 },
+    { timestamp: "Sep", value: 36 },
+    { timestamp: "Oct", value: 38 },
+    { timestamp: "Nov", value: 42 },
+    { timestamp: "Dec", value: 48 },
+    // ...
+  ]
+
   return (
     <div className="flex items-center mx-auto">
-      <div className="flex w-3/4 h-3/4 mx-auto mt-16 border-black border flex-col">
+      <div className="flex w-3/4 h-3/4 mx-auto mt-16 border-black border flex-col mb-16">
         <div class="flex items-center py-2 px-4 border-gray-400 border justify-center">
           <div class="flex gap-1">
             <span class="w-3 h-3 bg-gray-200 rounded-full"></span>
@@ -38,8 +71,8 @@ function App() {
             <div className="logo w-6 h-6 rounded-full bg-red-400"></div>
             <div className="logo w-6 h-6 rounded-full bg-red-400"></div>
           </div>
-          <div className="graph-map grid grid-cols-2 gap-8 p-6 flex-1">
-            <div class="graph-card-1 w-full rounded-lg border border-gray-200 bg-white shadow">
+          <div className="graph-map grid grid-cols-2 gap-8 p-6 flex-1 w-full">
+            <div class="graph-card-1 flex flex-col rounded-lg border border-gray-200 bg-white shadow">
               <div class="flex items-center justify-between px-4 pt-4">
                 <div class="text-sm">Current Concurrent Viewers</div>
 
@@ -66,11 +99,13 @@ function App() {
                   </svg>
                 </button>
               </div>
-              <div class="mt-10 flex flex-col items-center pb-10">
-                <div class="text-sm">graph to be added</div>
+              <div class="mt-10 px-4 h-[300px]">
+                <div class="w-full">
+                  <LineChart data={data1} chartId={`chart-1`} />
+                </div>
               </div>
             </div>
-            <div class="graph-card-2 w-full rounded-lg border border-gray-200 bg-white shadow">
+            <div class="graph-card-2 rounded-lg border border-gray-200 bg-white shadow">
               <div class="flex items-center justify-between px-4 pt-4">
                 <div class="text-sm">Current Concurrent Viewers</div>
 
@@ -97,17 +132,19 @@ function App() {
                   </svg>
                 </button>
               </div>
-              <div class="mt-10 flex flex-col items-center pb-10">
-                <div class="text-sm">graph to be added</div>
+              <div class="mt-10 px-4 h-[300px]">
+                <div class="w-full">
+                  <LineChart data={data2} chartId={`chart-2`} />
+                </div>
               </div>
             </div>
-            <div class="map-card col-span-2 rounded-lg   border border-gray-200 bg-white shadow">
+            <div class="map-card col-span-2 rounded-lg h-[400px] border border-gray-200 bg-white shadow">
               <div class="mt-10 flex flex-col items-center pb-10">
                 <div class="text-sm">map</div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col w-[350px] my-6 mr-4 rounded-lg overflow-y-auto h-3/4  border border-gray-100">
+          <div className="flex flex-col w-[350px] my-6 mr-4 rounded-lg overflow-y-auto border border-gray-100">
             <div className="px-4 text-sm pt-4 pb-8 bg-gray-100 ">
               Top Titles By CCV
             </div>
