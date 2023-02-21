@@ -1,27 +1,38 @@
+import React from "react"
 import { ComposableMap, Geographies, Geography } from "react-simple-maps"
-import worldData from "./mapData.json"
 
-const geographyPaths = worldData.features.map(feature => feature.geometry)
+const geoUrl =
+  "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json"
 
-function WorldMap() {
+export default function MapChart() {
   return (
-    <svg width="100%" height="100%">
-      <ComposableMap projection="geoMercator" projectionConfig={{ scale: 155 }}>
-        <Geographies geography={geographyPaths}>
+    <div className="w-3/4 ">
+      <ComposableMap>
+        <Geographies geography={geoUrl}>
           {({ geographies }) =>
-            geographies.map(geo => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                fill="#DDD"
-                stroke="#FFF"
-              />
-            ))
+            geographies.map(geo => {
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  style={{
+                    default: {
+                      fill: "indigo",
+                      stroke: "white",
+                    },
+                    hover: {
+                      fill: "#F53",
+                    },
+                    pressed: {
+                      fill: "#E42",
+                    },
+                  }}
+                />
+              )
+            })
           }
         </Geographies>
       </ComposableMap>
-    </svg>
+    </div>
   )
 }
-
-export default WorldMap
