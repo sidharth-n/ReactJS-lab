@@ -38,13 +38,7 @@ const LineChart = ({ data, chartId }) => {
     }
   }, [data])
 
-  return (
-    <canvas
-      id={chartId}
-      width="100%"
-      style={{ border: `1px solid black` }}
-    ></canvas>
-  )
+  return <canvas id={chartId} width="100%"></canvas>
 }
 
 export default LineChart

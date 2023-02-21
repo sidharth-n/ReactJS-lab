@@ -6,7 +6,7 @@ const geoUrl =
 
 export default function MapChart() {
   return (
-    <div className="w-3/4 ">
+    <div className="w-3/4 h-3/4">
       <ComposableMap>
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
