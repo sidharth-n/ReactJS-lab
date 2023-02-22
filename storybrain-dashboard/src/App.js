@@ -244,14 +244,6 @@ function App() {
               <div class="flex h-full overflow-hidden">
                 <MapChart />
               </div>
-              {/*   <div className="zoom buttons flex gap-2 absolute bottom-0 left-0 p-4">
-                <div className="bg-white border border-gray text-gray-600 text-2xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white">
-                  +
-                </div>
-                <div className="bg-white border border-gray text-gray-600 text-3xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white">
-                  -
-                </div>
-              </div> */}
             </div>
           </div>
           <div className="flex flex-col w-[350px] my-6 mr-4 rounded-lg overflow-y-auto border border-gray-100">
@@ -260,7 +252,7 @@ function App() {
             </div>
             {topTitles.map((product, index) => (
               <div
-                className={`flex justify-between  p-4 items-center ${
+                className={`flex justify-between  p-4 items-center hover:cursor-pointer hover:bg-indigo-100 ${
                   index % 2 !== 0 ? `bg-gray-100` : `bg-white`
                 } `}
               >
