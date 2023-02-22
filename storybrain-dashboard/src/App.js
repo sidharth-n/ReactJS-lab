@@ -52,8 +52,8 @@ function App() {
   ]
 
   return (
-    <div className="flex items-center mx-auto">
-      <div className="flex w-3/4 h-1/2 mx-auto mt-16 border-gray-200 border shadow flex-col mb-16">
+    <div className="flex items-center mx-auto bg-indigo-100">
+      <div className="flex w-3/4 h-1/2 mx-auto mt-16 border-gray-200 border shadow flex-col mb-16 bg-white">
         <div class="flex items-center py-2 px-4 border-gray-200 border-b-2 justify-center">
           <div class="flex gap-1">
             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>

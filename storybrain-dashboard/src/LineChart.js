@@ -17,7 +17,7 @@ const LineChart = ({ data, chartId, borderColor, backgroundColor }) => {
             borderColor: borderColor,
             borderWidth: 5,
             tension: 0.5,
-            pointRadius: 0.5,
+            pointRadius: 1,
             backgroundColor: backgroundColor,
           },
         ],
@@ -27,10 +27,22 @@ const LineChart = ({ data, chartId, borderColor, backgroundColor }) => {
           legend: {
             display: false,
           },
+          tooltip: {
+            intersect: false,
+          },
+        },
+        interaction: {
+          mode: "nearest",
+          intersect: false,
         },
         elements: {
           point: {
-            radius: 0, // Make sure that the points are not drawn
+            radius: 0,
+            hitRadius: 10,
+            hoverRadius: 5,
+            hover: {
+              cursor: "pointer",
+            },
           },
         },
         layout: {
@@ -43,12 +55,12 @@ const LineChart = ({ data, chartId, borderColor, backgroundColor }) => {
         },
         scales: {
           x: {
-            display: false, // Remove the x-axis labels and grid lines
+            display: false,
           },
           y: {
             display: false,
             suggestedMin: 0,
-            suggestedMax: 100, // Remove the y-axis labels and grid lines
+            suggestedMax: 100,
           },
         },
       },
