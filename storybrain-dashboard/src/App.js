@@ -241,7 +241,7 @@ function App() {
               </div>
             </div>
             <div class="map-card col-span-2 h-[450px] rounded-lg  bg-blue-50 shadow relative">
-              <div class="flex h-full overflow-hidden">
+              <div class="flex w-full h-full overflow-hidden">
                 <MapChart />
               </div>
             </div>

@@ -75,28 +75,30 @@ export default function MapChart() {
     "India",
   ]
 
-  const [zoom, setZoom] = useState(0.7) // Initialize the zoom level to 1
+  const [zoom, setZoom] = useState(0.7)
 
   const handleZoomIn = () => {
-    setZoom(z => z * 2) // Double the current zoom level
+    setZoom(z => z + 1)
   }
 
   const handleZoomOut = () => {
-    setZoom(z => z / 2) // Halve the current zoom level
+    if (zoom >= 0) {
+      setZoom(z => z - 1)
+    }
   }
 
   return (
-    <div className="w-full h-3/4">
+    <div className="w-full mt-[-130px]">
       <div className="zoom buttons flex gap-2 absolute bottom-0 left-0 p-4">
         <div
           onClick={handleZoomIn}
-          className="bg-white border border-gray text-gray-600 text-2xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white"
+          className="select-none bg-white border border-gray text-gray-600 text-2xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white"
         >
           +
         </div>
         <div
           onClick={handleZoomOut}
-          className="bg-white border border-gray text-gray-600 text-3xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white"
+          className="select-none bg-white border border-gray text-gray-600 text-3xl font-bold h-10 w-10 text-center rounded text-indigo-700 hover:cursor-pointer hover:bg-[#2f56ce] hover:text-white"
         >
           -
         </div>
