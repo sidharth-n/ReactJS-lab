@@ -17,11 +17,12 @@ export default function MapChart() {
                   geography={geo}
                   style={{
                     default: {
-                      fill: "indigo",
+                      fill: "#aabdff",
                       stroke: "white",
                     },
                     hover: {
-                      fill: "#F53",
+                      fill: "#2e55d1",
+                      cursor: "pointer",
                     },
                     pressed: {
                       fill: "#E42",
