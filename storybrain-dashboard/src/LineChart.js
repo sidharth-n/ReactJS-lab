@@ -17,7 +17,7 @@ const LineChart = ({ data, chartId, borderColor, backgroundColor }) => {
             borderColor: borderColor,
             borderWidth: 5,
             tension: 0.5,
-            pointRadius: 1,
+            pointRadius: 0.2,
             backgroundColor: backgroundColor,
           },
         ],

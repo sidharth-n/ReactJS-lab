@@ -56,9 +56,9 @@ function App() {
       <div className="flex w-3/4 h-1/2 mx-auto mt-16 border-gray-200 border shadow flex-col mb-16 bg-white">
         <div class="flex items-center py-2 px-4 border-gray-200 border-b-2 justify-center">
           <div class="flex gap-1">
-            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
-            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
-            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
+            <span class="w-3 h-3 bg-gray-200 rounded-full hover:cursor-pointer hover:bg-red-400"></span>
+            <span class="w-3 h-3 bg-gray-200 rounded-full hover:cursor-pointer hover:bg-green-400"></span>
+            <span class="w-3 h-3 bg-gray-200 rounded-full hover:cursor-pointer hover:bg-yellow-400"></span>
           </div>
           <div class="flex items-center justify-center flex-1 px-2">
             <div class="border border-gray-100 rounded bg-gray-100 text-sm px-32 py-1 text-gray-500">
@@ -114,7 +114,7 @@ function App() {
             </div>
           </div>
           <div className="graph-map grid grid-cols-2 gap-8 p-6 flex-1 w-full">
-            <div class="graph-card-1 flex flex-col rounded-lg border border-gray-200 bg-white shadow">
+            <div class="graph-card-1 flex flex-col rounded-lg border border-gray-200 bg-white shadow pb-4">
               <div class="flex items-center justify-between px-4 pt-4">
                 <div class="text-sm">Current Concurrent Viewers</div>
 
@@ -129,8 +129,8 @@ function App() {
                     width="27"
                     height="27"
                     viewBox="0 0 24 24"
-                    fill="grey"
-                    stroke="grey"
+                    fill="#9da1a0"
+                    stroke="#9da1a0"
                     stroke-width="3"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -141,7 +141,7 @@ function App() {
                   </svg>
                 </button>
               </div>
-              <div class="mt-4 px-4 h-[300px]">
+              <div class="px-4 h-[280px]">
                 <div class="w-full">
                   <LineChart
                     data={data1}
@@ -151,8 +151,8 @@ function App() {
                   />
                 </div>
                 <div className="footer flex justify-between w-full items-center mt-4 px-2">
-                  <div className="left-footer text-xl flex flex-col ">
-                    CCV <div className="text-base text-gray-500">90.47K</div>
+                  <div className="left-footer text-2xl flex flex-col">
+                    CCV <div className="text-xl text-gray-500">90.47K</div>
                   </div>
                   <div className="flex gap-1 items-center self-end">
                     <svg
@@ -177,7 +177,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div class="graph-card-2 rounded-lg border border-gray-200 bg-white shadow">
+            <div class="graph-card-2 rounded-lg border border-gray-200 bg-white shadow pb-4">
               <div class="flex items-center justify-between px-4 pt-4">
                 <div class="text-sm">Exits Before Video Starts</div>
 
@@ -192,8 +192,8 @@ function App() {
                     width="27"
                     height="27"
                     viewBox="0 0 24 24"
-                    fill="grey"
-                    stroke="grey"
+                    fill="#9da1a0"
+                    stroke="#9da1a0"
                     stroke-width="3"
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -204,7 +204,7 @@ function App() {
                   </svg>
                 </button>
               </div>
-              <div class="mt-4 px-4 h-[300px]">
+              <div class=" px-4 h-[280px]">
                 <div class="w-full">
                   <LineChart
                     data={data2}
@@ -214,8 +214,8 @@ function App() {
                   />
                 </div>
                 <div className="footer flex justify-between w-full items-center mt-4 px-2">
-                  <div className="left-footer text-xl flex flex-col ">
-                    By CCV <div className="text-base text-gray-500">0.25%</div>
+                  <div className="left-footer text-2xl flex flex-col ">
+                    By CCV <div className="text-xl text-gray-500">0.25%</div>
                   </div>
                   <div className="flex gap-1 items-center self-end">
                     <svg
