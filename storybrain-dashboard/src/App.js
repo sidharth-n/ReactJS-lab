@@ -115,8 +115,8 @@ function App() {
           </div>
           <div className="graph-map grid grid-cols-2 gap-8 p-6 flex-1 w-full">
             <div class="graph-card-1 flex flex-col rounded-lg border border-gray-200 bg-white shadow pb-4">
-              <div class="flex items-center justify-between px-4 pt-4">
-                <div class="text-sm">Current Concurrent Viewers</div>
+              <div class="flex items-center justify-between px-4 pt-4 pl-6">
+                <div class="text-base">Current Concurrent Viewers</div>
 
                 <button
                   id="dropdownButton"
@@ -178,8 +178,8 @@ function App() {
               </div>
             </div>
             <div class="graph-card-2 rounded-lg border border-gray-200 bg-white shadow pb-4">
-              <div class="flex items-center justify-between px-4 pt-4">
-                <div class="text-sm">Exits Before Video Starts</div>
+              <div class="flex items-center justify-between px-4 pt-4 pl-6">
+                <div class="text-base">Exits Before Video Starts</div>
 
                 <button
                   id="dropdownButton"
