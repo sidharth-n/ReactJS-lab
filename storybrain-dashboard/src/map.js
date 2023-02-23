@@ -75,14 +75,14 @@ export default function MapChart() {
     "India",
   ]
 
-  const [zoom, setZoom] = useState(0.7)
+  const [zoom, setZoom] = useState(0.65)
 
   const handleZoomIn = () => {
     setZoom(z => z + 1)
   }
 
   const handleZoomOut = () => {
-    if (zoom >= 0) {
+    if (zoom >= 1) {
       setZoom(z => z - 1)
     }
   }
@@ -103,7 +103,7 @@ export default function MapChart() {
           -
         </div>
       </div>
-      <ComposableMap>
+      <ComposableMap projection="geoMercator" style={{ marginTop: "120px" }}>
         <ZoomableGroup zoom={zoom}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
