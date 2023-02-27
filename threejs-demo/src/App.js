@@ -5,6 +5,7 @@ import earth from "./earth.jpg";
 
 function Earth() {
   const meshRef = useRef();
+  const textureRef = useRef();
 
   // Rotate the earth on each frame
   useFrame(() => {
@@ -13,12 +14,15 @@ function Earth() {
 
   // Load the earth texture
   const textureLoader = new THREE.TextureLoader();
-  const earthTexture = textureLoader.load(earth);
+  const earthTexture = textureLoader.load(earth, () => {
+    textureRef.current.needsUpdate = true;
+  });
+  earthTexture.mapping = THREE.UVMapping;
 
   return (
     <mesh ref={meshRef}>
       <sphereGeometry args={[1.5, 64, 64]} />
-      <meshPhongMaterial map={earthTexture} />
+      <meshPhongMaterial map={earthTexture} ref={textureRef} />
       <pointLight intensity={1} position={[10, 10, 10]} />
     </mesh>
   );
@@ -35,7 +39,7 @@ function App() {
       camera={{ position: [0, 0, 10], fov: 50 }}
     >
       <Earth />
-      <ambientLight intensity={0.1} />
+      <ambientLight intensity={0.9} />
     </Canvas>
   );
 }
