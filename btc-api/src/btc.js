@@ -27,7 +27,9 @@ export default function BTCData() {
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100 p-8 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-blue-600 mb-4">LIVE BTC/USDT</h1>
+      <div className="flex bg-blue-300 border border-black text-sm shadow-green-600 ">
+        BTC/USDT
+      </div>
       <p className="text-2xl font-bold text-gray-600 mb-4">
         current price: {usdFormatter.format(data.lastPrice)}
       </p>

@@ -67,7 +67,6 @@ const LineChart = ({ data, chartId, borderColor, backgroundColor }) => {
     })
 
     chartRef.current = chart
-
     return () => {
       chart.destroy()
       chartRef.current = null
