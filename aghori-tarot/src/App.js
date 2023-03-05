@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import eyesClosed from "./eyesClosed.png";
 import eyesOpen from "./eyesOpen.png";
 import soundFile from "./chant.mp3";
+import bgm from "./bgm.mp3";
 
 import "./style.css";
 function App() {
@@ -94,7 +95,7 @@ function App() {
     return messages[randomIndex];
   }
 
-  const totalChant = 1;
+  const totalChant = 5;
   const [chantCount, setChantCount] = useState(0);
   const [showMessage, setShowMessage] = useState(false);
   const [image, setImage] = useState(eyesClosed);
@@ -136,6 +137,8 @@ function App() {
         }, 3000);
       }, 2000);
     }
+    const audio = new Audio(bgm);
+    audio.play();
   }, [isPoojaDone]);
 
   return (
