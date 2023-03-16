@@ -1,27 +1,141 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
 function App() {
+  const quizData = {
+    questions: [
+      {
+        question: "Which keyword is used to declare a variable in JavaScript?",
+        answers: [
+          { text: "declare", correct: false },
+          { text: "var", correct: true },
+          { text: "let", correct: false },
+          { text: "const", correct: false },
+        ],
+      },
+      {
+        question:
+          "Which method can be used to add an element to the end of an array in JavaScript?",
+        answers: [
+          { text: "push()", correct: true },
+          { text: "pop()", correct: false },
+          { text: "shift()", correct: false },
+          { text: "unshift()", correct: false },
+        ],
+      },
+      {
+        question: "What is the result of the following code: 1 + '1'?",
+        answers: [
+          { text: "11", correct: true },
+          { text: "2", correct: false },
+          { text: "NaN", correct: false },
+          { text: "SyntaxError", correct: false },
+        ],
+      },
+      {
+        question:
+          "Which method can be used to convert a string to a number in JavaScript?",
+        answers: [
+          { text: "parseInt()", correct: true },
+          { text: "toFixed()", correct: false },
+          { text: "toString()", correct: false },
+          { text: "concat()", correct: false },
+        ],
+      },
+      {
+        question: "What is the result of the following code: typeof null?",
+        answers: [
+          { text: "null", correct: false },
+          { text: "undefined", correct: false },
+          { text: "object", correct: true },
+          { text: "number", correct: false },
+        ],
+      },
+    ],
+  };
+  const totalQuestions = 5;
+  const [question, setQuestion] = useState("");
+  const [options, setOptions] = useState([]);
+  const [questionNumber, setQuestionNumber] = useState(1);
+  const [score, setScore] = useState(0);
+  const [optionColor, setOptionColor] = useState("bg-white");
+  const [selectedIndex, setSelectedIndex] = useState(-2);
+  const [isgameDone, setIsGameDone] = useState(false);
+  // Load the current question and answer options based on the current question number
+  useEffect(() => {
+    const currentQuestion = quizData.questions[questionNumber - 1];
+    setQuestion(currentQuestion.question);
+    setOptions(currentQuestion.answers);
+  }, [questionNumber]);
+
+  const handleAnswerClick = (selectedOption, index) => {
+    setSelectedIndex(index);
+    if (questionNumber > totalQuestions) {
+      console.log(score);
+      setIsGameDone(true);
+      return;
+    }
+    // Check if the selected option is correct
+    const isCorrect = selectedOption.correct;
+    if (isCorrect) {
+      if (questionNumber <= totalQuestions) {
+        setScore((prev) => prev + 1);
+      }
+
+      setOptionColor("bg-green-500");
+    } else setOptionColor("bg-red-500");
+    // Update the question number and load the next question
+    setTimeout(() => {
+      if (questionNumber <= totalQuestions) {
+        setQuestionNumber((prev) => prev + 1);
+      }
+
+      setOptionColor("bg-white");
+    }, 1000);
+
+    // TODO: Handle the selected answer being correct or incorrect
+  };
+
   return (
-    <div className="mx-auto h-[600px] shadow p-4 mt-16 border border-gray-200 rounded bg-gray-100">
-      <div className="text-3xl border mx-auto mt-16 ">
-        who is the Ceo of twitter ?
+    <div className="main-container mx-auto shadow p-8 mt-16 relative ">
+      <div className={` ${!isgameDone ? "flex" : "hidden"} flex flex-col`}>
+        <div className="font-medium text-2xl absolute top-8 right-10 text-white">
+          {questionNumber}/{quizData.questions.length}
+        </div>
+        <div className="question text-3xl mx-auto mt-16 ">{question}</div>
+        <div className="answers flex flex-col gap-4 mt-16 mb-8">
+          {options.map((option, index) => (
+            <div
+              key={index}
+              className={`options ${index == selectedIndex ? optionColor : ""}`}
+              onClick={() => handleAnswerClick(option, index)}
+            >
+              {option.text}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="answers flex flex-col gap-4 mt-8">
-        <div className="text-2xl border shadow bg-blue-200 rounded p-2 ">
-          Elon musk
+      <section
+        class={`rounded-3xl shadow-2xl ${isgameDone ? "flex" : "hidden"}`}
+      >
+        <div class="p-8 text-center sm:p-12">
+          <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
+            Your order is on the way
+          </p>
+
+          <h2 class="mt-6 text-3xl font-bold">
+            Thanks for your purchase, we're getting it ready!
+          </h2>
+
+          <a
+            class="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
+            href=""
+          >
+            Track Order
+          </a>
         </div>
-        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
-          Jeff bezos
-        </div>
-        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
-          Joe rogan
-        </div>
-        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
-          Mark zuckeberg
-        </div>
-      </div>
+      </section>
     </div>
   );
 }
