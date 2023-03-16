@@ -109,7 +109,7 @@ function App() {
   }
 
   return (
-    <div className="main-container mx-auto shadow p-8 mt-16 relative ">
+    <div className="main-container mx-auto  p-8  relative ">
       <div className={` ${!isgameDone ? "flex" : "hidden"} flex flex-col`}>
         <div className="font-medium text-2xl absolute top-8 right-10 text-white">
           {questionNumber}/{quizData.questions.length}

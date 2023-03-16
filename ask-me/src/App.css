@@ -1,15 +1,10 @@
 #root {
-  max-width: 700px;
+  max-width: 400px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-  background-color: #9fbbf3;
-  height: 100vh;
-}
 
-.main-container {
+  text-align: center;
   background-color: #477ff0;
-  border-radius: 20px;
+  height: 100vh;
 }
 
 .question {
