@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #9fbbf3;
+  height: 100vh;
 }
 
 .main-container {

@@ -64,14 +64,20 @@ function App() {
   const [isgameDone, setIsGameDone] = useState(false);
   // Load the current question and answer options based on the current question number
   useEffect(() => {
-    const currentQuestion = quizData.questions[questionNumber - 1];
-    setQuestion(currentQuestion.question);
-    setOptions(currentQuestion.answers);
+    if (questionNumber <= totalQuestions) {
+      const currentQuestion = quizData.questions[questionNumber - 1];
+      setQuestion(currentQuestion.question);
+      setOptions(currentQuestion.answers);
+    }
   }, [questionNumber]);
 
   const handleAnswerClick = (selectedOption, index) => {
     setSelectedIndex(index);
-    if (questionNumber > totalQuestions) {
+    if (questionNumber >= totalQuestions) {
+      const isCorrect = selectedOption.correct;
+      if (isCorrect) {
+        setScore((prev) => prev + 1);
+      }
       console.log(score);
       setIsGameDone(true);
       return;
@@ -79,23 +85,28 @@ function App() {
     // Check if the selected option is correct
     const isCorrect = selectedOption.correct;
     if (isCorrect) {
-      if (questionNumber <= totalQuestions) {
-        setScore((prev) => prev + 1);
-      }
+      setScore((prev) => prev + 1);
 
       setOptionColor("bg-green-500");
     } else setOptionColor("bg-red-500");
     // Update the question number and load the next question
     setTimeout(() => {
-      if (questionNumber <= totalQuestions) {
-        setQuestionNumber((prev) => prev + 1);
-      }
+      setQuestionNumber((prev) => prev + 1);
 
       setOptionColor("bg-white");
-    }, 1000);
+    }, 100);
 
     // TODO: Handle the selected answer being correct or incorrect
   };
+  function reset() {
+    setQuestion("");
+    setOptionColor("bg-white");
+    setIsGameDone(false);
+    setSelectedIndex(-2);
+    setScore(0);
+    setQuestionNumber(1);
+    setOptions([]);
+  }
 
   return (
     <div className="main-container mx-auto shadow p-8 mt-16 relative ">
@@ -119,21 +130,21 @@ function App() {
       <section
         class={`rounded-3xl shadow-2xl ${isgameDone ? "flex" : "hidden"}`}
       >
-        <div class="p-8 text-center sm:p-12">
+        <div class="p-8 text-center sm:p-12 bg-transparent">
           <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
-            Your order is on the way
+            Thanks for Trying
           </p>
 
-          <h2 class="mt-6 text-3xl font-bold">
-            Thanks for your purchase, we're getting it ready!
+          <h2 class="mt-6 text-3xl font-bold text-white">
+            {`You Scored ${score}/${totalQuestions}`}
           </h2>
 
-          <a
+          <div
             class="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
-            href=""
+            onClick={reset}
           >
-            Track Order
-          </a>
+            Try Again
+          </div>
         </div>
       </section>
     </div>
