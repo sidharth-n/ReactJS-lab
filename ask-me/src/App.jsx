@@ -5,18 +5,22 @@ import "./App.css";
 function App() {
   return (
     <div className="mx-auto h-[600px] shadow p-4 mt-16 border border-gray-200 rounded bg-gray-100">
-      <div className="text-2xl border mx-auto mt-16 ">
+      <div className="text-3xl border mx-auto mt-16 ">
         who is the Ceo of twitter ?
       </div>
-      <div className="answers flex flex-col gap-4 mt-8 items-center">
-        <li className="text-xl border shadow bg-blue-200 rounded">Elon musk</li>
-        <li className="text-xl border shadow bg-blue-200 rounded">
+      <div className="answers flex flex-col gap-4 mt-8">
+        <div className="text-2xl border shadow bg-blue-200 rounded p-2 ">
+          Elon musk
+        </div>
+        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
           Jeff bezos
-        </li>
-        <li className="text-xl border shadow bg-blue-200 rounded">Joe rogan</li>
-        <li className="text-xl border shadow bg-blue-200 rounded">
+        </div>
+        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
+          Joe rogan
+        </div>
+        <div className="text-2xl border shadow bg-blue-200 rounded p-2">
           Mark zuckeberg
-        </li>
+        </div>
       </div>
     </div>
   );
