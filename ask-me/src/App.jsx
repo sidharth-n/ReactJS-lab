@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 
@@ -63,6 +64,12 @@ function App() {
   const [selectedIndex, setSelectedIndex] = useState(-2);
   const [isgameDone, setIsGameDone] = useState(false);
   // Load the current question and answer options based on the current question number
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const trParam = searchParams.get("tr");
+    console.log("params is: " + trParam);
+  }, [location.search]);
+
   useEffect(() => {
     if (questionNumber <= totalQuestions) {
       const currentQuestion = quizData.questions[questionNumber - 1];
