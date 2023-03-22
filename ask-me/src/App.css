@@ -1,25 +1,33 @@
 #root {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
+  padding: 0;
 
   text-align: center;
-  background-color: #477ff0;
+  background-color: #fafafa;
   height: 100vh;
+  overflow: hidden;
+  font-family: "Courier New", Courier, monospace;
+}
+::-webkit-scrollbar {
+  display: none;
 }
 
 .question {
-  color: white;
+  color: rgb(36, 36, 36);
   text-align: left;
+  font-size: 14px;
 }
 
 .options {
-  font-size: 25px;
+  font-size: 16px;
   width: 100%;
-  background-color: #fff;
+  background-color: #eeeded;
   padding: 10px;
-  color: #477ff0;
+  color: #000000;
   border-radius: 20px;
-  font-weight: 400;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .options:hover {

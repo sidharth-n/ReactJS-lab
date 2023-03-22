@@ -59,7 +59,7 @@ function App() {
   const [options, setOptions] = useState([]);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [score, setScore] = useState(0);
-  const [optionColor, setOptionColor] = useState("bg-white");
+  const [optionColor, setOptionColor] = useState("#eeeded");
   const [selectedIndex, setSelectedIndex] = useState(-2);
   const [isgameDone, setIsGameDone] = useState(false);
   // Load the current question and answer options based on the current question number
@@ -93,14 +93,14 @@ function App() {
     setTimeout(() => {
       setQuestionNumber((prev) => prev + 1);
 
-      setOptionColor("bg-white");
-    }, 100);
+      setOptionColor("#eeeded");
+    }, 500);
 
     // TODO: Handle the selected answer being correct or incorrect
   };
   function reset() {
     setQuestion("");
-    setOptionColor("bg-white");
+    setOptionColor("#eeeded");
     setIsGameDone(false);
     setSelectedIndex(-2);
     setScore(0);
@@ -111,11 +111,11 @@ function App() {
   return (
     <div className="main-container mx-auto  p-8  relative ">
       <div className={` ${!isgameDone ? "flex" : "hidden"} flex flex-col`}>
-        <div className="font-medium text-2xl absolute top-8 right-10 text-white">
+        <div className="font-medium text-xl absolute top-5 right-10 text-gray-800">
           {questionNumber}/{quizData.questions.length}
         </div>
-        <div className="question text-3xl mx-auto mt-16 ">{question}</div>
-        <div className="answers flex flex-col gap-4 mt-16 mb-8">
+        <div className="question text-xl mx-auto mt-10 ">{question}</div>
+        <div className="answers flex flex-col gap-4 mt-10 mb-8">
           {options.map((option, index) => (
             <div
               key={index}
@@ -128,19 +128,21 @@ function App() {
         </div>
       </div>
       <section
-        class={`rounded-3xl shadow-2xl ${isgameDone ? "flex" : "hidden"}`}
+        class={`rounded-3xl shadow-2xl ${
+          isgameDone ? "flex" : "hidden"
+        }  bg-white rounded-2xl`}
       >
-        <div class="p-8 text-center sm:p-12 bg-transparent">
+        <div class="p-8 mx-auto">
           <p class="text-sm font-semibold uppercase tracking-widest text-pink-500">
             Thanks for Trying
           </p>
 
-          <h2 class="mt-6 text-3xl font-bold text-white">
+          <h2 class="mt-6 text-3xl font-bold text-black">
             {`You Scored ${score}/${totalQuestions}`}
           </h2>
 
           <div
-            class="mt-8 inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
+            class="mt-8 cursor-pointer inline-block w-full rounded-full bg-pink-600 py-4 text-sm font-bold text-white shadow-xl"
             onClick={reset}
           >
             Try Again
