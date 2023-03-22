@@ -7,54 +7,78 @@ function App() {
   const quizData = {
     questions: [
       {
-        question: "Which keyword is used to declare a variable in JavaScript?",
+        question: "What is the unit circle?",
         answers: [
-          { text: "declare", correct: false },
-          { text: "var", correct: true },
-          { text: "let", correct: false },
-          { text: "const", correct: false },
+          { text: "A circle with a radius of 1", correct: true },
+          { text: "A circle with a radius of 2", correct: false },
+          { text: "A circle with a radius of 0.5", correct: false },
+          { text: "A circle with a radius of 10", correct: false },
         ],
       },
       {
         question:
-          "Which method can be used to add an element to the end of an array in JavaScript?",
+          "What is the value of the hypotenuse of a triangle in the unit circle?",
         answers: [
-          { text: "push()", correct: true },
-          { text: "pop()", correct: false },
-          { text: "shift()", correct: false },
-          { text: "unshift()", correct: false },
-        ],
-      },
-      {
-        question: "What is the result of the following code: 1 + '1'?",
-        answers: [
-          { text: "11", correct: true },
+          { text: "1", correct: true },
           { text: "2", correct: false },
-          { text: "NaN", correct: false },
-          { text: "SyntaxError", correct: false },
+          { text: "0.5", correct: false },
+          { text: "10", correct: false },
         ],
       },
       {
-        question:
-          "Which method can be used to convert a string to a number in JavaScript?",
+        question: "What is the sine of an angle in the unit circle?",
         answers: [
-          { text: "parseInt()", correct: true },
-          { text: "toFixed()", correct: false },
-          { text: "toString()", correct: false },
-          { text: "concat()", correct: false },
+          {
+            text: "The y-coordinate of the corresponding point",
+            correct: true,
+          },
+          {
+            text: "The x-coordinate of the corresponding point",
+            correct: false,
+          },
+          { text: "The tangent of the corresponding angle", correct: false },
+          {
+            text: "The inverse cosine of the corresponding angle",
+            correct: false,
+          },
         ],
       },
       {
-        question: "What is the result of the following code: typeof null?",
+        question: "What is the tangent of an angle in the unit circle?",
         answers: [
-          { text: "null", correct: false },
-          { text: "undefined", correct: false },
-          { text: "object", correct: true },
-          { text: "number", correct: false },
+          {
+            text: "The y-coordinate divided by the x-coordinate",
+            correct: true,
+          },
+          {
+            text: "The x-coordinate divided by the y-coordinate",
+            correct: false,
+          },
+          { text: "The cosine of the corresponding angle", correct: false },
+          {
+            text: "The inverse sine of the corresponding angle",
+            correct: false,
+          },
+        ],
+      },
+      {
+        question: "What is the secant of an angle in the unit circle?",
+        answers: [
+          { text: "The reciprocal of the x-coordinate", correct: true },
+          { text: "The reciprocal of the y-coordinate", correct: false },
+          {
+            text: "The reciprocal of the tangent of the corresponding angle",
+            correct: false,
+          },
+          {
+            text: "The reciprocal of the sine of the corresponding angle",
+            correct: false,
+          },
         ],
       },
     ],
   };
+
   const totalQuestions = 5;
   const [question, setQuestion] = useState("");
   const [options, setOptions] = useState([]);
