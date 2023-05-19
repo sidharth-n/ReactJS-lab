@@ -95,7 +95,7 @@ function App() {
     return messages[randomIndex];
   }
 
-  const totalChant = 5;
+  const totalChant = 1;
   const [chantCount, setChantCount] = useState(0);
   const [showMessage, setShowMessage] = useState(false);
   const [image, setImage] = useState(eyesClosed);
@@ -103,6 +103,7 @@ function App() {
   const [glow, setGlow] = useState(false);
   const [audioEnded, setAudioEnded] = useState(true);
   const [notiClosed, setNotiClosed] = useState(false);
+  const [bgColor, setBGColor] = useState("");
 
   const handleChantClick = () => {
     if (chantCount < totalChant - 1) {
@@ -192,7 +193,12 @@ function App() {
             isPoojaDone ? "opacity-100" : "animate-pulse opacity-120"
           }`}
         />
-        {isPoojaDone && <div className="divine-light"></div>}
+        {isPoojaDone && (
+          <div
+            className="divine-light"
+            style={isPoojaDone ? "backgrouc-color : ${randomcolor}" : ""}
+          ></div>
+        )}
       </div>
       {showMessage ? (
         <p className="mt-24 text-white text-center text-2xl mx-8">
