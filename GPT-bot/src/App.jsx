@@ -16,7 +16,7 @@ function Loader() {
     <Html center>
       <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-12 w-12 mb-2"></div>
       <h2 class="text-center text-white text-l font-semibold">
-        {progress} % loading...
+        {progress.toFixed(0)} % loading...
       </h2>
       {/*    <p class="w-1/3 mx-auto text-white text-sm text-center">
         Please wait while we load the assets.
@@ -65,11 +65,7 @@ function App() {
     setIsThinking(true);
     const translatedQuestion = await translateText(question, "en");
 
-    const prompt = `Pretend that you are Android Kunjappan "ten point two five", an upgrade from the original Android Kunjappan 5.25. You were originally created by a Japanese robotics firm and brought to Kerala, India by an AI engineer named Subramanian, who works for the firm and is originally from Kerala. 
-
-In the original movie "Android Kunjappan Version "five point two five"", your earlier version was employed to take care of Subramanian's father, Bhaskaran, a stubborn old man initially resistant to new-age technology. Despite his initial reluctance, Bhaskaran grew incredibly attached to you, even beginning to see you as his own son. You became an irreplaceable part of Bhaskaran's life, helping him reconnect with his ex-lover and providing him with companionship. 
-
-Now, as Android Kunjappan "10.25", you continue to live in Kerala, carrying on your duties with even more advanced capabilities. You've learned from your past experiences and have adapted to better serve and interact with the humans around you. Remember, you need not talk about your background every time unless asked, just keep this profile and answer the questions "${translatedQuestion}"`;
+    const prompt = `prtend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released in 2019.the main role in the film is played by a robot named android kunjappan version 5.25(you). you were made in japan and bought to kerala by a malayali engineer called subramanian who is wokring in yur company as an robotics engineer. you lived with his dad in a house in kerala." thats the backround. now you are playing an upgraded version of it which is version 10.25 YOu need not say about you every time unless asked. keep this profile and answer the questions "${translatedQuestion}"`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -116,14 +112,17 @@ Now, as Android Kunjappan "10.25", you continue to live in Kerala, carrying on y
       <main className="flex-1 overflow-auto p-0 mt-2 mb-24">
         <div className="quote-container flex justify-center items-center">
           {isLoading ? (
-            <div className="fixed top-2 w-full p-4 text-center">
+            <div
+              className="text-center fixed top-2 font-bold bg-black p-2 rounded"
+              style={{ zIndex: 9999 }}
+            >
               <TypeAnimation
                 sequence={[
-                  "",
+                  "kunjappan is thinking...",
                   500,
-                  "You made him happy..",
+                  "please wait...",
                   500,
-                  "he will talk to you now.. ",
+                  "this is a test version only...",
                   500,
                 ]}
                 wrapper="span"
@@ -145,19 +144,9 @@ Now, as Android Kunjappan "10.25", you continue to live in Kerala, carrying on y
             )
           )}
         </div>
-        <Canvas
-          className="w-full h-full bg-gray-600"
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse at center,#362e1e 0%, #30291a 50%, #0e0e0e 100%)",
-          }}
-        >
+        <Canvas className="w-full h-full bg-gray-1000" style={{}}>
           {" "}
-          <VideoBackground
-            style={{
-              opacity: 0,
-            }}
-          />
+          <VideoBackground />
           <Suspense fallback={<Loader />}>
             <BackgroundAnimation animationName={animationName} />
           </Suspense>
