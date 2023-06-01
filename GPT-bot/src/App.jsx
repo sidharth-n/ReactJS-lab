@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import { Html, useProgress } from "@react-three/drei";
 import { translateText } from "././components/TranslationService";
 import VideoBackground from "././components/VideoBackground";
+import SpeechToText from "././components/SpeechToText";
 
 function Loader() {
   const { progress } = useProgress();
@@ -33,11 +34,12 @@ function App() {
   const quoteContainerRef = useRef(null);
   const [audioResponse, setAudioResponse] = useState("");
   const [animationName, setAnimationName] = useState("Freeze");
-  const idleAnimations = ["talk_Armature.001"];
-  const talkAnimations = ["talk_Armature.001"];
+  const idleAnimations = ["mixamo.com"];
+  const talkAnimations = ["mixamo.com"];
   const thinkAnimations = ["Think01"]; /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
+  const [transcription, setTranscription] = useState("");
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length);
@@ -46,7 +48,7 @@ function App() {
 
   useEffect(() => {
     if (isThinking) {
-      setAnimationName("talk_Armature.001");
+      setAnimationName("mixamo.com");
     } else if (isPlaying) {
       setAnimationName(getRandomAnimation(talkAnimations));
     } else {
@@ -56,6 +58,10 @@ function App() {
 
   const handleChange = (event) => {
     setQuestion(event.target.value);
+  };
+
+  const handleTranscription = (text) => {
+    setTranscription(text);
   };
 
   const handleSubmit = async (event) => {
@@ -144,22 +150,23 @@ function App() {
             )
           )}
         </div>
-        <Canvas className="w-full h-full bg-gray-1000" style={{}}>
+        {/*    <Canvas className="w-full h-full bg-gray-1000" style={{}}>
           {" "}
           <VideoBackground />
           <Suspense fallback={<Loader />}>
             <BackgroundAnimation animationName={animationName} />
           </Suspense>
-        </Canvas>
+        </Canvas> */}
       </main>
       <footer className="fixed bottom-0 w-full p-4">
+        <SpeechToText onTranscription={handleTranscription} />
+
         <form onSubmit={handleSubmit} className="flex items-center">
-          <div className="relative flex-grow">
-            <input
-              type="text"
+          <div className="relative flex-grow overflow-auto max-h-24">
+            <textarea
               placeholder="Type your question.."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md"
-              value={question}
+              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none"
+              value={transcription}
               onChange={handleChange}
               autoFocus
             />
