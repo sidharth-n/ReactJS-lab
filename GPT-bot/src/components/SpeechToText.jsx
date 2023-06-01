@@ -1,4 +1,3 @@
-// SpeechToText.jsx
 import React, { useState, useEffect } from "react";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
@@ -6,6 +5,7 @@ function SpeechToText({ onTranscription }) {
   const [transcription, setTranscription] = useState("");
   const [listening, setListening] = useState(false);
   const [recognizer, setRecognizer] = useState(null);
+  const [partialTranscriptions, setPartialTranscriptions] = useState([]);
 
   useEffect(() => {
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
@@ -15,17 +15,26 @@ function SpeechToText({ onTranscription }) {
     );
     const newRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-    newRecognizer.recognizing = (s, e) => {
-      setTranscription(e.result.text);
-      onTranscription(e.result.text); // Notify parent component of the transcription
+    newRecognizer.recognized = (s, e) => {
+      if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
+        setPartialTranscriptions([...partialTranscriptions, e.result.text]);
+      }
     };
 
     setRecognizer(newRecognizer);
 
     return () => {
-      newRecognizer.stopContinuousRecognitionAsync();
+      if (newRecognizer) {
+        newRecognizer.stopContinuousRecognitionAsync();
+        newRecognizer.close();
+      }
     };
-  }, [onTranscription]);
+  }, []);
+
+  useEffect(() => {
+    setTranscription(partialTranscriptions.join(" "));
+    onTranscription(partialTranscriptions.join(" "));
+  }, [partialTranscriptions, onTranscription]);
 
   const startListening = () => {
     navigator.mediaDevices
@@ -33,6 +42,7 @@ function SpeechToText({ onTranscription }) {
       .then((stream) => {
         // Microphone access is granted, start recognition
         recognizer.startContinuousRecognitionAsync();
+        setPartialTranscriptions([]);
         setListening(true);
       })
       .catch((err) => {
@@ -45,10 +55,9 @@ function SpeechToText({ onTranscription }) {
     recognizer.stopContinuousRecognitionAsync();
     setListening(false);
   };
+
   return (
     <div className="flex flex-col items-center">
-      {/*    <h2>Real-Time Transcription:</h2>
-      <p>{transcription}</p> */}
       <div className="space-x-4">
         {listening ? (
           <div className="p-4 bg-red-500 flex align-center rounded-full mb-6">
@@ -60,10 +69,10 @@ function SpeechToText({ onTranscription }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-octagon"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-octagon"
             >
               <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
             </svg>
@@ -79,10 +88,10 @@ function SpeechToText({ onTranscription }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-mic"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-mic"
             >
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
               <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
