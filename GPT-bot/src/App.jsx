@@ -34,12 +34,13 @@ function App() {
   const quoteContainerRef = useRef(null);
   const [audioResponse, setAudioResponse] = useState("");
   const [animationName, setAnimationName] = useState("Freeze");
-  const idleAnimations = ["mixamo.com"];
-  const talkAnimations = ["mixamo.com"];
+  const idleAnimations = ["talk_Armature.001"];
+  const talkAnimations = ["talk_Armature.001"];
   const thinkAnimations = ["Think01"]; /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [transcription, setTranscription] = useState("");
+  const [isAkSpeaking, setIsAkSpeaking] = useState(false);
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length);
@@ -48,7 +49,7 @@ function App() {
 
   useEffect(() => {
     if (isThinking) {
-      setAnimationName("mixamo.com");
+      setAnimationName("talk_Armature.001");
     } else if (isPlaying) {
       setAnimationName(getRandomAnimation(talkAnimations));
     } else {
@@ -150,22 +151,23 @@ function App() {
             )
           )}
         </div>
-        {/*    <Canvas className="w-full h-full bg-gray-1000" style={{}}>
-          {" "}
-          <VideoBackground />
-          <Suspense fallback={<Loader />}>
-            <BackgroundAnimation animationName={animationName} />
-          </Suspense>
-        </Canvas> */}
+        {
+          <Canvas className="w-full h-full bg-gray-1000" style={{}}>
+            {" "}
+            <VideoBackground />
+            <Suspense fallback={<Loader />}>
+              <BackgroundAnimation animationName={animationName} />
+            </Suspense>
+          </Canvas>
+        }
       </main>
       <footer className="fixed bottom-0 w-full p-4">
-        <SpeechToText onTranscription={handleTranscription} />
-
+        <SpeechToText onTranscription={handleTranscription} pause={isPlaying} />
         <form onSubmit={handleSubmit} className="flex items-center">
-          <div className="relative flex-grow overflow-auto max-h-24 align-center">
+          <div className="relative flex-grow overflow-auto max-h-24">
             <textarea
               placeholder="Type your question.."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none "
+              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none"
               value={transcription}
               onChange={handleChange}
               autoFocus

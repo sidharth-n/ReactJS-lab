@@ -1,11 +1,11 @@
+// SpeechToText.jsx
 import React, { useState, useEffect } from "react";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
-function SpeechToText({ onTranscription }) {
+function SpeechToText({ onTranscription, pause }) {
   const [transcription, setTranscription] = useState("");
   const [listening, setListening] = useState(false);
   const [recognizer, setRecognizer] = useState(null);
-  const [partialTranscriptions, setPartialTranscriptions] = useState([]);
 
   useEffect(() => {
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
@@ -13,28 +13,20 @@ function SpeechToText({ onTranscription }) {
       `${import.meta.env.VITE_SPEECH_API_KEY}`,
       "centralindia"
     );
+    speechConfig.speechRecognitionLanguage = "ml-IN";
     const newRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
-    newRecognizer.recognized = (s, e) => {
-      if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
-        setPartialTranscriptions([...partialTranscriptions, e.result.text]);
-      }
+    newRecognizer.recognizing = (s, e) => {
+      setTranscription(e.result.text);
+      onTranscription(e.result.text); // Notify parent component of the transcription
     };
 
     setRecognizer(newRecognizer);
 
-    return () => {
-      if (newRecognizer) {
-        newRecognizer.stopContinuousRecognitionAsync();
-        newRecognizer.close();
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    setTranscription(partialTranscriptions.join(" "));
-    onTranscription(partialTranscriptions.join(" "));
-  }, [partialTranscriptions, onTranscription]);
+    if (pause) {
+      newRecognizer.stopContinuousRecognitionAsync();
+    }
+  }, [onTranscription]);
 
   const startListening = () => {
     navigator.mediaDevices
@@ -42,7 +34,6 @@ function SpeechToText({ onTranscription }) {
       .then((stream) => {
         // Microphone access is granted, start recognition
         recognizer.startContinuousRecognitionAsync();
-        setPartialTranscriptions([]);
         setListening(true);
       })
       .catch((err) => {
@@ -55,12 +46,11 @@ function SpeechToText({ onTranscription }) {
     recognizer.stopContinuousRecognitionAsync();
     setListening(false);
   };
-
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mb-6">
       <div className="space-x-4">
         {listening ? (
-          <div className="p-4 bg-red-500 flex align-center rounded-full mb-6">
+          <div className="p-4 bg-red-500 flex align-center rounded-full">
             <svg
               onClick={stopListening}
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +68,7 @@ function SpeechToText({ onTranscription }) {
             </svg>
           </div>
         ) : (
-          <div className="p-4 bg-green-500 flex align-center rounded-full mb-6">
+          <div className="p-4 bg-green-500 flex align-center rounded-full">
             <svg
               onClick={startListening}
               disabled={listening}
@@ -88,10 +78,10 @@ function SpeechToText({ onTranscription }) {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-mic"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-mic"
             >
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
               <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>

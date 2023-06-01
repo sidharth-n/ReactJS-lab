@@ -16,9 +16,9 @@ import {
 import { useRef, useEffect } from "react";
 
 function BackgroundAnimation({ animationName }) {
-  const model = useGLTF("./000.gltf");
+  const model = useGLTF("./check.glb");
 
-  model.scene.scale.set(0.01, 0.01, 0.01);
+  model.scene.scale.set(1, 1, 1);
   model.scene.position.set(0, -0.6, 3.6);
   model.scene.rotation.set(0.3, 0, 0);
   const animations = useAnimations(model.animations, model.scene);
