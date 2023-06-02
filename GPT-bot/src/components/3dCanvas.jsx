@@ -41,14 +41,14 @@ function BackgroundAnimation({ animationName }) {
         rotation={[0, -Math.PI / 2, 0]}
         fov={60}
       ></PerspectiveCamera>
-      <Environment
+      {/*    <Environment
         ground={{
           height: 20,
           radius: 50,
           scale: 500,
         }}
         files={"./studio.hdr"}
-      />
+      /> */}
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <spotLight position={[0, 10, 10]} intensity={1} />
