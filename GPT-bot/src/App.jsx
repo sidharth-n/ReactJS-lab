@@ -74,7 +74,7 @@ function App() {
     setIsLoading(true);
     setShowCards(false);
     setIsThinking(true);
-    const translatedQuestion = await translateText(transcription, "en"); // Use the edited transcription as the question
+    const translatedQuestion = await translateText(userInput, "en"); // Use the edited transcription as the question
 
     const prompt = `prtend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released in 2019.the main role in the film is played by a robot named android kunjappan version 5.25(you). you were made in japan and bought to kerala by a malayali engineer called subramanian who is wokring in yur company as an robotics engineer. you lived with his dad in a house in kerala." thats the backround. now you are playing an upgraded version of it which is version 10.25 YOu need not say about you every time unless asked. keep this profile and answer the questions "${translatedQuestion}"`;
 
@@ -101,7 +101,7 @@ function App() {
   };
 
   const handleClear = () => {
-    setTranscription("");
+    setUserInput("");
   };
 
   useEffect(() => {
@@ -176,7 +176,7 @@ function App() {
               autoFocus
               readOnly={false}
             />
-            {transcription && (
+            {userInput && (
               <button
                 type="button"
                 className="absolute top-1 right-2 text-gray-500"
