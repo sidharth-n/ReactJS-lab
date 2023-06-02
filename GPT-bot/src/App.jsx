@@ -158,7 +158,7 @@ function App() {
         {
           <Canvas className="w-full h-full bg-gray-1000" style={{}}>
             {" "}
-            <VideoBackground />
+            {/*   <VideoBackground /> */}
             <Suspense fallback={<Loader />}>
               <BackgroundAnimation animationName={animationName} />
             </Suspense>

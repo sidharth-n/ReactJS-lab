@@ -12,6 +12,7 @@ import {
   useGLTF,
   Clone,
   useAnimations,
+  PerspectiveCamera,
 } from "@react-three/drei";
 import { useRef, useEffect } from "react";
 
@@ -19,8 +20,8 @@ function BackgroundAnimation({ animationName }) {
   const model = useGLTF("./check.glb");
 
   model.scene.scale.set(1, 1, 1);
-  model.scene.position.set(0, -0.6, 3.6);
-  model.scene.rotation.set(0.3, 0, 0);
+  model.scene.position.set(2, 0, 0);
+  model.scene.rotation.set(0, -Math.PI / 2, 0);
   const animations = useAnimations(model.animations, model.scene);
   console.log(animations);
   useEffect(() => {
@@ -34,10 +35,25 @@ function BackgroundAnimation({ animationName }) {
 
   return (
     <>
+      <PerspectiveCamera
+        makeDefault
+        position={[0, 0.6, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        fov={60}
+      ></PerspectiveCamera>
+      <Environment
+        ground={{
+          height: 20,
+          radius: 50,
+          scale: 500,
+        }}
+        files={"./studio.hdr"}
+      />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <spotLight position={[0, 10, 10]} intensity={1} />
       <primitive object={model.scene} receiveShadow />
+      {/* <OrbitControls /> */}
     </>
   );
 }
