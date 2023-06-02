@@ -13,6 +13,7 @@ function SpeechToText({ onTranscription }) {
       `${import.meta.env.VITE_SPEECH_API_KEY}`,
       "centralindia"
     );
+    speechConfig.speechRecognitionLanguage = "ml-IN";
     const newRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
 
     newRecognizer.recognized = (s, e) => {

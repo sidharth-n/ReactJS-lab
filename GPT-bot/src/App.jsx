@@ -167,13 +167,13 @@ function App() {
         <SpeechToText onTranscription={handleTranscription} />
 
         <form onSubmit={handleSubmit} className="flex items-center">
-          <div className="relative flex-grow overflow-auto max-h-24 align-center">
+          <div className="relative flex-grow overflow-auto max-h-36 items-center">
             <textarea
               placeholder="Type your question.."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none h-auto"
+              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none h-full"
               style={{
-                minHeight: "1em",
-                maxHeight: "5em",
+                minHeight: "0.5em",
+                maxHeight: "6em",
                 height: "auto",
                 overflowY: "auto",
               }}
