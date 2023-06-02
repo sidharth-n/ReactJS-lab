@@ -44,11 +44,9 @@ function SpeechToText({ onTranscription }) {
   }, [partialTranscriptions, onTranscription]);
 
   const handleStart = () => {
-    startSound.current.play().then(() => {
-      setPartialTranscriptions([]);
-      recognizer.startContinuousRecognitionAsync();
-      setListening(true);
-    });
+    setPartialTranscriptions([]);
+    recognizer.startContinuousRecognitionAsync();
+    setListening(true);
   };
 
   const handleEnd = () => {
