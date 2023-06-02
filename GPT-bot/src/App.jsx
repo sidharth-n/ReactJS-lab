@@ -171,7 +171,7 @@ function App() {
         <form onSubmit={handleSubmit} className="flex items-center">
           <div className="relative flex-grow overflow-auto max-h-36 items-center">
             <textarea
-              placeholder="Type your question.."
+              placeholder="Type / speak your question..."
               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none h-full"
               style={{
                 minHeight: "0.5em",

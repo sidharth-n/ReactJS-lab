@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as sdk from "microsoft-cognitiveservices-speech-sdk";
 
 function SpeechToText({ onTranscription }) {
@@ -6,6 +6,9 @@ function SpeechToText({ onTranscription }) {
   const [listening, setListening] = useState(false);
   const [recognizer, setRecognizer] = useState(null);
   const [partialTranscriptions, setPartialTranscriptions] = useState([]);
+
+  const startSound = useRef(new Audio("/start_recording.wav"));
+  const stopSound = useRef(new Audio("/stop_recording.wav"));
 
   useEffect(() => {
     const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
@@ -41,14 +44,18 @@ function SpeechToText({ onTranscription }) {
   }, [partialTranscriptions, onTranscription]);
 
   const handleStart = () => {
-    setPartialTranscriptions([]);
-    recognizer.startContinuousRecognitionAsync();
-    setListening(true);
+    startSound.current.play().then(() => {
+      setPartialTranscriptions([]);
+      recognizer.startContinuousRecognitionAsync();
+      setListening(true);
+    });
   };
 
   const handleEnd = () => {
-    recognizer.stopContinuousRecognitionAsync();
-    setListening(false);
+    stopSound.current.play().then(() => {
+      recognizer.stopContinuousRecognitionAsync();
+      setListening(false);
+    });
   };
 
   return (

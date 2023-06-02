@@ -1,31 +1,44 @@
 import React, { useEffect, useState } from "react";
 
 function TextToSpeech({ text, onAudioEnd, onAudioStart }) {
-  // Don't forget to destructure the 'text' prop here.
   const [audioSrc, setAudioSrc] = useState(null);
+
   useEffect(() => {
-    // call fetchSpeech function with 'text' prop instead of hardcoded string
     if (text) {
-      // Only fetch speech if 'text' is not empty.
       fetchSpeech(text);
     }
-  }, [text]); // Add 'text' as dependency to trigger useEffect whenever 'text' changes
+  }, [text]);
+
+  // Add this effect to unlock the audio context on iOS
+  useEffect(() => {
+    const unlockAudioContext = () => {
+      if (document.readyState === "interactive") {
+        const audioContext = new (window.AudioContext ||
+          window.webkitAudioContext)();
+        const buffer = audioContext.createBuffer(1, 1, 22050);
+        const source = audioContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioContext.destination);
+        source.start();
+        document.removeEventListener("touchstart", unlockAudioContext);
+      }
+    };
+    document.addEventListener("touchstart", unlockAudioContext);
+  }, []);
 
   const fetchSpeech = async (text) => {
     const accessToken = await fetchAccessToken();
 
     const ssml = `
-  <speak version='1.0' xml:lang='en-US'>
-    <voice xml:lang='en-US' xml:gender='Male' name='ml-IN-MidhunNeural'>
-      <prosody pitch='+3st'>
-        ${text}
-      </prosody>
-    </voice>
-  </speak>
-`;
+      <speak version='1.0' xml:lang='en-US'>
+        <voice xml:lang='en-US' xml:gender='Male' name='ml-IN-MidhunNeural'>
+          <prosody pitch='+3st'>
+            ${text}
+          </prosody>
+        </voice>
+      </speak>
+    `;
 
-    //ml-IN-SobhanaNeural
-    //en-US-AnaNeural
     const response = await fetch(
       "https://centralindia.tts.speech.microsoft.com/cognitiveservices/v1",
       {
