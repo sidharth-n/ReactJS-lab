@@ -170,7 +170,13 @@ function App() {
           <div className="relative flex-grow overflow-auto max-h-24 align-center">
             <textarea
               placeholder="Type your question.."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none "
+              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none h-auto"
+              style={{
+                minHeight: "1em",
+                maxHeight: "5em",
+                height: "auto",
+                overflowY: "auto",
+              }}
               value={userInput}
               onChange={handleChange}
               autoFocus
