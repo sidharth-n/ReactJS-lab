@@ -56,6 +56,18 @@ function SpeechToText({ onTranscription }) {
     setListening(false);
   };
 
+  const askForMicrophonePermission = () => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true })
+      .then(() => {
+        startListening();
+      })
+      .catch((err) => {
+        // Handle error - user denied microphone access, or other error occurred
+        console.error(err);
+      });
+  };
+
   return (
     <div className="flex flex-col items-center">
       <div className="space-x-4">
@@ -80,7 +92,7 @@ function SpeechToText({ onTranscription }) {
         ) : (
           <div className="p-4 bg-green-500 flex align-center rounded-full mb-6">
             <svg
-              onClick={startListening}
+              onClick={askForMicrophonePermission}
               disabled={listening}
               xmlns="http://www.w3.org/2000/svg"
               width="24"

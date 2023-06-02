@@ -40,6 +40,7 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [transcription, setTranscription] = useState("");
+  const [userInput, setUserInput] = useState("");
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length);
@@ -57,12 +58,16 @@ function App() {
   }, [isPlaying, isThinking]);
 
   const handleChange = (event) => {
-    setTranscription(event.target.value);
+    setUserInput(event.target.value);
   };
 
   const handleTranscription = (text) => {
     setTranscription(text);
   };
+
+  useEffect(() => {
+    setUserInput(transcription);
+  }, [transcription]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -166,9 +171,10 @@ function App() {
             <textarea
               placeholder="Type your question.."
               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none "
-              value={transcription}
+              value={userInput}
               onChange={handleChange}
               autoFocus
+              readOnly={false}
             />
             {transcription && (
               <button
