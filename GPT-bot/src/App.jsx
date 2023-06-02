@@ -34,8 +34,8 @@ function App() {
   const quoteContainerRef = useRef(null);
   const [audioResponse, setAudioResponse] = useState("");
   const [animationName, setAnimationName] = useState("Freeze");
-  const idleAnimations = ["mixamo.com"];
-  const talkAnimations = ["mixamo.com"];
+  const idleAnimations = ["talk_Armature.001"];
+  const talkAnimations = ["talk_Armature.001"];
   const thinkAnimations = ["Think01"]; /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -49,7 +49,7 @@ function App() {
 
   useEffect(() => {
     if (isThinking) {
-      setAnimationName("mixamo.com");
+      setAnimationName("talk_Armature.001");
     } else if (isPlaying) {
       setAnimationName(getRandomAnimation(talkAnimations));
     } else {
@@ -155,13 +155,15 @@ function App() {
             )
           )}
         </div>
-        {/*    <Canvas className="w-full h-full bg-gray-1000" style={{}}>
-          {" "}
-          <VideoBackground />
-          <Suspense fallback={<Loader />}>
-            <BackgroundAnimation animationName={animationName} />
-          </Suspense>
-        </Canvas> */}
+        {
+          <Canvas className="w-full h-full bg-gray-1000" style={{}}>
+            {" "}
+            <VideoBackground />
+            <Suspense fallback={<Loader />}>
+              <BackgroundAnimation animationName={animationName} />
+            </Suspense>
+          </Canvas>
+        }
       </main>
       <footer className="fixed bottom-0 w-full p-4">
         <SpeechToText onTranscription={handleTranscription} />
@@ -205,69 +207,3 @@ function App() {
 }
 
 export default App;
-
-// App.jsx
-// App.jsx
-/* import React, { useState } from "react";
-import TextToSpeech from "./TextToSpeech";
-
-const App = () => {
-  const [inputText, setInputText] = useState("");
-  const [textToSpeak, setTextToSpeak] = useState("");
-
-  const handleChange = (event) => {
-    setInputText(event.target.value);
-  };
-
-  const handleSend = () => {
-    setTextToSpeak(inputText);
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        value={inputText}
-        onChange={handleChange}
-        placeholder="Enter text here"
-      />
-      <button onClick={handleSend}>Send</button>
-      <TextToSpeech text={textToSpeak} />
-    </div>
-  );
-};
-
-export default App; */
-
-// App.jsx
-// App.jsx
-/* import React, { useState } from "react";
-import TextToSpeech from "./TextToSpeech";
-
-const App = () => {
-  const [inputText, setInputText] = useState("");
-  const [textToSpeak, setTextToSpeak] = useState("");
-
-  const handleChange = (event) => {
-    setInputText(event.target.value);
-  };
-
-  const handleSend = () => {
-    setTextToSpeak(inputText);
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        value={inputText}
-        onChange={handleChange}
-        placeholder="Enter text here"
-      />
-      <button onClick={handleSend}>Send</button>
-      <TextToSpeech text={textToSpeak} />
-    </div>
-  );
-};
-
-export default App; */
