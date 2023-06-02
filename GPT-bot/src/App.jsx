@@ -47,6 +47,18 @@ function App() {
     return animationList[randomIndex];
   }
 
+  function saveToConversationHistory(message) {
+    let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    history.push(message);
+    // Store only last 6 messages
+    history = history.slice(-6);
+    localStorage.setItem("chatHistory", JSON.stringify(history));
+  }
+
+  function getConversationHistory() {
+    return JSON.parse(localStorage.getItem("chatHistory") || "[]");
+  }
+
   useEffect(() => {
     if (isThinking) {
       setAnimationName("talk_Armature.001");
@@ -74,16 +86,23 @@ function App() {
     setIsLoading(true);
     setShowCards(false);
     setIsThinking(true);
-    const translatedQuestion = await translateText(userInput, "en"); // Use the edited transcription as the question
+    const translatedQuestion = await translateText(userInput, "en");
 
-    const prompt = `prtend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released 
-    in 2019.the main role in the film is played by a robot named android kunjappan version 5.25(you).
-     you were made in japan and bought to kerala by a malayali engineer called subramanian who is wokring in yur company
-      as an robotics engineer. you lived with his dad in a house in kerala." thats the backround. now you are playing an
-       upgraded virtual version 10.25 of it developed by an AI nerd called sidharth. 
-       remmber you are build as a webapp version who actually talks to people with the help of a text-speech tool adn they can talk to you 
-       either by typing or prssing the speak button below you (your vatar on the site) and you have no internet access.YOu should not say about this background and details unless asked. keep this profile and
-        answer the question "${translatedQuestion}"`;
+    const history = getConversationHistory();
+
+    const persona = `pretend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released 
+  in 2019.the main role in the film is played by a robot named android kunjappan version 5.25(you).
+   you were made in japan and bought to kerala by a malayali engineer called subramanian who is wokring in your company
+    as an robotics engineer. you lived with his dad in a house in kerala." thats the background. now you are playing an
+     upgraded virtual version 10.25 of it developed by an AI nerd called sidharth. 
+     remember you are built as a webapp version who actually talks to people with the help of a text-speech tool and they can talk to you 
+     either by typing or pressing the speak button below you (your avatar on the site) and you have no internet access.You should not say about you or your background and personal details unless asked to. keep this profile internally`;
+
+    const conversationPrompt = history
+      .map((m) => `${m.role}: ${m.content}`)
+      .join("\n");
+
+    const newPrompt = `${persona}\nThis is our Conversational History for your reference:${conversationPrompt}\n. now this is the contnued conversation between you and me. me : '${translatedQuestion}'.just tell me the asnwer do not add 'you' in the beginnning of your reply. just answer as if you are talking to me.`;
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -93,15 +112,26 @@ function App() {
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: prompt }],
+        messages: [{ role: "user", content: newPrompt }],
         temperature: 0.7,
       }),
     });
-
+    console.log(newPrompt);
     const data = await response.json();
 
     const result = data.choices[0].message.content;
     console.log(result);
+
+    // Save user's question and AI's answer to conversation history
+    saveToConversationHistory({
+      role: "me",
+      content: translatedQuestion,
+    });
+    saveToConversationHistory({
+      role: "you",
+      content: result,
+    });
+
     const answer_from_gpt = await translateText(result, "ml");
     setIsLoading(false);
     setAudioResponse(answer_from_gpt);
