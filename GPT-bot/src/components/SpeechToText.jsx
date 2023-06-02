@@ -18,7 +18,10 @@ function SpeechToText({ onTranscription }) {
 
     newRecognizer.recognized = (s, e) => {
       if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
-        setPartialTranscriptions([...partialTranscriptions, e.result.text]);
+        setPartialTranscriptions((prevTranscriptions) => [
+          ...prevTranscriptions,
+          e.result.text,
+        ]);
       }
     };
 
@@ -38,8 +41,8 @@ function SpeechToText({ onTranscription }) {
   }, [partialTranscriptions, onTranscription]);
 
   const handleStart = () => {
-    recognizer.startContinuousRecognitionAsync();
     setPartialTranscriptions([]);
+    recognizer.startContinuousRecognitionAsync();
     setListening(true);
   };
 
