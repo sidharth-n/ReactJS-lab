@@ -31,7 +31,7 @@ function TextToSpeech({ text, onAudioEnd, onAudioStart }) {
 
     const ssml = `
       <speak version='1.0' xml:lang='en-US'>
-        <voice xml:lang='en-US' xml:gender='Male' name='en-IN-PrabhatNeural'>
+        <voice xml:lang='en-US' xml:gender='Male' name='en-US-BrandonNeural'>
           <prosody pitch='+3st'>
             ${text}
           </prosody>
@@ -40,6 +40,8 @@ function TextToSpeech({ text, onAudioEnd, onAudioStart }) {
     `;
 
     //ml-IN-MidhunNeural
+    //en-US-BrandonNeural
+    //en-IN-PrabhatNeural
     const response = await fetch(
       "https://centralindia.tts.speech.microsoft.com/cognitiveservices/v1",
       {
