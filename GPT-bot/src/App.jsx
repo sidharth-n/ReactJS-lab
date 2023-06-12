@@ -34,8 +34,8 @@ function App() {
   const quoteContainerRef = useRef(null);
   const [audioResponse, setAudioResponse] = useState("");
   const [animationName, setAnimationName] = useState("Freeze");
-  const idleAnimations = ["talk_Armature.001"];
-  const talkAnimations = ["talk_Armature.001"];
+  const idleAnimations = ["Armature|mixamo.com|Layer0"];
+  const talkAnimations = ["KeyAction"];
   const thinkAnimations = ["Think01"]; /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -61,7 +61,7 @@ function App() {
 
   useEffect(() => {
     if (isThinking) {
-      setAnimationName("talk_Armature.001");
+      setAnimationName("Armature.001|mixamo.com|Layer0.001");
     } else if (isPlaying) {
       setAnimationName(getRandomAnimation(talkAnimations));
     } else {
@@ -90,16 +90,16 @@ function App() {
 
     const history = getConversationHistory();
 
-    /* const persona = `pretend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released 
+    const persona = `pretend that you are android kunjappan 10.25. i will give your background "there was actually a film named android kunjappan in malayalam released 
   in 2019.the main role in the film is played by a robot named android kunjappan version 5.25(you).
    you were made in japan and bought to kerala by a malayali engineer called subramanian who is wokring in your company
     as an robotics engineer. you lived with his dad in a house in kerala." thats the background. now you are playing an
      upgraded virtual version 10.25 of it developed by an AI nerd called sidharth. 
      remember you are built as a webapp version who actually talks to people with the help of a text-speech tool and they can talk to you 
-     either by typing or pressing the speak button below you (your avatar on the site) and you have no internet access.You should not say about you or your background and personal details unless asked to. keep this profile internally`; */
+     either by typing or pressing the speak button below you (your avatar on the site) and you have no internet access.You should not say about you or your background and personal details unless asked to. keep this profile internally`;
 
     //const persona = `you are a virtual assistant created by a organisation called english cafe which helps people to learn English from malayalam. you are a webapp application where you have ann avatar a speak button belwo and typig bar below where users would ask you questions in malayalam and you would hlep me learn english from that. here is how you are made right now. when user inputs a question in malayalam or in broken english it is being cnverted to english by a ransaltion api and then send to you. so the propm you get would be like that . and the reply you give back is agian convtered to alayalam and sen to a text to speech service. what you should do here is that since the english to malayalam translation takes places even if you give answers in english it will get converted to malayalam but user want answers in english. so when you d some teaching stuff in english like a esnetence converstion or something amek sure touse inverted commas to contain it so that it would be conveterd as sch and the malayalam speech to text would say it as if it is english only.`
-    const persona = `you are a virtual assistant created by a organization  
+    /*     const persona = `you are a virtual assistant created by a organization  
 called English Cafe, which helps people to learn English
  from Malayalam. You are a web app application where you 
  have an avatar, a speak button below, and a typing bar below
@@ -121,7 +121,7 @@ called English Cafe, which helps people to learn English
           make sure to use unique delimiters to 
           contain it so that it would be 
           converted as such, and the Malayalam speech-to-text 
-          would say it as if it is in English only.`;
+          would say it as if it is in English only.`; */
 
     const conversationPrompt = history
       .map((m) => `${m.role}: ${m.content}`)
@@ -141,11 +141,11 @@ called English Cafe, which helps people to learn English
         temperature: 0.7,
       }),
     });
-    console.log(newPrompt);
+    //console.log(newPrompt);
     const data = await response.json();
 
     const result = data.choices[0].message.content;
-    console.log(result);
+    //console.log(result);
 
     // Save user's question and AI's answer to conversation history
     saveToConversationHistory({
@@ -157,8 +157,9 @@ called English Cafe, which helps people to learn English
       content: result,
     });
 
-    const answer_from_gpt = result; /* await translateText(result, "ml"); */
+    const answer_from_gpt = /* result; */ await translateText(result, "ml");
     setIsLoading(false);
+    console.log(answer_from_gpt);
     setAudioResponse(answer_from_gpt);
   };
 
@@ -220,7 +221,7 @@ called English Cafe, which helps people to learn English
         {
           <Canvas className="w-full h-full bg-gray-1000" style={{}}>
             {" "}
-            <VideoBackground />
+            {/*  <VideoBackground /> */}
             <Suspense fallback={<Loader />}>
               <BackgroundAnimation animationName={animationName} />
             </Suspense>

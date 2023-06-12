@@ -31,7 +31,7 @@ function TextToSpeech({ text, onAudioEnd, onAudioStart }) {
 
     const ssml = `
       <speak version='1.0' xml:lang='en-US'>
-        <voice xml:lang='en-US' xml:gender='Male' name='en-US-BrandonNeural'>
+        <voice xml:lang='en-US' xml:gender='Male' name='ml-IN-MidhunNeural'>
           <prosody pitch='+3st'>
             ${text}
           </prosody>

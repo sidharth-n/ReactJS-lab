@@ -17,11 +17,14 @@ import {
 import { useRef, useEffect } from "react";
 
 function BackgroundAnimation({ animationName }) {
-  const model = useGLTF("./check.glb");
+  const model = useGLTF("./ak_talk.glb");
+  const stage = useGLTF("./stage3.glb");
 
   model.scene.scale.set(1.2, 1.2, 1.2);
-  model.scene.position.set(2, 0, 0);
+  model.scene.position.set(2.4, 0, 0);
   model.scene.rotation.set(0, -Math.PI / 2, 0);
+  stage.scene.rotation.set(0, -Math.PI / 2, 0);
+  stage.scene.position.set(3, 0, 0.07);
   const animations = useAnimations(model.animations, model.scene);
   console.log(animations);
   useEffect(() => {
@@ -41,7 +44,7 @@ function BackgroundAnimation({ animationName }) {
         rotation={[0, -Math.PI / 2, 0]}
         fov={60}
       ></PerspectiveCamera>
-      {/*    <Environment
+      {/*      <Environment
         ground={{
           height: 20,
           radius: 50,
@@ -53,6 +56,7 @@ function BackgroundAnimation({ animationName }) {
       <pointLight position={[10, 10, 10]} intensity={1} />
       <spotLight position={[0, 10, 10]} intensity={1} />
       <primitive object={model.scene} receiveShadow />
+      <primitive object={stage.scene} receiveShadow />
       {/* <OrbitControls /> */}
     </>
   );
