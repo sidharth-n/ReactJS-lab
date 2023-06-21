@@ -41,6 +41,7 @@ function App() {
   const [isThinking, setIsThinking] = useState(false);
   const [transcription, setTranscription] = useState("");
   const [userInput, setUserInput] = useState("");
+  const [recentQuestion, setRecentQuestion] = useState("");
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length);
@@ -86,7 +87,9 @@ function App() {
     setIsLoading(true);
     setShowCards(false);
     setIsThinking(true);
+    setRecentQuestion(userInput);
     const translatedQuestion = await translateText(userInput, "en");
+    setUserInput("");
 
     const history = getConversationHistory();
 
@@ -187,7 +190,7 @@ called English Cafe, which helps people to learn English
         <div className="quote-container flex justify-center items-center">
           {isLoading ? (
             <div
-              className="text-center fixed top-2 font-bold bg-black p-2 rounded"
+              className="text-center fixed bottom-5 font-bold bg-black p-2 rounded"
               style={{ zIndex: 9999 }}
             >
               <TypeAnimation
@@ -196,7 +199,7 @@ called English Cafe, which helps people to learn English
                   500,
                   "please wait...",
                   500,
-                  "this is a test version only...",
+                  "this is a beta version...",
                   500,
                 ]}
                 wrapper="span"
@@ -229,6 +232,11 @@ called English Cafe, which helps people to learn English
         }
       </main>
       <footer className="fixed bottom-1 w-full p-3">
+        {recentQuestion && (
+          <div className="mb-2 text-sm bg-red-200 w-full text-black p-1 pl-3 ">
+            {recentQuestion}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="flex items-center ">
           <div className="relative flex-grow overflow-auto max-h-36 items-center">
             <textarea
@@ -245,7 +253,7 @@ called English Cafe, which helps people to learn English
               autoFocus
               readOnly={false}
             />
-            {userInput && (
+            {/*    {userInput && (
               <button
                 type="button"
                 className="absolute top-1 right-2 text-gray-500"
@@ -253,7 +261,7 @@ called English Cafe, which helps people to learn English
               >
                 <CloseIcon />
               </button>
-            )}
+            )} */}
           </div>
           <button
             type="submit"
