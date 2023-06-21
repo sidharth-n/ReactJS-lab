@@ -295,11 +295,11 @@ called English Cafe, which helps people to learn English
         </div>
         {recentQuestion && (
           <div
-            className="mb-2 text-base w-full text-gray-400 p-1 pl-3 rounded-xl"
-            style={{
-              backgroundColor: "rgba(0, 0, 0, 0.4)",
-              backdropFilter: "blur(10px)",
-            }}
+            className="mb-2 text-base  text-gray-400 p-1 pl-3 rounded-xl"
+            /* style={{
+              backgroundColor: "rgba(256, 256, 256, 0.2)",
+              backdropFilter: "blur(5px)",
+            }} */
           >
             {recentQuestion}
           </div>
