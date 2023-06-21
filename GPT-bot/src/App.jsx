@@ -187,10 +187,21 @@ called English Cafe, which helps people to learn English
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
       />
       <main className="flex-1 overflow-auto p-0 mt-2 mb-24">
-        <div className="quote-container flex justify-center items-center">
+        {
+          <Canvas className="w-full h-full bg-gray-1000" style={{}}>
+            {" "}
+            {/*  <VideoBackground /> */}
+            <Suspense fallback={<Loader />}>
+              <BackgroundAnimation animationNames={animationName} />
+            </Suspense>
+          </Canvas>
+        }
+      </main>
+      <footer className="fixed bottom-1 w-full p-3">
+        <div className="quote-container flex justify-center items-center mb-5">
           {isLoading ? (
             <div
-              className="text-center fixed bottom-5 font-bold bg-black p-2 rounded"
+              className="text-center fixed bottom-20 font-bold bg-gray-900 p-2 pl-3 rounded"
               style={{ zIndex: 9999 }}
             >
               <TypeAnimation
@@ -221,19 +232,14 @@ called English Cafe, which helps people to learn English
             )
           )}
         </div>
-        {
-          <Canvas className="w-full h-full bg-gray-1000" style={{}}>
-            {" "}
-            {/*  <VideoBackground /> */}
-            <Suspense fallback={<Loader />}>
-              <BackgroundAnimation animationNames={animationName} />
-            </Suspense>
-          </Canvas>
-        }
-      </main>
-      <footer className="fixed bottom-1 w-full p-3">
         {recentQuestion && (
-          <div className="mb-2 text-sm bg-red-200 w-full text-black p-1 pl-3 ">
+          <div
+            className="mb-2 text-base w-full text-gray-400 p-1 pl-3 rounded-xl"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.4)",
+              backdropFilter: "blur(10px)",
+            }}
+          >
             {recentQuestion}
           </div>
         )}
