@@ -1,4 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { PerspectiveCamera } from "@react-three/drei";
+import { useGLTF, useAnimations } from "@react-three/drei";
+
+function BackgroundAnimation({ animationNames }) {
+  const model = useGLTF("./ak_talk.glb");
+  const stage = useGLTF("./stage3.glb");
+
+  model.scene.scale.set(1.2, 1.2, 1.2);
+  model.scene.position.set(2.3, 0, 0);
+  model.scene.rotation.set(0, -Math.PI / 2, 0);
+  stage.scene.rotation.set(0, -Math.PI / 2, 0);
+  stage.scene.position.set(3, 0, 0.07);
+  const animations = useAnimations(model.animations, model.scene);
+
+  useEffect(() => {
+    animationNames.forEach((animationName) => {
+      const action = animations.actions[animationName];
+      if (action) {
+        action.reset().play();
+      }
+    });
+
+    return () => {
+      animationNames.forEach((animationName) => {
+        const action = animations.actions[animationName];
+        if (action) {
+          action.fadeOut(0);
+        }
+      });
+    };
+  }, [animationNames]);
+
+  return (
+    <>
+      <PerspectiveCamera
+        makeDefault
+        position={[0, 0.6, 0]}
+        rotation={[0, -Math.PI / 2, 0]}
+        fov={60}
+      />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[10, 10, 10]} intensity={1} />
+      <spotLight position={[0, 10, 10]} intensity={1} />
+      <primitive object={model.scene} receiveShadow />
+      <primitive object={stage.scene} receiveShadow />
+    </>
+  );
+}
+
+export { BackgroundAnimation };
+
+/* import React from "react";
 import { Canvas } from "react-three-fiber";
 import {
   OrbitControls,
@@ -44,22 +96,22 @@ function BackgroundAnimation({ animationName }) {
         rotation={[0, -Math.PI / 2, 0]}
         fov={60}
       ></PerspectiveCamera>
-      {/*      <Environment
+           <Environment
         ground={{
           height: 20,
           radius: 50,
           scale: 500,
         }}
         files={"./studio.hdr"}
-      /> */}
+      />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} />
       <spotLight position={[0, 10, 10]} intensity={1} />
       <primitive object={model.scene} receiveShadow />
       <primitive object={stage.scene} receiveShadow />
-      {/* <OrbitControls /> */}
+     
     </>
   );
 }
 
-export { BackgroundAnimation };
+export { BackgroundAnimation }; */

@@ -32,11 +32,11 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showCards, setShowCards] = useState(true);
   const quoteContainerRef = useRef(null);
-  const [audioResponse, setAudioResponse] = useState("");
-  const [animationName, setAnimationName] = useState("Freeze");
-  const idleAnimations = ["Armature|mixamo.com|Layer0"];
-  const talkAnimations = ["KeyAction"];
-  const thinkAnimations = ["Think01"]; /* "Talk02", "Talk03", "Talk04" */
+  const [audioResponse, setAudioResponse] = useState();
+  const [animationName, setAnimationName] = useState([]);
+  const idleAnimations = [["Armature|mixamo.com|Layer0"]];
+  const talkAnimations = [["KeyAction", "Armature|mixamo.com|Layer0"]];
+  const thinkAnimations = [""]; /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [transcription, setTranscription] = useState("");
@@ -61,7 +61,7 @@ function App() {
 
   useEffect(() => {
     if (isThinking) {
-      setAnimationName("Armature.001|mixamo.com|Layer0.001");
+      setAnimationName(["Armature|mixamo.com|Layer0"]);
     } else if (isPlaying) {
       setAnimationName(getRandomAnimation(talkAnimations));
     } else {
@@ -223,23 +223,21 @@ called English Cafe, which helps people to learn English
             {" "}
             {/*  <VideoBackground /> */}
             <Suspense fallback={<Loader />}>
-              <BackgroundAnimation animationName={animationName} />
+              <BackgroundAnimation animationNames={animationName} />
             </Suspense>
           </Canvas>
         }
       </main>
-      <footer className="fixed bottom-0 w-full p-4">
-        <SpeechToText onTranscription={handleTranscription} />
-
-        <form onSubmit={handleSubmit} className="flex items-center">
+      <footer className="fixed bottom-1 w-full p-3">
+        <form onSubmit={handleSubmit} className="flex items-center ">
           <div className="relative flex-grow overflow-auto max-h-36 items-center">
             <textarea
-              placeholder="Type / speak your question..."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none"
+              placeholder="Come lets talk.."
+              className="w-full mt-2 p-3 bg-gray-900 border border-gray-700 rounded-xl text-white outline-none shadow-md resize-none text-sm"
               style={{
                 minHeight: "0.5em",
                 maxHeight: "6em",
-                height: "auto",
+                height: "3rem",
                 overflowY: "auto",
               }}
               value={userInput}
@@ -259,10 +257,11 @@ called English Cafe, which helps people to learn English
           </div>
           <button
             type="submit"
-            className="ml-4 bg-gray-900 text-white p-3 rounded-full shadow-md"
+            className="ml-2 bg-green-700 text-white p-3 rounded-full shadow-md"
           >
             <SendIcon />
           </button>
+          <SpeechToText onTranscription={handleTranscription} />
         </form>
       </footer>
     </div>

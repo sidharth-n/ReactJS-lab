@@ -60,8 +60,8 @@ function SpeechToText({ onTranscription }) {
     <div className="flex flex-col items-center">
       <div className="space-x-4">
         <div
-          className={`p-4 flex align-center rounded-full mb-6 ${
-            listening ? "bg-red-500" : "bg-green-500"
+          className={`p-3 flex align-center rounded-full ml-2 ${
+            listening ? "bg-red-500" : "bg-green-700"
           }`}
           onMouseDown={handleStart}
           onMouseUp={handleEnd}
@@ -70,8 +70,8 @@ function SpeechToText({ onTranscription }) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
