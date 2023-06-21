@@ -42,6 +42,9 @@ function App() {
   const [transcription, setTranscription] = useState("");
   const [userInput, setUserInput] = useState("");
   const [recentQuestion, setRecentQuestion] = useState("");
+  const [audioPlaying, setAudioPlaying] = useState(false);
+
+  const bgm = useRef(null);
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length);
@@ -79,6 +82,36 @@ function App() {
   };
 
   useEffect(() => {
+    if (audioPlaying) {
+      bgm.current = new Audio("/bgm.mp3");
+      bgm.current.loop = true;
+      bgm.current.play();
+    } else {
+      if (bgm.current) {
+        bgm.current.pause();
+        bgm.current.currentTime = 0; // Optional: Reset the music to start
+        bgm.current = null;
+      }
+    }
+  }, [audioPlaying]);
+
+  const startDance = () => {
+    setAnimationName(["Armature.001|mixamo.com|Layer0.002"]);
+    setAudioPlaying(true);
+  };
+
+  // Call stopMusic() function whenever you want to stop the music
+  const startFlip = () => {
+    setAudioPlaying(false);
+    setAnimationName(["Armature.001|mixamo.com|Layer0.003"]);
+  };
+
+  const startTalk = () => {
+    setAudioPlaying(false);
+    setAnimationName(["Armature|mixamo.com|Layer0"]);
+  };
+
+  useEffect(() => {
     setUserInput(transcription);
   }, [transcription]);
 
@@ -87,6 +120,7 @@ function App() {
     setIsLoading(true);
     setShowCards(false);
     setIsThinking(true);
+    setAudioPlaying(false);
     setRecentQuestion(userInput);
     const translatedQuestion = await translateText(userInput, "en");
     setUserInput("");
@@ -181,18 +215,45 @@ called English Cafe, which helps people to learn English
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white font-sans">
+    <div className="flex flex-col h-screen bg-black text-white font-sans ">
       <meta
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
       />
-      <main className="flex-1 overflow-auto p-0 mt-2 mb-24">
+      <div
+        className="fixed top-3 flex flex-row space-x-2 self-center"
+        style={{ zIndex: 999 }}
+      >
+        <button
+          onClick={startTalk}
+          className="text-base text-white bg-orange-800 p-2 rounded-xl"
+        >
+          Talk
+        </button>
+        <button
+          onClick={startDance}
+          className="text-base text-white bg-orange-800 p-2 rounded-xl"
+        >
+          Dance
+        </button>
+        <button
+          onClick={startFlip}
+          className="text-base text-white bg-orange-800 p-2 rounded-xl"
+        >
+          Flip
+        </button>
+      </div>
+
+      <main className="flex-1 overflow-auto p-0">
         {
           <Canvas className="w-full h-full bg-gray-1000" style={{}}>
             {" "}
             {/*  <VideoBackground /> */}
             <Suspense fallback={<Loader />}>
-              <BackgroundAnimation animationNames={animationName} />
+              <BackgroundAnimation
+                animationNames={animationName}
+                overlay={true}
+              />
             </Suspense>
           </Canvas>
         }

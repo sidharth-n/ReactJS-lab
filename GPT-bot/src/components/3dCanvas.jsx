@@ -12,6 +12,7 @@ function BackgroundAnimation({ animationNames }) {
   stage.scene.rotation.set(0, -Math.PI / 2, 0);
   stage.scene.position.set(3, 0, 0.07);
   const animations = useAnimations(model.animations, model.scene);
+  console.log(animations);
 
   useEffect(() => {
     animationNames.forEach((animationName) => {
@@ -25,7 +26,7 @@ function BackgroundAnimation({ animationNames }) {
       animationNames.forEach((animationName) => {
         const action = animations.actions[animationName];
         if (action) {
-          action.fadeOut(0);
+          action.fadeOut();
         }
       });
     };
