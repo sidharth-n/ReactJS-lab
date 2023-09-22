@@ -1,39 +1,118 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import styles from "./App.module.css";
 
 const App = () => {
-  const timestamps = [10, 20, 30, 40, 50]; // Your array of timestamps
-  const [currentTimestampIndex, setCurrentTimestampIndex] = useState(0);
+  const sequences = [
+    { start: 10, end: 15 },
+    { start: 20, end: 25 },
+    { start: 30, end: 35 },
+    { start: 40, end: 45 },
+    { start: 50, end: 55 },
+  ]; // Your array of sequences
+  const [currentSequenceIndex, setCurrentSequenceIndex] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
+  const [pausedTime, setPausedTime] = useState(null);
+  const playerRef = useRef(null);
 
   useEffect(() => {
+    if (!isActive || isPaused) return;
+
     const video = document.querySelector("video");
     if (video) {
-      video.currentTime = timestamps[currentTimestampIndex];
+      video.currentTime = pausedTime || sequences[currentSequenceIndex].start;
       video.play();
 
-      // After 5 seconds, pause the video and set the next timestamp
-      const timer = setTimeout(() => {
-        video.pause();
-        setCurrentTimestampIndex(
-          (currentTimestampIndex + 1) % timestamps.length
-        );
-      }, 5000);
-
-      // Clean up the timeout when the component unmounts or the timestamp index changes
-      return () => clearTimeout(timer);
+      video.ontimeupdate = () => {
+        if (video.currentTime >= sequences[currentSequenceIndex].end) {
+          video.pause();
+          video.ontimeupdate = null;
+          if (currentSequenceIndex + 1 < sequences.length) {
+            setCurrentSequenceIndex(currentSequenceIndex + 1);
+            setPausedTime(null);
+          } else {
+            setIsFinished(true);
+            setIsActive(false);
+          }
+        }
+      };
     }
-  }, [currentTimestampIndex]);
+  }, [currentSequenceIndex, isActive, isPaused, pausedTime]);
 
-  const handleClick = () => {
-    setCurrentTimestampIndex(0); // Start from the first timestamp when the button is clicked
+  useEffect(() => {
+    const player = playerRef.current;
+    let pos1 = 0,
+      pos2 = 0,
+      pos3 = 0,
+      pos4 = 0;
+
+    const dragMouseDown = (e) => {
+      e.preventDefault();
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    };
+
+    const elementDrag = (e) => {
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      player.style.top = player.offsetTop - pos2 + "px";
+      player.style.left = player.offsetLeft - pos1 + "px";
+    };
+
+    const closeDragElement = () => {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    };
+
+    player.onmousedown = dragMouseDown;
+    return () => {
+      player.onmousedown = null;
+    };
+  }, []);
+
+  const handleStart = () => {
+    setIsActive(true);
+    setIsPaused(false);
+    setIsFinished(false);
+    setPausedTime(null);
+  };
+
+  const handlePauseResume = () => {
+    const video = document.querySelector("video");
+    if (isPaused) {
+      video.play();
+      setIsPaused(false);
+    } else {
+      setPausedTime(video.currentTime);
+      video.pause();
+      setIsPaused(true);
+    }
+  };
+
+  const handleReplay = () => {
+    setCurrentSequenceIndex(0);
+    setIsActive(true);
+    setIsPaused(false);
+    setIsFinished(false);
+    setPausedTime(null);
   };
 
   return (
-    <button
-      onClick={handleClick}
-      style={{ position: "absolute", top: "100px", left: "200px" }}
-    >
-      Quicker
-    </button>
+    <div className={styles.container} ref={playerRef}>
+      <h2>Summary</h2>
+      {!isActive && !isFinished && <button onClick={handleStart}>Start</button>}
+      {isActive && !isPaused && (
+        <button onClick={handlePauseResume}>Pause</button>
+      )}
+      {isPaused && <button onClick={handlePauseResume}>Resume</button>}
+      {isFinished && <button onClick={handleReplay}>Replay</button>}
+    </div>
   );
 };
 
