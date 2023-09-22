@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "YouTube Quicker",
+  "version": "1.0",
+  "description": "Skip to the main points in YouTube videos",
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["index.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": ["activeTab"]
+}
