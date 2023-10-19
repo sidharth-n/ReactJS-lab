@@ -173,7 +173,7 @@ called English Cafe, which helps people to learn English
         Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [{ role: "user", content: newPrompt }],
         temperature: 0.7,
       }),
@@ -182,7 +182,7 @@ called English Cafe, which helps people to learn English
     const data = await response.json();
 
     const result = data.choices[0].message.content;
-    //console.log(result);
+    console.log(result);
 
     // Save user's question and AI's answer to conversation history
     saveToConversationHistory({
@@ -194,7 +194,7 @@ called English Cafe, which helps people to learn English
       content: result,
     });
 
-    const answer_from_gpt = /* result; */ await translateText(result, "ml");
+    const answer_from_gpt = result; /* await translateText(result, "ml") */
     setIsLoading(false);
     console.log(answer_from_gpt);
     setAudioResponse(answer_from_gpt);
