@@ -122,7 +122,8 @@ function App() {
     setIsThinking(true);
     setAudioPlaying(false);
     setRecentQuestion(userInput);
-    const translatedQuestion = await translateText(userInput, "en");
+    const translatedQuestion =
+      /*  await translateText(userInput, "en") */ userInput;
     setUserInput("");
 
     const history = getConversationHistory();
