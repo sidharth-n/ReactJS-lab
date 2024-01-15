@@ -1,67 +1,67 @@
-import React, { useState, useEffect, useRef } from "react";
-import * as sdk from "microsoft-cognitiveservices-speech-sdk";
+import React, { useState, useEffect, useRef } from "react"
+import * as sdk from "microsoft-cognitiveservices-speech-sdk"
 
 function SpeechToText({ onTranscription }) {
-  const [transcription, setTranscription] = useState("");
-  const [listening, setListening] = useState(false);
-  const [recognizer, setRecognizer] = useState(null);
-  const [partialTranscriptions, setPartialTranscriptions] = useState([]);
+  const [transcription, setTranscription] = useState("")
+  const [listening, setListening] = useState(false)
+  const [recognizer, setRecognizer] = useState(null)
+  const [partialTranscriptions, setPartialTranscriptions] = useState([])
 
-  const startSound = useRef(new Audio("/start_recording.wav"));
-  const stopSound = useRef(new Audio("/stop_recording.wav"));
+  const startSound = useRef(new Audio("/start_recording.wav"))
+  const stopSound = useRef(new Audio("/stop_recording.wav"))
 
   useEffect(() => {
-    const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput();
+    const audioConfig = sdk.AudioConfig.fromDefaultMicrophoneInput()
     const speechConfig = sdk.SpeechConfig.fromSubscription(
       `${import.meta.env.VITE_SPEECH_API_KEY}`,
       "centralindia"
-    );
-    speechConfig.speechRecognitionLanguage = "ml-IN";
-    const newRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig);
+    )
+    speechConfig.speechRecognitionLanguage = "ml-IN"
+    const newRecognizer = new sdk.SpeechRecognizer(speechConfig, audioConfig)
 
     newRecognizer.recognized = (s, e) => {
       if (e.result.reason === sdk.ResultReason.RecognizedSpeech) {
-        setPartialTranscriptions((prevTranscriptions) => [
+        setPartialTranscriptions(prevTranscriptions => [
           ...prevTranscriptions,
           e.result.text,
-        ]);
+        ])
       }
-    };
+    }
 
-    setRecognizer(newRecognizer);
+    setRecognizer(newRecognizer)
 
     return () => {
       if (newRecognizer) {
-        newRecognizer.stopContinuousRecognitionAsync();
-        newRecognizer.close();
+        newRecognizer.stopContinuousRecognitionAsync()
+        newRecognizer.close()
       }
-    };
-  }, []);
+    }
+  }, [])
 
   useEffect(() => {
-    setTranscription(partialTranscriptions.join(" "));
-    onTranscription(partialTranscriptions.join(" "));
-  }, [partialTranscriptions, onTranscription]);
+    setTranscription(partialTranscriptions.join(" "))
+    onTranscription(partialTranscriptions.join(" "))
+  }, [partialTranscriptions, onTranscription])
 
   const handleStart = () => {
-    setPartialTranscriptions([]);
-    recognizer.startContinuousRecognitionAsync();
-    setListening(true);
-  };
+    setPartialTranscriptions([])
+    recognizer.startContinuousRecognitionAsync()
+    setListening(true)
+  }
 
   const handleEnd = () => {
     stopSound.current.play().then(() => {
-      recognizer.stopContinuousRecognitionAsync();
-      setListening(false);
-    });
-  };
+      recognizer.stopContinuousRecognitionAsync()
+      setListening(false)
+    })
+  }
 
   return (
     <div className="flex flex-col items-center">
       <div className="space-x-4">
         <div
           className={`p-3 flex align-center rounded-full ml-2 ${
-            listening ? "bg-red-500" : "bg-green-700"
+            listening ? "bg-red-500" : "bg-blue-600"
           }`}
           onMouseDown={handleStart}
           onMouseUp={handleEnd}
@@ -87,7 +87,7 @@ function SpeechToText({ onTranscription }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default SpeechToText;
+export default SpeechToText
