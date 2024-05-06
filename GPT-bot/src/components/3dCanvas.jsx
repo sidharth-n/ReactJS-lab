@@ -1,36 +1,36 @@
-import React, { useEffect } from "react";
-import { PerspectiveCamera } from "@react-three/drei";
-import { useGLTF, useAnimations } from "@react-three/drei";
+import React, { useEffect } from "react"
+import { PerspectiveCamera } from "@react-three/drei"
+import { useGLTF, useAnimations } from "@react-three/drei"
 
 function BackgroundAnimation({ animationNames }) {
-  const model = useGLTF("./ak_talk.glb");
-  const stage = useGLTF("./stage3.glb");
+  const model = useGLTF("./ak_talk.glb")
+  const stage = useGLTF("./stage3.glb")
 
-  model.scene.scale.set(1.2, 1.2, 1.2);
-  model.scene.position.set(2.4, 0, 0);
-  model.scene.rotation.set(0, -Math.PI / 2, 0);
-  stage.scene.rotation.set(0, -Math.PI / 2, 0);
-  stage.scene.position.set(3.3, 0, 0.06);
-  const animations = useAnimations(model.animations, model.scene);
-  console.log(animations);
+  model.scene.scale.set(1.2, 1.2, 1.2)
+  model.scene.position.set(2.4, 0, 0)
+  model.scene.rotation.set(0, -Math.PI / 2, 0)
+  stage.scene.rotation.set(0, -Math.PI / 2, 0)
+  stage.scene.position.set(3.3, 0, 0.06)
+  const animations = useAnimations(model.animations, model.scene)
+  //console.log(animations);
 
   useEffect(() => {
-    animationNames.forEach((animationName) => {
-      const action = animations.actions[animationName];
+    animationNames.forEach(animationName => {
+      const action = animations.actions[animationName]
       if (action) {
-        action.reset().play();
+        action.reset().play()
       }
-    });
+    })
 
     return () => {
-      animationNames.forEach((animationName) => {
-        const action = animations.actions[animationName];
+      animationNames.forEach(animationName => {
+        const action = animations.actions[animationName]
         if (action) {
-          action.fadeOut();
+          action.fadeOut()
         }
-      });
-    };
-  }, [animationNames]);
+      })
+    }
+  }, [animationNames])
 
   return (
     <>
@@ -46,10 +46,10 @@ function BackgroundAnimation({ animationNames }) {
       <primitive object={model.scene} receiveShadow />
       <primitive object={stage.scene} receiveShadow />
     </>
-  );
+  )
 }
 
-export { BackgroundAnimation };
+export { BackgroundAnimation }
 
 /* import React from "react";
 import { Canvas } from "react-three-fiber";

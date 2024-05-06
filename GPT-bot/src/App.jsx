@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react"
-import { TypeAnimation } from "react-type-animation"
-import TextToSpeech from "././components/TextToSpeech"
 import { BackgroundAnimation } from "././components/3dCanvas"
 import { Canvas } from "react-three-fiber"
 import { Suspense } from "react"
 import { Html, useProgress } from "@react-three/drei"
+import ClientComponent from "./components/ClientComponent"
+import { fetchAccessToken } from "@humeai/voice"
 
 function Loader() {
   const { progress } = useProgress()
@@ -19,20 +19,32 @@ function Loader() {
 }
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [audioResponse, setAudioResponse] = useState()
+  const [accessToken, setAccessToken] = useState("")
   const [animationName, setAnimationName] = useState([])
   const idleAnimations = [["Armature|mixamo.com|Layer0"]]
   const talkAnimations = [["KeyAction", "Armature|mixamo.com|Layer0"]]
-  const thinkAnimations = [""] /* "Talk02", "Talk03", "Talk04" */
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isListening, setIsListening] = useState(false)
-  const [transcription, setTranscription] = useState("")
-  const [userInput, setUserInput] = useState("")
-  const [recentQuestion, setRecentQuestion] = useState("")
-  const [audioPlaying, setAudioPlaying] = useState(false)
+  const idleAnimation = getRandomAnimation(idleAnimations)
+  const talkAnimation = getRandomAnimation(talkAnimations)
 
-  const bgm = useRef(null)
+  useEffect(() => {
+    const loadAccessToken = async () => {
+      const token = await fetchAccessToken({
+        apiKey: String(process.env.VITE_HUME_API_KEY),
+        clientSecret: String(process.env.VITE_HUME_CLIENT_SECRET),
+      })
+      if (!token) {
+        throw new Error("Failed to fetch access token")
+      }
+      setAccessToken(token)
+    }
+
+    loadAccessToken()
+  }, [])
+
+  /*   if (!accessToken) {
+    return <div>Loading...</div>
+  } */
 
   function getRandomAnimation(animationList) {
     const randomIndex = Math.floor(Math.random() * animationList.length)
@@ -40,15 +52,12 @@ function App() {
   }
 
   useEffect(() => {
-    if (isListening) {
-      setAnimationName(["Armature|mixamo.com|Layer0"])
-    } else if (isPlaying) {
-      setAnimationName(getRandomAnimation(talkAnimations))
+    if (isPlaying) {
+      setAnimationName(talkAnimation)
     } else {
-      setAnimationName(getRandomAnimation(idleAnimations))
+      setAnimationName(idleAnimation)
     }
-  }, [isPlaying, isListening])
-
+  }, [isPlaying, idleAnimation, talkAnimation])
   const startDance = () => {
     setAnimationName(["Armature.001|mixamo.com|Layer0.002"])
   }
@@ -62,10 +71,8 @@ function App() {
   }
 
   useEffect(() => {
-    // Disable body scrolling on mobile
     document.body.style.overflow = "hidden"
 
-    // Re-enable body scrolling when component is unmounted
     return () => {
       document.body.style.overflow = "auto"
     }
@@ -77,37 +84,41 @@ function App() {
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
       />
-      <div
-        className="fixed top-5 flex flex-row space-x-2 self-center"
-        style={{ zIndex: 999 }}
-      >
-        <button
-          onClick={startTalk}
-          className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
+      {
+        <div
+          className="fixed top-5 flex flex-row space-x-2 self-center"
+          style={{ zIndex: 999 }}
         >
-          Talk
-        </button>
+          <button
+            onClick={startTalk}
+            className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
+          >
+            Talk
+          </button>
+          {/*   <ClientComponent
+            className="fixed top-20 left-0 flex flex-row "
+            accessToken={accessToken}
+            setIsSpeaking={setIsPlaying}
+          /> */}
+          <button
+            onClick={startDance}
+            className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
+          >
+            Dance
+          </button>
 
-        <button
-          onClick={startDance}
-          className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
-        >
-          Dance
-        </button>
-
-        <button
-          onClick={startFlip}
-          className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
-        >
-          Flip
-        </button>
-      </div>
+          <button
+            onClick={startFlip}
+            className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
+          >
+            Flip
+          </button>
+        </div>
+      }
 
       <main className="flex-1 overflow-auto p-0">
         {
           <Canvas className="w-full h-full bg-gray-1000" style={{}}>
-            {" "}
-            {/*  <VideoBackground /> */}
             <Suspense fallback={<Loader />}>
               <BackgroundAnimation
                 animationNames={animationName}
@@ -118,15 +129,7 @@ function App() {
         }
       </main>
       <footer className="fixed bottom-1 w-full p-3">
-        <div className="flex items-center gap-4 ">
-          <button id="auth-btn">Authenticate</button>
-          <button id="start-btn" disabled="true">
-            Start
-          </button>
-          <button id="end-btn" disabled="true">
-            End
-          </button>
-        </div>
+        <div className="flex items-center gap-4 "></div>
       </footer>
     </div>
   )

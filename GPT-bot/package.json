@@ -13,22 +13,24 @@
     "@azure/ai-text-analytics": "^5.1.0",
     "@chatscope/chat-ui-kit-react": "^1.10.1",
     "@chatscope/chat-ui-kit-styles": "^1.4.0",
-    "@humeai/voice": "^0.1.3",
     "@react-three/drei": "^9.70.0",
     "dexie": "^3.2.3",
     "dotenv": "^16.0.3",
     "ffmpeg.js": "^4.2.9003",
     "leva": "^0.9.34",
     "microsoft-cognitiveservices-speech-sdk": "^1.28.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "react-mic": "^12.4.6",
     "react-speech-kit": "^3.0.1",
     "react-spinners": "^0.13.8",
     "react-three-fiber": "^6.0.13",
     "react-type-animation": "^3.0.1",
     "react-typewriter-effect": "^1.1.0",
-    "three": "^0.152.2"
+    "three": "^0.152.2",
+    "@humeai/voice": "^0.1.2",
+    "@humeai/voice-react": "^0.1.2",
+
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
