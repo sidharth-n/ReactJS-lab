@@ -55,9 +55,9 @@ function App() {
     if (isPlaying) {
       setAnimationName(talkAnimation)
     } else {
-      setAnimationName(idleAnimation)
+      setAnimationName(["Armature|mixamo.com|Layer0"])
     }
-  }, [isPlaying, idleAnimation, talkAnimation])
+  }, [isPlaying])
   const startDance = () => {
     setAnimationName(["Armature.001|mixamo.com|Layer0.002"])
   }
@@ -95,11 +95,11 @@ function App() {
           >
             Talk
           </button>
-          {/*   <ClientComponent
+          <ClientComponent
             className="fixed top-20 left-0 flex flex-row "
             accessToken={accessToken}
             setIsSpeaking={setIsPlaying}
-          /> */}
+          />
           <button
             onClick={startDance}
             className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
