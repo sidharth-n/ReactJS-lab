@@ -26,6 +26,8 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const idleAnimation = getRandomAnimation(idleAnimations)
   const talkAnimation = getRandomAnimation(talkAnimations)
+  const [audioPlaying, setAudioPlaying] = useState(false)
+  const bgm = useRef(null)
 
   useEffect(() => {
     const loadAccessToken = async () => {
@@ -50,6 +52,19 @@ function App() {
     const randomIndex = Math.floor(Math.random() * animationList.length)
     return animationList[randomIndex]
   }
+  useEffect(() => {
+    if (audioPlaying) {
+      bgm.current = new Audio("/eSoul.mp3")
+      bgm.current.loop = true
+      bgm.current.play()
+    } else {
+      if (bgm.current) {
+        bgm.current.pause()
+        bgm.current.currentTime = 0 // Optional: Reset the music to start
+        bgm.current = null
+      }
+    }
+  }, [audioPlaying])
 
   useEffect(() => {
     if (isPlaying) {
@@ -60,14 +75,17 @@ function App() {
   }, [isPlaying])
   const startDance = () => {
     setAnimationName(["Armature.001|mixamo.com|Layer0.002"])
+    setAudioPlaying(true)
   }
 
   const startFlip = () => {
     setAnimationName(["Armature.001|mixamo.com|Layer0.003"])
+    setAudioPlaying(false)
   }
 
-  const startTalk = () => {
+  const stayCalm = () => {
     setAnimationName(["Armature|mixamo.com|Layer0"])
+    setAudioPlaying(false)
   }
 
   useEffect(() => {
@@ -90,7 +108,7 @@ function App() {
           style={{ zIndex: 999 }}
         >
           <button
-            onClick={startTalk}
+            onClick={stayCalm}
             className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
           >
             Calm
