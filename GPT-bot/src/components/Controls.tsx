@@ -12,14 +12,20 @@ export default function Controls({ setIsSpeaking }) {
   return (
     <div>
       {readyState === VoiceReadyState.OPEN ? (
-        <button onClick={disconnect}>End Session</button>
+        <button
+          onClick={disconnect}
+          className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
+        >
+          Stop
+        </button>
       ) : (
         <button
+          className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
           onClick={() =>
             connect().catch(error => console.error("Failed to connect:", error))
           }
         >
-          Start Session
+          Talk
         </button>
       )}
     </div>

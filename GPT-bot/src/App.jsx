@@ -93,7 +93,7 @@ function App() {
             onClick={startTalk}
             className="text-base text-white bg-blue-600 p-2 rounded-lg px-4 focus:outline-none active:bg-blue-800"
           >
-            Talk
+            Calm
           </button>
           <ClientComponent
             className="fixed top-20 left-0 flex flex-row "
