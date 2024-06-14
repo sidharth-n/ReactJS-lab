@@ -13,6 +13,10 @@ const TokenEntry = () => {
 
   const handleSubmit = async event => {
     event.preventDefault()
+    if (tokens.trim() === "") {
+      alert("Please enter tokens to send.")
+      return
+    }
     const tokenArray = tokens.split(" ").map(Number)
     const tokenString = JSON.stringify(tokenArray)
     console.log("Token String:", tokenString)
@@ -40,7 +44,7 @@ const TokenEntry = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-end min-h-screen bg-gray-100 p-4 border border-red-500">
+    <div className="flex flex-col items-center justify-end min-h-screen bg-gray-100 p-4">
       <div className="w-full max-w-lg">
         <div className="mb-4">
           <h2 className="text-2xl font-semibold text-gray-700">
