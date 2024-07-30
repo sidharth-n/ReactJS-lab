@@ -4,7 +4,7 @@ import { Canvas } from "react-three-fiber"
 import { Suspense } from "react"
 import { Html, useProgress } from "@react-three/drei"
 import ClientComponent from "./components/ClientComponent"
-import { fetchAccessToken } from "@humeai/voice"
+import { fetchAccessToken,VoiceClient, createConfig } from "@humeai/voice"
 
 function Loader() {
   const { progress } = useProgress()
