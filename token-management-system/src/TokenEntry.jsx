@@ -17,8 +17,15 @@ const TokenEntry = () => {
       alert("Please enter tokens to send.")
       return
     }
-    const tokenArray = tokens.split(" ").map(Number)
-    const tokenString = JSON.stringify(tokenArray)
+
+    const tokenArray = tokens.split(" ")
+    if (!tokenArray.every(token => !isNaN(token) && token.trim() !== "")) {
+      alert("Please enter valid numbers.")
+      return
+    }
+
+    const tokenNumbers = tokenArray.map(Number)
+    const tokenString = JSON.stringify(tokenNumbers)
     console.log("Token String:", tokenString)
     try {
       const response = await axios.post(
