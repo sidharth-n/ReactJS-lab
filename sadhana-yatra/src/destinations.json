@@ -1,0 +1,76 @@
+{
+  "destinations": [
+    {
+      "id": 1,
+      "name": "Varanasi",
+      "state": "Uttar Pradesh",
+      "cost": "₹1,200/day",
+      "significance": "Spiritual capital of India",
+      "mainAttraction": "Ghats along the Ganges",
+      "description": "Varanasi, also known as Kashi or Benaras, is one of the oldest living cities in the world. It's a major pilgrimage destination for Hindus and is famous for its ghats along the Ganges river where spiritual ceremonies and cremations take place.",
+      "bestTimeToVisit": "October to March",
+      "nearbyAccommodations": ["Taj Ganges", "BrijRama Palace", "Suryauday Haveli"],
+      "mainImage": "https://i.imgur.com/S6drY0b.jpeg",
+      "gallery": [
+        "https://i.imgur.com/AunIWJA.jpeg",
+        "https://i.imgur.com/SLGdbY5.jpeg",
+        "https://i.imgur.com/wrJdCMH.jpeg"
+      ],
+      "activities": [
+        "Attend the Ganga Aarti at Dashashwamedh Ghat",
+        "Take a boat ride on the Ganges at sunrise",
+        "Visit the Kashi Vishwanath Temple",
+        "Explore the ancient Sarnath ruins"
+      ],
+      "spiritualSignificance": "Varanasi is believed to be the abode of Lord Shiva and is considered one of the seven holy cities in Hinduism. It's said that those who die in Varanasi attain moksha (liberation from the cycle of rebirth)."
+    },
+    {
+      "id": 2,
+      "name": "Rishikesh",
+      "state": "Uttarakhand",
+      "cost": "₹950/day",
+      "significance": "Yoga Capital of the World",
+      "mainAttraction": "Beatles Ashram",
+      "description": "Rishikesh, known as the 'Yoga Capital of the World', is a serene town nestled in the Himalayan foothills. It's famous for its ashrams, yoga retreats, and the sacred Ganges river. The Beatles' visit to Maharishi Mahesh Yogi's ashram in 1968 brought it international fame.",
+      "bestTimeToVisit": "September to April",
+      "nearbyAccommodations": ["Ananda in the Himalayas", "Aloha on the Ganges", "Ganga Kinare"],
+      "mainImage": "https://i.imgur.com/UKkSWoW.jpeg",
+      "gallery": [
+        "https://i.imgur.com/4WqvEpG.jpeg",
+        "https://i.imgur.com/mIwpcZL.jpeg",
+        "https://i.imgur.com/ljXNXKN.jpeg"
+      ],
+      "activities": [
+        "Practice yoga and meditation",
+        "Try river rafting on the Ganges",
+        "Visit the Beatles Ashram",
+        "Attend the Ganga Aarti at Triveni Ghat"
+      ],
+      "spiritualSignificance": "Rishikesh is considered the gateway to the Himalayas and is a center for spiritual and yogic studies. It's believed that meditation in Rishikesh brings one closer to attainment of moksha, as does a dip in the holy river Ganges."
+    },
+    {
+      "id": 3,
+      "name": "Tirupati",
+      "state": "Andhra Pradesh",
+      "cost": "₹1,500/day",
+      "significance": "Abode of Lord Venkateshwara",
+      "mainAttraction": "Tirumala Venkateswara Temple",
+      "description": "Tirupati is home to the Tirumala Venkateswara Temple, one of the most visited religious sites in the world. The temple is dedicated to Lord Venkateshwara, an incarnation of Vishnu, and is known for its architectural beauty and spiritual significance.",
+      "bestTimeToVisit": "September to February",
+      "nearbyAccommodations": ["Fortune Kences", "Marasa Sarovar Premiere", "The Lotus"],
+      "mainImage": "https://i.imgur.com/xoU17Uo.jpeg",
+      "gallery": [
+        "https://i.imgur.com/16KwGhO.jpeg",
+        "https://i.imgur.com/a8B6VSU.jpeg",
+        "https://i.imgur.com/87rgP0v.jpeg"
+      ],
+      "activities": [
+        "Visit the Tirumala Venkateswara Temple",
+        "Explore the Sri Venkateswara National Park",
+        "Visit the TTD Gardens",
+        "Take a dip in the holy Swami Pushkarini"
+      ],
+      "spiritualSignificance": "Tirupati is considered the earthly abode of Lord Venkateshwara. It's believed that a pilgrimage to Tirupati and a darshan of the Lord can cleanse one's sins and bring prosperity and good fortune."
+    }
+  ]
+}
