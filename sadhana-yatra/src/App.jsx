@@ -54,15 +54,15 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => (
   </div>
 );
 
-const FilterButton = ({ setShowFilters }) => (
-  <button
-    onClick={() => setShowFilters(true)}
-    className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center space-x-2 hover:bg-blue-600 transition duration-300"
-  >
-    <FilterIcon size={20} />
-    <span className="hidden sm:inline">Filters</span>
-  </button>
-);
+// const FilterButton = ({ setShowFilters }) => (
+//   <button
+//     onClick={() => setShowFilters(true)}
+//     className="bg-blue-500 text-white px-4 py-2 rounded-full flex items-center space-x-2 hover:bg-blue-600 transition duration-300"
+//   >
+//     <FilterIcon size={20} />
+//     <span className="hidden sm:inline">Filters</span>
+//   </button>
+// );
 
 const DestinationCard = ({ destination }) => (
   <Link to={`/destination/${destination.id}`} className="block">
@@ -154,7 +154,7 @@ const App = () => {
               <main className="container mx-auto px-4 py-8">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
                   <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-                  <FilterButton setShowFilters={setShowFilters} />
+                 {/*  <FilterButton setShowFilters={setShowFilters} /> */}
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredDestinations.map(destination => (

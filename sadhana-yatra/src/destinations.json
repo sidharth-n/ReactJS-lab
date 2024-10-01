@@ -71,6 +71,174 @@
         "Take a dip in the holy Swami Pushkarini"
       ],
       "spiritualSignificance": "Tirupati is considered the earthly abode of Lord Venkateshwara. It's believed that a pilgrimage to Tirupati and a darshan of the Lord can cleanse one's sins and bring prosperity and good fortune."
+    },
+    {
+      "id": 4,
+      "name": "Amritsar",
+      "state": "Punjab",
+      "cost": "₹1,100/day",
+      "significance": "Spiritual center for Sikhs",
+      "mainAttraction": "Golden Temple",
+      "description": "Amritsar, the spiritual and cultural center of the Sikh religion, is home to the iconic Golden Temple. The city is known for its rich history, vibrant culture, and the daily rituals at the Harmandir Sahib.",
+      "bestTimeToVisit": "October to March",
+      "nearbyAccommodations": ["Taj Swarna", "Hyatt Amritsar", "Ramada Amritsar"],
+      "mainImage": "https://i.imgur.com/ATls1DL.jpeg",
+      "gallery": [
+        "https://i.imgur.com/8J9CLx5.jpeg",
+        "https://i.imgur.com/P9MHVVi.jpeg",
+        "https://i.imgur.com/y9qCqhL.jpeg"
+      ],
+      "activities": [
+        "Visit the Golden Temple",
+        "Witness the Wagah Border Ceremony",
+        "Explore Jallianwala Bagh",
+        "Visit the Durgiana Temple"
+      ],
+      "spiritualSignificance": "The Golden Temple is the holiest shrine of Sikhism, symbolizing equality and brotherhood. The Guru Granth Sahib, the holy scripture of Sikhs, is housed here and continuous recitation takes place."
+    },
+    {
+      "id": 5,
+      "name": "Bodh Gaya",
+      "state": "Bihar",
+      "cost": "₹800/day",
+      "significance": "Place of Buddha's enlightenment",
+      "mainAttraction": "Mahabodhi Temple",
+      "description": "Bodh Gaya is the place where Gautama Buddha attained enlightenment under the Bodhi Tree. It's one of the four main pilgrimage sites related to the life of Buddha and attracts Buddhists from around the world.",
+      "bestTimeToVisit": "November to February",
+      "nearbyAccommodations": ["Royal Residency", "Hotel Taj Darbar", "Oaks Bodhgaya"],
+      "mainImage": "https://i.imgur.com/oXyIReD.jpeg",
+      "gallery": [
+        "https://i.imgur.com/wQsdKJz.jpeg",
+        "https://i.imgur.com/DLTr7M3.jpeg",
+        "https://i.imgur.com/lqaYObJ.jpeg"
+      ],
+      "activities": [
+        "Meditate under the Bodhi Tree",
+        "Visit the Mahabodhi Temple",
+        "Explore the Great Buddha Statue",
+        "Visit the Tibetan Refugee Market"
+      ],
+      "spiritualSignificance": "Bodh Gaya is considered the birthplace of Buddhism. The Bodhi Tree and the area around it are believed to radiate spiritual energy, drawing seekers from all over the world for meditation and spiritual practices."
+    },
+    {
+      "id": 6,
+      "name": "Haridwar",
+      "state": "Uttarakhand",
+      "cost": "₹900/day",
+      "significance": "Gateway to the Gods",
+      "mainAttraction": "Har Ki Pauri Ghat",
+      "description": "Haridwar, meaning 'Gateway to God', is one of the seven holiest places for Hindus. The city is situated on the banks of the River Ganges and is known for its ghats, temples, and the evening Ganga Aarti.",
+      "bestTimeToVisit": "February to March and August to October",
+      "nearbyAccommodations": ["Haveli Hari Ganga", "Radisson Blu Haridwar", "Ganga Lahari"],
+      "mainImage": "https://i.imgur.com/4pYPNIY.jpeg",
+      "gallery": [
+        "https://i.imgur.com/t5yxIuW.jpeg",
+        "https://i.imgur.com/bK1VJWL.jpeg",
+        "https://i.imgur.com/1PYr51F.jpeg"
+      ],
+      "activities": [
+        "Attend the Ganga Aarti at Har Ki Pauri",
+        "Take a holy dip in the Ganges",
+        "Visit Mansa Devi Temple",
+        "Explore Rajaji National Park"
+      ],
+      "spiritualSignificance": "Haridwar is one of the four sites where drops of the elixir of immortality accidentally spilled over from the pitcher, in which it was being carried by the celestial bird Garuda. This makes it one of the four places where the Kumbh Mela is held every twelve years."
+    },
+    {
+      "id": 7,
+      "name": "Puri",
+      "state": "Odisha",
+      "cost": "₹1,000/day",
+      "significance": "One of the Char Dhams",
+      "mainAttraction": "Jagannath Temple",
+      "description": "Puri is one of the four sacred Char Dham pilgrimage sites for Hindus. The city is famous for its Jagannath Temple, dedicated to Lord Jagannath, a form of Lord Vishnu.",
+      "bestTimeToVisit": "October to February",
+      "nearbyAccommodations": ["Mayfair Heritage", "Sterling Puri", "Hans Coco Palms"],
+      "mainImage": "https://i.imgur.com/ffx0KZt.jpeg",
+      "gallery": [
+        "https://i.imgur.com/HQuyGo8.jpeg",
+        "https://i.imgur.com/RVJtB05.jpeg",
+        "https://i.imgur.com/S0tWHFn.jpeg"
+      ],
+      "activities": [
+        "Visit the Jagannath Temple",
+        "Witness the Rath Yatra (if visiting in June/July)",
+        "Relax on Puri Beach",
+        "Explore the Sun Temple at Konark"
+      ],
+      "spiritualSignificance": "The Jagannath Temple in Puri is one of the most revered Vaishnava shrines. The annual Rath Yatra of Lord Jagannath is a major event that attracts millions of devotees from around the world."
+    },
+    {
+      "id": 8,
+      "name": "Dharamshala",
+      "state": "Himachal Pradesh",
+      "cost": "₹1,300/day",
+      "significance": "Residence of the Dalai Lama",
+      "mainAttraction": "Tsuglagkhang Complex",
+      "description": "Dharamshala, nestled in the Kangra Valley, is known for its Tibetan community and as the residence of the Dalai Lama. It's a center for Tibetan Buddhism and culture in India.",
+      "bestTimeToVisit": "March to June and September to November",
+      "nearbyAccommodations": ["Fortune Park Moksha", "Pride Surya Mountain Resort", "Zostel Dharamshala"],
+      "mainImage": "https://i.imgur.com/B7sZklu.jpeg",
+      "gallery": [
+        "https://i.imgur.com/u1rxJBq.jpeg",
+        "https://i.imgur.com/Xbx96aq.jpeg",
+        "https://i.imgur.com/HaKxVPp.jpeg"
+      ],
+      "activities": [
+        "Visit the Tsuglagkhang Complex",
+        "Attend teachings by the Dalai Lama (if scheduled)",
+        "Trek to Triund",
+        "Learn Tibetan meditation and philosophy"
+      ],
+      "spiritualSignificance": "Dharamshala is the heart of the Tibetan exile community and a center for Tibetan Buddhism. It offers a unique blend of Tibetan and Indian cultures, providing a serene environment for spiritual seekers and those interested in Buddhist philosophy."
+    },
+    {
+      "id": 9,
+      "name": "Ajmer",
+      "state": "Rajasthan",
+      "cost": "₹1,100/day",
+      "significance": "Home to the Shrine of Sufi Saint Khwaja Moinuddin Chishti",
+      "mainAttraction": "Ajmer Sharif Dargah",
+      "description": "Ajmer is famous for the shrine of Sufi saint Khwaja Moinuddin Chishti. The city is an important pilgrimage center for both Hindus and Muslims, known for its rich history and spiritual atmosphere.",
+      "bestTimeToVisit": "October to March",
+      "nearbyAccommodations": ["Taj Gateway Hotel", "Mansingh Palace", "Hotel Embassy"],
+      "mainImage": "https://i.imgur.com/rU3caPf.jpeg",
+      "gallery": [
+        "https://i.imgur.com/JLnPzcF.jpeg",
+        "https://i.imgur.com/EkS0vU6.jpeg",
+        "https://i.imgur.com/hPOlzFT.jpeg"
+      ],
+      "activities": [
+        "Visit Ajmer Sharif Dargah",
+        "Explore Adhai Din Ka Jhonpra",
+        "Visit Pushkar Lake",
+        "Explore Taragarh Fort"
+      ],
+      "spiritualSignificance": "The Ajmer Sharif Dargah is one of the most sacred Sufi shrines in India. It's believed that sincere prayers made at this shrine are always answered, making it a symbol of communal harmony and spiritual enlightenment."
+    },
+    {
+      "id": 10,
+      "name": "Shirdi",
+      "state": "Maharashtra",
+      "cost": "₹800/day",
+      "significance": "Abode of Sai Baba",
+      "mainAttraction": "Shirdi Sai Baba Temple",
+      "description": "Shirdi is famous as the home of the late 19th century saint Sai Baba. It's a major pilgrimage site attracting devotees from all over the world who come to pay homage to Sai Baba and seek his blessings.",
+      "bestTimeToVisit": "November to February",
+      "nearbyAccommodations": ["Hotel Sai Sahavas", "St. Laurn The Spiritual Resort", "Keys Prima Hotel Temple Tree"],
+      "mainImage": "https://i.imgur.com/GOqWVg7.jpeg",
+      "gallery": [
+        "https://i.imgur.com/8UQn893.jpeg",
+        "https://i.imgur.com/w2yCQOw.jpeg",
+        "https://i.imgur.com/KPAhfcX.jpeg"
+      ],
+      "activities": [
+        "Visit the Shirdi Sai Baba Temple",
+        "Attend the Kakad Aarti (early morning ritual)",
+        "Explore Dwarkamai Mosque",
+        "Visit Chavadi"
+      ],
+      "spiritualSignificance": "Sai Baba, revered by both Hindus and Muslims, taught a moral code of love, forgiveness, helping others, charity, contentment, inner peace, and devotion to God and guru. Shirdi has become a place where people of all faiths come to seek blessings and spiritual guidance."
     }
   ]
 }
