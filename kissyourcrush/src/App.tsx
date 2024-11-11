@@ -1,20 +1,29 @@
-import React from 'react';
-import Hero from './components/Hero';
-import ExamplesGallery from './components/ExamplesGallery';
-import UploadSection from './components/UploadSection';
-import TrustSection from './components/TrustSection';
-import Footer from './components/Footer';
+// App.tsx
+import React, { useRef } from 'react';
+import Hero from './Hero';
+import ExamplesGallery from './ExamplesGallery';
+import UploadSection from './UploadSection';
 
-function App() {
+const App = () => {
+  // Reference to the UploadSection
+  const uploadSectionRef = useRef<HTMLDivElement>(null);
+
+  // Function to scroll to the UploadSection
+  const scrollToUploadSection = () => {
+    if (uploadSectionRef.current) {
+      uploadSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-soft-pink via-deep-pink to-deep-purple">
-      <Hero />
+    <div>
+      <Hero scrollToUploadSection={scrollToUploadSection} />
       <ExamplesGallery />
-      <UploadSection />
-      <TrustSection />
-      <Footer />
+      <div ref={uploadSectionRef}>
+        <UploadSection />
+      </div>
     </div>
   );
-}
+};
 
 export default App;

@@ -52,18 +52,9 @@ const UploadSection = () => {
     };
   };
 
-  const handleClearFile = (index: number) => {
-    if (uploadMode === 'couple') {
-      setFiles([]);
-    } else {
-      if (index === 0) {
-        setFiles([]);
-        setStitchedImage(null);
-      } else if (index === 1) {
-        setFiles(files.slice(0, 1));
-        setStitchedImage(null);
-      }
-    }
+  const handleClearFile = () => {
+    setFiles([]);
+    setStitchedImage(null);
   };
 
   const handleGenerate = () => {
@@ -84,8 +75,7 @@ const UploadSection = () => {
             <button
               onClick={() => {
                 setUploadMode('couple');
-                setFiles([]);
-                setStitchedImage(null);
+                handleClearFile();
               }}
               className={`flex-1 py-3 rounded-full font-montserrat ${
                 uploadMode === 'couple'
@@ -98,8 +88,7 @@ const UploadSection = () => {
             <button
               onClick={() => {
                 setUploadMode('solo');
-                setFiles([]);
-                setStitchedImage(null);
+                handleClearFile();
               }}
               className={`flex-1 py-3 rounded-full font-montserrat ${
                 uploadMode === 'solo'
@@ -120,7 +109,7 @@ const UploadSection = () => {
               onChange={handleFileChange}
               className="hidden"
               id="fileInput"
-              disabled={files.length >= (uploadMode === 'couple' ? 1 : 2)}
+              disabled={uploadMode === 'couple' ? files.length >= 1 : files.length >= 2}
             />
             <label
               htmlFor="fileInput"
@@ -130,9 +119,11 @@ const UploadSection = () => {
             >
               <Upload className="w-12 h-12 mx-auto mb-4 text-deep-pink" />
               <p className="text-lg mb-2">
-                {`Click to select your ${
-                  uploadMode === 'couple' ? 'couple photo' : files.length === 0 ? 'first photo' : 'second photo'
-                }`}
+                {uploadMode === 'couple'
+                  ? 'Click to select your couple photo'
+                  : files.length === 0
+                  ? 'Click to upload first photo'
+                  : 'Click to upload second photo'}
               </p>
             </label>
           </div>
@@ -141,65 +132,42 @@ const UploadSection = () => {
           {files.length > 0 && (
             <div className="mt-8">
               <h3 className="font-playfair text-xl mb-4">Preview</h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="relative">
                 {uploadMode === 'couple' && files.length > 0 && (
-                  <div className="relative col-span-2">
-                    <img
-                      src={URL.createObjectURL(files[0])}
-                      alt="Preview"
-                      className="w-full h-64 object-contain rounded-lg"
-                    />
-                    <button
-                      onClick={() => handleClearFile(0)}
-                      className="absolute top-2 right-2 bg-white rounded-full p-1"
-                    >
-                      <X className="w-5 h-5 text-deep-pink" />
-                    </button>
-                  </div>
+                  <img
+                    src={URL.createObjectURL(files[0])}
+                    alt="Couple Photo Preview"
+                    className="w-full h-64 object-contain rounded-lg"
+                  />
                 )}
-                {uploadMode === 'solo' && files.length > 0 && (
-                  <>
-                    {files.length >= 1 && (
-                      <div className="relative">
-                        <img
-                          src={URL.createObjectURL(files[0])}
-                          alt="First Solo Preview"
-                          className="w-full h-64 object-contain rounded-lg"
-                        />
-                        <button
-                          onClick={() => handleClearFile(0)}
-                          className="absolute top-2 right-2 bg-white rounded-full p-1"
-                        >
-                          <X className="w-5 h-5 text-deep-pink" />
-                        </button>
-                      </div>
-                    )}
-                    {stitchedImage && (
-                      <div className="relative col-span-2">
-                        <img
-                          src={stitchedImage}
-                          alt="Stitched Preview"
-                          className="w-full h-64 object-contain rounded-lg"
-                        />
-                        <button
-                          onClick={() => handleClearFile(1)}
-                          className="absolute top-2 right-2 bg-white rounded-full p-1"
-                        >
-                          <X className="w-5 h-5 text-deep-pink" />
-                        </button>
-                      </div>
-                    )}
-                  </>
+                {uploadMode === 'solo' && stitchedImage && (
+                  <img
+                    src={stitchedImage}
+                    alt="Stitched Photo Preview"
+                    className="w-full h-64 object-contain rounded-lg"
+                  />
                 )}
+                <button
+                  onClick={handleClearFile}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1"
+                >
+                  <X className="w-5 h-5 text-deep-pink" />
+                </button>
               </div>
               <button
                 onClick={handleGenerate}
                 className={`w-full mt-6 bg-deep-pink text-white py-4 rounded-full font-montserrat font-semibold hover:bg-opacity-90 transition-colors ${
-                  loading || files.length < (uploadMode === 'solo' ? 2 : 1)
+                  loading ||
+                  (uploadMode === 'couple' && files.length < 1) ||
+                  (uploadMode === 'solo' && !stitchedImage)
                     ? 'opacity-50 cursor-not-allowed'
                     : ''
                 }`}
-                disabled={loading || files.length < (uploadMode === 'solo' ? 2 : 1)}
+                disabled={
+                  loading ||
+                  (uploadMode === 'couple' && files.length < 1) ||
+                  (uploadMode === 'solo' && !stitchedImage)
+                }
               >
                 {loading ? 'Generating...' : 'Generate Video'}
               </button>
